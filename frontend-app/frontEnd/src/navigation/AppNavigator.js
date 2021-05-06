@@ -5,6 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Signin from '../screens/Signin/Signin'
 import Signup from '../screens/Signup/Signup'
 import Home from '../screens/Homepage/Home'
+import Starter from '../screens/starter/Starter';
 
 const Stack = createStackNavigator();
 
@@ -17,18 +18,22 @@ function App() {
       }}
       >
         <Stack.Screen
-          name="Signin"
-          component={Signin}
+          name="Starter"
+          component={Starter}
           options={{
-            title: '',
+            title: 'Starter',
             headerStyle: {
               backgroundColor: '#1597bb',
             },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              fontSize: 22,
-              alignSelf: 'center'
+          }}
+        />
+        <Stack.Screen
+          name="Signin"
+          component={Signin}
+          options={{
+            title: 'Signin',
+            headerStyle: {
+              backgroundColor: '#1597bb',
             },
           }}
         />
