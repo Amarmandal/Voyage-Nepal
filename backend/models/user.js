@@ -40,7 +40,6 @@ const userSchema = new Schema({
     },
     encryPassword: {
         type: String,
-        required: true
     },
     salt: String,
 }, {timestamps: true});
