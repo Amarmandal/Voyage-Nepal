@@ -60,3 +60,7 @@ buck-out/
 
 #resources
 resources/
+
+.env
+.env/
+
