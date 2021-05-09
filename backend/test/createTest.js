@@ -1,8 +1,8 @@
-const User = require('../models/user');
-const Category = require('../models/category');
-const Place = require('../models/place');
-const Review = require('../models/review');
-const HotRes = require('../models/hotres');
+const User = require('../models/userModel');
+const Category = require('../models/categoryModel');
+const Place = require('../models/placeModel');
+const Review = require('../models/reviewModel');
+const HotRes = require('../models/hotresModel');
 const assert = require('assert');
 
 
