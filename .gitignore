@@ -61,6 +61,8 @@ buck-out/
 #resources
 resources/
 
+/backend/.env
+backend/.env
 .env
 .env/
 .env*
