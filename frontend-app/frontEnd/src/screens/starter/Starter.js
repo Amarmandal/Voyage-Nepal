@@ -1,5 +1,5 @@
 import React from 'react';
-import {ImageBackground} from 'react-native';
+import {ImageBackground, ScrollView} from 'react-native';
 import {Text, Button, View, Icon} from 'native-base';
 
 const Starter = ({navigation}) => {
