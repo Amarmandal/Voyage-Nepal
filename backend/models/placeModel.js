@@ -7,7 +7,7 @@ const placeSchema = new Schema({
     name: {
         type: String,
         trim: true,
-        require: true,
+        required: true,
         minLength: 1,
     },
     category: [{
@@ -15,14 +15,9 @@ const placeSchema = new Schema({
         ref: 'Category',
         trim: true,
     }],
-    hotels: [{
+    stayPlace: [{
         type: ObjectId,
-        ref: 'Hotel',
-        trim: true,
-    }],
-    restaurant: [{
-        type: ObjectId,
-        ref: 'Restaurant',
+        ref: 'HotRes',
         trim: true,
     }],
     reviews: [{

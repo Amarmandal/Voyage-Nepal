@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
-const {ObjectId} = Schema.Types;
 
-const restaurantSchema = new Schema({
+const hotResSchema = new Schema({
     name: {
         type: String,
         required: true,
         trim: true,
         unique: true,
+        maxLength: 65,
     },
     rating: {
         type: Number,
@@ -16,14 +16,14 @@ const restaurantSchema = new Schema({
         max: 5,
         default: 1,
     },
-    location: [{
-        type: ObjectId,
-        ref: 'Place',
-        required: true,
-    }]
+    stayType: {
+        type: String,
+        enum: ['Hotel', 'Restaurant'],
+        default: 'Hotel'
+    }
 
 }, {timestamps: true});
 
-const Restaurant = mongoose.model('Hotel', restaurantSchema);
+const HotRes = mongoose.model('Hotel', hotResSchema);
 
-module.exports = Restaurant;
+module.exports = HotRes;
