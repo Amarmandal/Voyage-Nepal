@@ -63,6 +63,7 @@ resources/
 
 /backend/.env
 backend/.env
+backend/env.txt
 .env
 .env/
 .env*

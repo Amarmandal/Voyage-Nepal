@@ -41,6 +41,12 @@ const userSchema = new Schema(
       type: String,
       trim: true,
     },
+    encryptOtp: {
+      type: String,
+    },
+    otpExpires: {
+      type: Date
+    },
     hashPassword: {
       type: String,
       required: true,
@@ -50,20 +56,21 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-userSchema.virtual('password')
-  .set(function(userPass) {
+userSchema
+  .virtual("password")
+  .set(function (userPass) {
     this.salt = uuid();
     this._password = userPass;
     this.hashPassword = this.getHashPassword(userPass);
   })
-  .get(function() {
-      return this._password;
-  })
+  .get(function () {
+    return this._password;
+  });
 
 userSchema.method({
-    authenticate: function (plainPassword) {
-        return (this.getHashPassword(plainPassword) === this.hashPassword);
-    },
+  authenticate: function (plainPassword) {
+    return this.getHashPassword(plainPassword) === this.hashPassword;
+  },
 
   getHashPassword: function (plainPassword) {
     if (plainPassword === "") return "";
@@ -77,6 +84,22 @@ userSchema.method({
       console.log(error);
       return "";
     }
+  },
+
+  generateOtp: function () {
+    let otp = "";
+    for (let i = 0; i < 6; i++) {
+      otp += Math.floor(Math.random() * 10);
+    }
+
+    this.encryptOtp = crypto
+      .createHash('sha256')
+      .update(otp)
+      .digest('hex')
+
+    
+    this.otpExpires = Date.now() + 5 * 60 * 1000;
+    return otp;
   },
 });
 

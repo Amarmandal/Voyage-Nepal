@@ -1,23 +1,10 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
-const { google } = require('googleapis');
-const OAuth2 = google.auth.OAuth2;
-
-//oauth2 Client configuration
-const oauth2Client = new OAuth2(
-  process.env.OAUTH_CLIENT_ID,
-  process.env.OAUTH_CLIENT_SECRET,
-  "https://developers.google.com/oauthplayground"
-)
-
-oauth2Client.setCredentials({
-  refresh_token: process.env.OAUTH_REFRESH_TOKEN
-})
+const { getTransporter } = require("../utils/sendEmail");
 
 exports.userSignup = async (req, res) => {
-  const {email} = req.body; 
-  
+  const { email } = req.body;
+
   User.findOne({ email }).then((doc) => {
     if (doc) {
       return res.json({ error: "User with this Email Already exist" });
@@ -25,21 +12,11 @@ exports.userSignup = async (req, res) => {
   });
 
   try {
-    const accessToken = await oauth2Client.getAccessToken();
-    const jwtToken = jwt.sign(req.body, process.env.JWT_SECRETS, {expiresIn: '10m'})
-
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        type: 'OAuth2',
-        user: process.env.EMAIL,
-        clientId: process.env.OAUTH_CLIENT_ID,
-        clientSecret: process.env.OAUTH_CLIENT_SECRET,
-        refreshToken: process.env.OAUTH_REFRESH_TOKEN,
-        accessToken: accessToken,
-      },
+    const jwtToken = jwt.sign(req.body, process.env.JWT_SECRETS, {
+      expiresIn: "10m",
     });
 
+    const transporter = await getTransporter();
     const mailOptions = {
       from: process.env.EMAIL,
       to: `${email}`,
@@ -48,26 +25,25 @@ exports.userSignup = async (req, res) => {
         <a href='https://google.com'>Activation Link</a>
         <p>Link Will Expire in 10 minutes </p>
         <p>${jwtToken}</p>
-      `
-    }
+      `,
+    };
 
-    res.status(200).json({ message: 'Please check Email for activation link' })
+    res.status(200).json({ message: "Please check Email for activation link" });
     const info = await transporter.sendMail(mailOptions);
     return info;
   } catch (error) {
     console.log(error);
   }
-}
-
+};
 
 exports.userEmailVerification = async (req, res) => {
   const { token } = req.body;
 
-  if(!token) return res.status(404).json({error: 'Token Not Found'});
+  if (!token) return res.status(404).json({ error: "Token Not Found" });
 
   jwt.verify(token, process.env.JWT_SECRETS, (err, decodedToken) => {
-    if(err) {
-      return res.status(400).json({error: 'Expired Token or Link'});
+    if (err) {
+      return res.status(400).json({ error: "Expired Token or Link" });
     }
 
     User.findOne({ email: decodedToken.email }).then((doc) => {
@@ -82,14 +58,14 @@ exports.userEmailVerification = async (req, res) => {
     user
       .save()
       .then((doc) => {
-        res.status(200).json(doc);
+        const { _id, name, email, isAdmin, gender, city } = doc;
+        res.status(200).json({id: _id, name, email, isAdmin, gender, city });
       })
       .catch((err) => {
         console.log(err);
       });
-  })
+  });
 };
-
 
 exports.userSingin = (req, res) => {
   const { email, password } = req.body;
@@ -124,42 +100,50 @@ exports.userSingin = (req, res) => {
     .catch((err) => console.log(err));
 };
 
-//authentication
-exports.isSignedIn = (req, res, next) => {
-  const {token} = req.cookies;
-  
-  if(!token) {
-    return res.status(401).json({'error': 'User is not logged in'});
-  }
+exports.forgetPassword = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
 
-  req.user = {auth: 'auth'};
-  next();
-}
-
-//authenticating user passed using bearer
-exports.isAuthenticated = (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const authToken = req.user && authHeader && authHeader.split(' ')[1]
-
-  if(!authToken) return res.status(401).json({error: 'Unauthorized'});
-  jwt.verify(authToken, process.env.JWT_SECRETS , (err, decodedValue) => {
-    if(err) {
-      return res.status(401).json({'error': 'Access Denied due to Invalid Token'});
+    if (!user) {
+      return res
+        .status(404)
+        .json({ error: "User associated with this mail not found" });
     }
 
-    req.user = decodedValue;
-    next();
-  });
+    const otp = user.generateOtp();
+    await user.save();
 
-}
+    const transporter = await getTransporter();
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: `${email}`,
+      subject: "Verify You Email by Clicking the Link",
+      html: `
+          <a href='https://google.com'>Activation Link</a>
+          <p>This otp will expire in 5 minutes</p>
+          <p>${otp}</p>
+        `,
+    };
 
-//isAdmin check
-exports.isAdmin = (req, res, next) => {
-  const {isAdmin} = req.user;
-  
-  if(!isAdmin) {
-    return res.status(401).json({error: 'User is not an admin'});
+    res.status(200).json({ message: "Please check Email for OTP" });
+    const info = await transporter.sendMail(mailOptions);
+    return info;
+
+  } catch (error) {
+    console.log(error);
   }
+};
 
-  next();
+exports.resetPassword = async (req, res) => {
+  const { password } = req.body;
+  const user = req.profile;
+  
+  user.password = password;
+  user.encryptOtp = undefined;
+  user.otpExpires = undefined;
+
+  await user.save();
+
+  res.status(200).json('Password Reset Successful');
 }
