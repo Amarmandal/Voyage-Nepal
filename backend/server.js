@@ -12,6 +12,7 @@ mongoose.connect('mongodb://localhost:27017/voyage_nepal', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
+    useFindAndModify: false
 });
 mongoose.connection
     .once('open', () => {
