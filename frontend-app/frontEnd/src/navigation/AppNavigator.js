@@ -13,6 +13,7 @@ import Category from '../screens/Homepage/Category';
 import Map from '../screens/Homepage/Map';
 import Profile from '../screens/Homepage/Profile';
 import Starter from '../screens/starter/Starter';
+import Colors from '../constants/Color'
 
 const activeColor = '#CF3838'
 
@@ -23,10 +24,10 @@ const Home = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: activeColor,
+        activeTintColor: Colors.primary,
         showLabel: false,
         style: {
-          backgroundColor: 'transparent',
+          backgroundColor: '#ffffff',
           borderTopWidth: 0,
           position: 'absolute',
           elevation: 0, 
@@ -36,14 +37,14 @@ const Home = () => {
       <Tab.Screen
         name="Feed"
         component={Feed}
-        options={{tabBarIcon: ({focused}) => <Icon name="home" size={26} style={{ color: focused ? activeColor : 'black' }} />}}
+        options={{tabBarIcon: ({focused}) => <Icon name="home" size={26} style={{ color: focused ? Colors.themeColor : 'black' }} />}}
       />
       <Tab.Screen
         name="Explore"
         component={Explore}
         options={{
           tabBarIcon: ({focused}) => (
-            <Icon type="MaterialIcons" name="explore" size={26} style={{ color: focused ? activeColor : 'black' }}/>
+            <Icon type="MaterialIcons" name="explore" size={26} style={{ color: focused ? Colors.themeColor : 'black' }}/>
           ),
         }}
       />
@@ -51,7 +52,7 @@ const Home = () => {
         name="Category"
         component={Category}
         options={{
-          tabBarIcon: ({focused}) => <Icon type="FontAwesome5" name="book" size={26} style={{ color: focused ? activeColor : 'black' }}/>,
+          tabBarIcon: ({focused}) => <Icon type="FontAwesome5" name="book" size={26} style={{ color: focused ? Colors.themeColor : 'black' }}/>,
         }}
       />
       <Tab.Screen
@@ -62,7 +63,7 @@ const Home = () => {
             <Icon
               type='FontAwesome5'
               name="map-marked-alt"
-              style={{ color: focused ? activeColor : 'black' }}
+              style={{ color: focused ? Colors.themeColor : 'black' }}
             />
           ),
         }}
@@ -72,7 +73,7 @@ const Home = () => {
         component={Profile}
         options={{
           tabBarIcon: ({focused}) => (
-            <Icon type="FontAwesome5" name="user-circle" size={26} style={{ color: focused ? activeColor : 'black' }}/>
+            <Icon type="FontAwesome5" name="user-alt" size={26} style={{ color: focused ? Colors.themeColor : 'black' }}/>
           ),
         }}
       />

@@ -1,62 +1,73 @@
 import React from 'react';
-import {Image, useWindowDimensions, ImageBackground} from 'react-native';
+import {
+  Image,
+  useWindowDimensions,
+  ImageBackground,
+  ScrollView,
+} from 'react-native';
 import {View, Text, Item, Icon, Button} from 'native-base';
 
-const Profile = () => {
+import {
+  Divider,
+  Img,
+  List,
+  SignOut,
+  UserName,
+} from '../../Components/Home/profile/Profile';
+
+import Colors from "../../constants/Color";
+
+const Profile = ({navigation}) => {
   const imageWidth = useWindowDimensions().width;
-  const imageHeight = Math.round((imageWidth * 5304) / 7426);
+  const imageHeight = Math.round(imageWidth * (1105 / 2004));
 
   return (
-    <View style={{flex: 1, alignItems: 'flex-start'}}>
-      <ImageBackground
-        source={require('../../assets/pictures/background.jpg')}
-        style={{
-          height: imageHeight,
-          width: imageWidth,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Image
-          source={require('../../assets/pictures/face.jpg')}
-          style={{
-            width: 175,
-            height: 175,
-            borderRadius: 400 / 2,
-            overlayColor: 'transparent',
-          }}
-        />
-      </ImageBackground>
-      <View style = {{margin: 30}}>
-        <Button transparent iconLeft>
-          <Icon name="search" />
-          <Text uppercase={false}>My trips</Text>
-        </Button>
-        <Button transparent iconLeft>
-          <Icon name="search" />
-          <Text uppercase={false}>My bookings</Text>
-        </Button>
-        <Button transparent iconLeft>
-          <Icon name="search" />
-          <Text uppercase={false}>Travel Guides</Text>
-        </Button>
-        <Button transparent iconLeft>
-          <Icon name="search" />
-          <Text uppercase={false}>Favorites</Text>
-        </Button>
-        <Button transparent iconLeft>
-          <Icon name="search" />
-          <Text uppercase={false}>Share</Text>
-        </Button>
-        <Button transparent iconLeft>
-          <Icon name="search" />
-          <Text uppercase={false}>Help and support</Text>
-        </Button>
-        <Button transparent iconLeft>
-          <Icon name="search" />
-          <Text uppercase={false}>settings</Text>
-        </Button>
-        
+    <View style={{flex: 1, backgroundColor: Colors.gray}}>
+      <View style={{alignItems: 'center', marginBottom: 20,}}>
+        <Img />
+        <UserName name = 'Jane Jane' />
       </View>
+      <Divider />
+
+      <ScrollView>
+        <View style = {{paddingLeft: 20, paddingRight: 20, paddingBottom: 80, backgroundColor: Colors.gray}}>
+          <List iconType="Ionicons" iconName="search" listName="My Trips" />
+          <List
+            iconType="FontAwesome5"
+            iconName="book"
+            listName="My Bookings"
+          />
+          <Divider />
+          {/* <Text style = {{color: Colors.dimGray, fontSize: 18}}>Explore</Text> */}
+          <List
+            iconType="FontAwesome5"
+            iconName="hands-helping"
+            listName="Travel Guides"
+          />
+          <List
+            iconType="FontAwesome"
+            iconName="heart-o"
+            listName="Favourites"
+          />
+          <Divider />
+          <List
+            iconType="FontAwesome5"
+            iconName="share-alt"
+            listName="Share"
+          />
+          <List
+            iconType="Feather"
+            iconName="help-circle"
+            listName="Help & Support"
+          />
+          <List
+            iconType="Ionicons"
+            iconName="settings-outline"
+            listName="Settings"
+          />
+          <SignOut signOut = {() => navigation.navigate('Starter')} />
+        </View>
+      </ScrollView>
     </View>
   );
 };
