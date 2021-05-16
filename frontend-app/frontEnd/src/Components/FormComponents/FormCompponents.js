@@ -64,7 +64,7 @@ export const FormInput = props => {
 
 export const ActionButton = props => {
   return (
-    <Button rounded block light style={{ paddingLeft: 30, paddingRight: 30, marginRight: 10}}>
+    <Button rounded block light style = {{marginBottom: 15}}>
       <Text
         onPress={props.home}
         style={{fontSize: 22, fontFamily: 'GentiumBookBasic-Bold'}}>

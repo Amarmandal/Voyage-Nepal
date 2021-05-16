@@ -32,6 +32,8 @@
 		E3C98E4B620F4B11A85E91E8 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9497164CBD994FD98F47D7F3 /* rubicon-icon-font.ttf */; };
 		B8146F91D57F4C808B38D251 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 49EEE7A453E843D4829DA8A1 /* SimpleLineIcons.ttf */; };
 		7F818668E6CE4F63A72A7E87 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F91DDC217A554767910F40D4 /* Zocial.ttf */; };
+		19CC156FE1CE452D82F251C8 /* KaushanScript-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B9D9681D56EA4655A5B9212B /* KaushanScript-Regular.ttf */; };
+		9DF46DE129DD46339535ED3B /* Playball-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1CBFE833D28F48D5B4835850 /* Playball-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +78,8 @@
 		9497164CBD994FD98F47D7F3 /* rubicon-icon-font.ttf */ = {isa = PBXFileReference; name = "rubicon-icon-font.ttf"; path = "../node_modules/native-base/Fonts/rubicon-icon-font.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		49EEE7A453E843D4829DA8A1 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; name = "SimpleLineIcons.ttf"; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		F91DDC217A554767910F40D4 /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/native-base/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B9D9681D56EA4655A5B9212B /* KaushanScript-Regular.ttf */ = {isa = PBXFileReference; name = "KaushanScript-Regular.ttf"; path = "../src/assets/fonts/KaushanScript-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		1CBFE833D28F48D5B4835850 /* Playball-Regular.ttf */ = {isa = PBXFileReference; name = "Playball-Regular.ttf"; path = "../src/assets/fonts/Playball-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +192,8 @@
 				9497164CBD994FD98F47D7F3 /* rubicon-icon-font.ttf */,
 				49EEE7A453E843D4829DA8A1 /* SimpleLineIcons.ttf */,
 				F91DDC217A554767910F40D4 /* Zocial.ttf */,
+				B9D9681D56EA4655A5B9212B /* KaushanScript-Regular.ttf */,
+				1CBFE833D28F48D5B4835850 /* Playball-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -303,6 +309,8 @@
 				E3C98E4B620F4B11A85E91E8 /* rubicon-icon-font.ttf in Resources */,
 				B8146F91D57F4C808B38D251 /* SimpleLineIcons.ttf in Resources */,
 				7F818668E6CE4F63A72A7E87 /* Zocial.ttf in Resources */,
+				19CC156FE1CE452D82F251C8 /* KaushanScript-Regular.ttf in Resources */,
+				9DF46DE129DD46339535ED3B /* Playball-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
