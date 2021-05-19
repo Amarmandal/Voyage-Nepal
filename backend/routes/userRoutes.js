@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/users', (req, res) => {
-    res.send('/User Route hit');
-})
+const { uploadPhoto, updatePhoto } = require('../controllers/userController');
+const { upload } = require('../utils/uploadHelper');
 
-router
+router.post('/upload/photo', upload.single('photo'), uploadPhoto);
 
-
+router.post('/update/photo', upload.single('photo'), updatePhoto);
 
 module.exports = router;

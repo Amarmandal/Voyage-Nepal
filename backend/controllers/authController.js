@@ -5,14 +5,24 @@ const { getTransporter } = require("../utils/sendEmail");
 exports.userSignup = async (req, res) => {
   const { email } = req.body;
 
-  User.findOne({ email }).then((doc) => {
-    if (doc) {
-      return res.json({ error: "User with this Email Already exist" });
-    }
-  });
-
   try {
-    const jwtToken = jwt.sign(req.body, process.env.JWT_SECRETS, {
+    const user = await User.findOne({email});
+
+    if(user) {
+      // if(req.profilePath) {
+      //   //delete the existing file
+      //   fs.unlink(req.profilePath, (err) => {
+      //     if(err) {
+      //       throw err;
+      //     }
+      //   });
+
+      // }
+      res.status(302).json({ error: 'User with this Email Already exist'})
+      return;
+    }
+
+    const jwtToken = jwt.sign({...req.body, profileImgURL: req.profilePath}, process.env.JWT_SECRETS, {
       expiresIn: "10m",
     });
 
@@ -63,6 +73,7 @@ exports.userEmailVerification = async (req, res) => {
       })
       .catch((err) => {
         console.log(err);
+        return res.status(400).json({ error: 'User Account Cannot be created!'})
       });
   });
 };

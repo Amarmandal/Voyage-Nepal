@@ -67,3 +67,5 @@ backend/env.txt
 .env
 .env/
 .env*
+backend/app.yaml
+backend/voyage-nepal-63a2c8679aa6.json
