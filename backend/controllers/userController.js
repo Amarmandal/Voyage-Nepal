@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const { bucket } = require("../utils/uploadHelper");
 const { getIdFromURl } = require('../utils/imageIdExtract');
+const { v4: uuid } = require('uuid');
 
 //get user by id
 exports.getUserById = async (req, res, next, userId) => {
@@ -10,7 +11,7 @@ exports.getUserById = async (req, res, next, userId) => {
       res.status(404).json({ error: "Invalid User Id" });
       return;
     }
-    req.user = user;
+    req.userProfile = user;
     next();
   } catch (error) {
     console.log(error);
@@ -30,6 +31,7 @@ exports.removeUserById = async (req, res) => {
   }
 };
 
+
 // exports.updateUserById =  asy
 
 //upload User Profile Picture
@@ -45,7 +47,7 @@ exports.uploadPhoto = (req, res, next) => {
   }
 
   const blob = bucket.file(
-    "images/" + req.file.originalname.replace(/ /g, "_")
+    "images/" + uuid() + req.file.originalname.replace(/ /g, "_")
   );
 
   const blobStream = blob.createWriteStream({
@@ -59,7 +61,18 @@ exports.uploadPhoto = (req, res, next) => {
     })
     .on("finish", async () => {
       const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-      res.status(200).json({ profileURL: publicUrl });
+      const user = req.userProfile;
+      user.profileImgURL = publicUrl;
+      
+      try {
+        await user.save();
+        res.status(200).json('Profile Picture has been set successfully');
+        return;
+      } catch (error) {
+        console.log(error);
+        res.status(400).json({ error: 'Error uploading user profile'})
+        return;
+      }
     })
     .end(req.file.buffer);
 };
@@ -77,7 +90,7 @@ exports.updatePhoto = (req, res, next) => {
       return;
     }
 
-    const fileId = getIdFromURl(req.body.fileLocation);
+    const fileId = getIdFromURl(req.userProfile.profileImgURL);
     const blob = bucket.file(fileId);
 
     const blobStream = blob.createWriteStream({
@@ -91,7 +104,14 @@ exports.updatePhoto = (req, res, next) => {
       })
       .on("finish", async () => {
         const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-        res.status(200).json({ updatedUrl: publicUrl });
+
+        if(req.userProfile.profileImgURL !== publicUrl) {
+          res.status(400).json({ error: 'Unable to update User profile' })
+          return;
+        }
+
+        res.status(200).json('User Profile has been updated Successfully');
+        return;
       })
       .end(req.file.buffer);
     
