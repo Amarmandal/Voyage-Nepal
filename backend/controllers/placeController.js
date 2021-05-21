@@ -27,12 +27,17 @@ exports.createPlace = async (req, res) => {
 }
 
 exports.updatePlace = async(req, res) => {
-    const updateData = req.body;
+    const { name, placePhoto, category } = req.body;
+    const place = req.place;
     try {
-        const place = {...req.place, updateData};
+        place.name = name;
+        place.placePhoto = placePhoto;
+        place.category = category;
+
         await place.save();
-        return res.status(200).json(place);
+        return res.status(200).json({ data: place});
      } catch (error) {
+         console.log(error);
          res.status(400).json({error: 'Cannot save place in db'})
          return;
      }
@@ -41,7 +46,7 @@ exports.updatePlace = async(req, res) => {
 exports.getAllPlace = async (req, res) => {
     try {
         const places = await Place.find({});
-        return res.status(200).json({data: places});
+        return res.status(200).json(places);
     } catch (error) {
         console.log(error);
         return res.status(400).json({ error: 'Error fetching places from DB'});

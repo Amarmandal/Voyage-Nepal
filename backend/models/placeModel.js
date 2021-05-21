@@ -9,6 +9,7 @@ const placeSchema = new Schema({
         trim: true,
         required: true,
         minLength: 1,
+        unique: true
     },
     placePhoto: {
         type: String,

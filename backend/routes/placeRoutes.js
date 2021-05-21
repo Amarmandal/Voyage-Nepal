@@ -19,6 +19,6 @@ router.put('/place/:placeId/update', isSignedIn, isAuthenticated, isAdmin, updat
 //deleteplace
 router.delete('/place/:placeId/delete', isSignedIn, isAuthenticated, isAdmin, deletePlace);
 //get All the places
-router.post('/places', isSignedIn, isAuthenticated, getAllPlace);
+router.get('/places', isSignedIn, isAuthenticated, getAllPlace);
 
 module.exports = router;
