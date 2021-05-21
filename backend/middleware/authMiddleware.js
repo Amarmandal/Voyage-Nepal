@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require('crypto');
 
 
-//authentication
+//
 exports.isSignedIn = (req, res, next) => {
   const { token } = req.cookies;
 
@@ -20,7 +20,7 @@ exports.isAuthenticated = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const authToken = req.user && authHeader && authHeader.split(" ")[1];
 
-  if (!authToken) return res.status(401).json({ error: "Unauthorized" });
+  if (!authToken) return res.status(401).json({ error: "No authorized token found" });
   jwt.verify(authToken, process.env.JWT_SECRETS, (err, decodedValue) => {
     if (err) {
       return res

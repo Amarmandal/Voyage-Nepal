@@ -29,10 +29,18 @@ app.use(cookieParser());
 const userRoute = require('./routes/userRoutes');
 const authRoute = require('./routes/authRoutes');
 const categoryRoute = require('./routes/categoryRoutes');
+const reviewRoute = require('./routes/reviewRoutes');
+const placeRoute = require('./routes/placeRoutes');
+const hotresRoute = require('./routes/hotresRoutes');
 
 app.use('/api', userRoute);
 app.use('/api', categoryRoute);
 app.use('/api', authRoute);
+app.use('/api', reviewRoute);
+app.use('/api', placeRoute);
+app.use('/api', hotresRoute);
+
+
 
 app.listen(port, (err) => {
     if(!err) {

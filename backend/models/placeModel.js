@@ -10,6 +10,9 @@ const placeSchema = new Schema({
         required: true,
         minLength: 1,
     },
+    placePhoto: {
+        type: String,
+    },
     category: [{
         type: ObjectId,
         ref: 'Category',
@@ -24,7 +27,13 @@ const placeSchema = new Schema({
         type: ObjectId,
         ref: 'Review',
         trim: true,
-    }]
+    }],
+    ratings: {
+        type: Number,
+        default: 0,
+        required: true,
+        max: 5
+    }
 }, {timestamps: true});
 
 const Place = mongoose.model('Place', placeSchema);

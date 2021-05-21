@@ -19,9 +19,10 @@ exports.getUserById = async (req, res, next, userId) => {
   }
 };
 
+//only admin
 exports.removeUserById = async (req, res) => {
   try {
-    await User.findOneAndRemove({ _id: req.user._id });
+    await User.findOneAndRemove({ _id: req.userProfile._id });
     res.status(200).json("User Has been successfully deleted");
     return;
   } catch (error) {
@@ -30,6 +31,36 @@ exports.removeUserById = async (req, res) => {
     return;
   }
 };
+
+exports.updateUserRole = (req, res) => {
+  const user = req.userProfile;
+  user.isAdmin = req.body.role;
+
+  try {
+    await user.save();
+    res.status(200).json({message: 'User Role has been successfully changed'})
+    return;
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({error: 'Unable to change the user role'})
+    return;
+  }
+}
+
+//update User
+exports.updateUserById = async (req, res) => {
+  const user = req.userProfile;
+  const updateData = req.body;
+  const updatedUser = {...user, updateData };
+  try {
+    await updatedUser.save()
+    res.send(200).json({ updatedUser });
+    return;
+  } catch(err) {
+    console.log(err);
+    res.status(400).json({ error: 'User cannot be updated'});
+  }
+}
 
 
 // exports.updateUserById =  asy

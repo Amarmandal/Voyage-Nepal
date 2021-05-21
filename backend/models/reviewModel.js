@@ -9,6 +9,12 @@ const reviewSchema = new Schema({
         minLength: 5,
         maxLength: 150,
     },
+    rating: {
+        type: Number,
+        default: 0,
+        required: true,
+        max: 5
+    },
     userId: {
         type: Schema.Types.ObjectId,
         ref: 'User'
