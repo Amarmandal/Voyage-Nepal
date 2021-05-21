@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Image,
   useWindowDimensions,
@@ -21,18 +21,26 @@ import Colors from '../../constants/Color';
 const Profile = ({navigation}) => {
   const imageWidth = useWindowDimensions().width;
   const imageHeight = Math.round(imageWidth * (1105 / 2004));
+  const [name, setName] = useState()
+
+  useEffect(async() => {
+    const userName = await AsyncStorage.getItem('userData')
+    setName(userName)
+  }, [])
 
   const handleLogOut = async() => {
-    await AsyncStorage.clear()
-    navigation.navigate('Starter')
-    // console.log(AsyncStorage.getItem('token'));
+    await AsyncStorage.removeItem('token')
+    if(await AsyncStorage.getItem('token') === null){
+      console.log('no Token');
+      navigation.navigate('Starter')
+    }
   }
 
   return (
     <View style={{flex: 1, backgroundColor: Colors.gray}}>
       <View style={{alignItems: 'center', marginBottom: 20}}>
         <Img />
-        <UserName name="Jane Jane" />
+        <UserName name={name} />
       </View>
       <Divider />
 

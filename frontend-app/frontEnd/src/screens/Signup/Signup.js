@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {ScrollView} from 'react-native';
 import api from '../../services/ApiServices';
-import axios from 'axios'
+import axios from 'axios';
 import {
   Container,
   Content,
@@ -37,15 +37,14 @@ const Signup = ({navigation}, props) => {
 
   const today = new Date();
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPAssword] = useState('');
+  const [hidePassword, setHidePassword] = useState(true);
+  const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
   const [gender, setGender] = useState('');
   const [city, setCity] = useState('');
-  const [dob, setDob] = useState();
+  const [dob, setDob] = useState('');
   const [date, setDate] = useState(new Date(today));
   const [showCalendar, setShowCalendar] = useState(false);
+  const [dobError, setDobError] = useState(false)
   const [data, setData] = useState({
     name: '',
     email: '',
@@ -168,14 +167,25 @@ const Signup = ({navigation}, props) => {
     }
   };
 
+  const handleValidDOB = () => {
+    if(dob.length !== 10){
+      setDobError(true)
+    }
+  }
+
+  const dobOnFocus = () => {
+    setShowCalendar(true)
+    setDobError(false)
+  }
+
   var newUser = JSON.stringify({
-    "name": data.name,
-    "email": data.email,
-    "password": data.password,
-    "gender": gender.name,
-    "isAdmin": false,
-    "city": city,
-    "DOB": dob,
+    name: data.name,
+    email: data.email,
+    password: data.password,
+    gender: gender.name,
+    isAdmin: false,
+    city: city,
+    DOB: dob,
   });
 
   var config = {
@@ -189,31 +199,33 @@ const Signup = ({navigation}, props) => {
   };
 
   const submitValues = () => {
-    axios(config)
-      .then(function (res) {
-        console.log(res)
-        setData({
-          name: '',
-          email: '',
-          password: '',
-          confirmPassword: '',
+    if(data.name !== '' && data.email !== '' && data.password !== '' && data.confirmPassword !== '' && dob !== '' && gender !== '' && city !== ''){
+      axios(config)
+        .then(function (res) {
+          console.log(res);
+          setData({
+            name: '',
+            email: '',
+            password: '',
+            confirmPassword: '',
   
-          check_textInputChange: false,
-          isValidName: true,
-          isValidEmail: true,
-          isValidPassword: true,
-          isValidConfirmPassword: true,
+            check_textInputChange: false,
+            isValidName: true,
+            isValidEmail: true,
+            isValidPassword: true,
+            isValidConfirmPassword: true,
+          });
+          //alert('Check Email for verification')
+          navigation.navigate('Home');
+        })
+        .catch(function (error) {
+          // console.log(error.response.data.error_description);
+          console.log(error);
         });
-        //alert('Check Email for verification')
-        navigation.navigate('Home');
-      })
-      .catch(function (error) {
-        // console.log(error.response.data.error_description);
-        console.log(error);
-  
-      });
-  }
-
+    } else {
+      alert('All fields are mandatory; Please fill up the form correctly')
+    }
+  };
 
   return (
     <Container style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
@@ -267,6 +279,9 @@ const Signup = ({navigation}, props) => {
                 value={data.password}
                 onChangeText={getPassword}
                 onBlur={() => handleValidPassword()}
+                rightIcon={hidePassword ? 'eye-off-outline' : 'eye-outline'}
+                showPassword={() => setHidePassword(!hidePassword)}
+                secureText={hidePassword ? true : false}
               />
               {data.isValidPassword ? null : (
                 <Text
@@ -280,6 +295,9 @@ const Signup = ({navigation}, props) => {
                 value={data.confirmPassword}
                 onChangeText={getConfirmPassword}
                 onBlur={() => handleValidConfirmPassword()}
+                rightIcon={hideConfirmPassword ? 'eye-off-outline' : 'eye-outline'}
+                showPassword={() => setHideConfirmPassword(!hideConfirmPassword)}
+                secureText={hideConfirmPassword ? true : false}
               />
               {data.isValidConfirmPassword ? null : (
                 <Text
@@ -292,7 +310,8 @@ const Signup = ({navigation}, props) => {
                 placeholder="Date of Birth"
                 value={dob}
                 onChangeText={getDOB}
-                onFocus={() => setShowCalendar(true)}
+                onFocus={() => dobOnFocus()}
+                onBlur={() => handleValidDOB()}
               />
 
               {showCalendar ? (
@@ -306,6 +325,12 @@ const Signup = ({navigation}, props) => {
                   yearRange="-99:-18"
                 />
               ) : null}
+              {dobError === false ? null : (
+                <Text
+                style={{color: '#FF0000', fontSize: 14, marginBottom: 10}}>
+                Please Enter your valid date of birth
+              </Text>
+              )}
               <Text
                 style={{
                   alignSelf: 'flex-start',
@@ -357,10 +382,7 @@ const Signup = ({navigation}, props) => {
               </View>
             </Form>
 
-            <ActionButton
-              buttonName="Sign up"
-              home={() => submitValues()}
-            />
+            <ActionButton buttonName="Sign up" home={() => submitValues()} />
             <Account
               text="Already have an Account? "
               action="Login"

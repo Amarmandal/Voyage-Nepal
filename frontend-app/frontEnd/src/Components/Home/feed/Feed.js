@@ -4,10 +4,10 @@ import { View, Text } from "native-base";
 //var ScrollableTabView = require('react-native-scrollable-tab-view');
 import feedStyles from './feed.styles'
 
-export const HelloUser = () => {
+export const HelloUser = (props) => {
     return (
         <View style={feedStyles.helloUSer}>
-            <Text style = {feedStyles.userName}>Hello, Jane</Text>
+            <Text style = {feedStyles.userName}>Hello, {props.name}</Text>
             <Text style = {[feedStyles.userName, {fontSize: 26, fontFamily: 'KaushanScript-Regular', color: '#000000'}]}>Welcome to Nepal</Text>
         </View>
     )
@@ -19,13 +19,13 @@ export const UserImage = () => {
     )
 }
 
-export const WelcomeContainer = () => {
+export const WelcomeContainer = (props) => {
     const imageWidth = useWindowDimensions().width;
   const imageHeight = Math.round(imageWidth * (1105 / 2004));
     return(
         <View style = {feedStyles.welcomeContainer}>
             <ImageBackground source = {require('../../../assets/pictures/bgMountains.jpg')} style = {{width: imageWidth, height: imageHeight}}>
-            <HelloUser />
+            <HelloUser name = {props.user} />
             <UserImage />
             </ImageBackground>
             
