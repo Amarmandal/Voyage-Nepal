@@ -8,10 +8,11 @@ const port = process.env.PORT || 8000;
 
 
 //connecting database mongoose
-mongoose.connect('mongodb://localhost:27017/voyage_nepal', {
+mongoose.connect(process.env.DATABASE_LOCAL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
+    useFindAndModify: false
 });
 mongoose.connection
     .once('open', () => {
