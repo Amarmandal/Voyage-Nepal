@@ -1,7 +1,7 @@
 import React from 'react'
-import { Image, ImageBackground, useWindowDimensions } from 'react-native'
+import { Image, ImageBackground, useWindowDimensions, StyleSheet } from 'react-native'
 import { View, Text } from "native-base";
-
+//var ScrollableTabView = require('react-native-scrollable-tab-view');
 import feedStyles from './feed.styles'
 
 export const HelloUser = () => {

@@ -53,11 +53,14 @@ export const ActionText = props => {
   );
 };
 
+
+
 export const FormInput = props => {
+
   return (
     <Item rounded style={{margin: 10}}>
       <Icon name={props.icon}></Icon>
-      <Input placeholder={props.placeholder} />
+      <Input placeholder={props.placeholder} onChangeText = {(text) => props.onChangeText(text)} value = {props.value} onFocus = {props.onFocus} onBlur = {props.onBlur} />
     </Item>
   );
 };

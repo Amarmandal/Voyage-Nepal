@@ -6,6 +6,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {View, Text, Item, Icon, Button} from 'native-base';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import {
   Divider,
@@ -15,22 +16,34 @@ import {
   UserName,
 } from '../../Components/Home/profile/Profile';
 
-import Colors from "../../constants/Color";
+import Colors from '../../constants/Color';
 
 const Profile = ({navigation}) => {
   const imageWidth = useWindowDimensions().width;
   const imageHeight = Math.round(imageWidth * (1105 / 2004));
 
+  const handleLogOut = async() => {
+    await AsyncStorage.clear()
+    navigation.navigate('Starter')
+    // console.log(AsyncStorage.getItem('token'));
+  }
+
   return (
     <View style={{flex: 1, backgroundColor: Colors.gray}}>
-      <View style={{alignItems: 'center', marginBottom: 20,}}>
+      <View style={{alignItems: 'center', marginBottom: 20}}>
         <Img />
-        <UserName name = 'Jane Jane' />
+        <UserName name="Jane Jane" />
       </View>
       <Divider />
 
       <ScrollView>
-        <View style = {{paddingLeft: 20, paddingRight: 20, paddingBottom: 80, backgroundColor: Colors.gray}}>
+        <View
+          style={{
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingBottom: 80,
+            backgroundColor: Colors.gray,
+          }}>
           <List iconType="Ionicons" iconName="search" listName="My Trips" />
           <List
             iconType="FontAwesome5"
@@ -50,11 +63,7 @@ const Profile = ({navigation}) => {
             listName="Favourites"
           />
           <Divider />
-          <List
-            iconType="FontAwesome5"
-            iconName="share-alt"
-            listName="Share"
-          />
+          <List iconType="FontAwesome5" iconName="share-alt" listName="Share" />
           <List
             iconType="Feather"
             iconName="help-circle"
@@ -65,7 +74,7 @@ const Profile = ({navigation}) => {
             iconName="settings-outline"
             listName="Settings"
           />
-          <SignOut signOut = {() => navigation.navigate('Starter')} />
+          <SignOut signOut={() => handleLogOut()} />
         </View>
       </ScrollView>
     </View>
