@@ -2,13 +2,13 @@ import React from 'react';
 import {Image, ScrollView} from 'react-native';
 import {View, Text} from 'native-base'
 
-import { WelcomeContainer} from '../../Components/Home/feed/Feed'
+import { WelcomeContainer} from '../../../Components/Home/feed/Feed'
 
 const Feed = ({navigation}) => {
   return (
-    <View>
+    <ScrollView>
       <WelcomeContainer />
-    </View>
+    </ScrollView>
   );
 };
 
