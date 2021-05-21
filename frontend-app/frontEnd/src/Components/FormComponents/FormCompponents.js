@@ -60,7 +60,8 @@ export const FormInput = props => {
   return (
     <Item rounded style={{margin: 10}}>
       <Icon name={props.icon}></Icon>
-      <Input placeholder={props.placeholder} onChangeText = {(text) => props.onChangeText(text)} value = {props.value} onFocus = {props.onFocus} onBlur = {props.onBlur} />
+      <Input placeholder={props.placeholder} onChangeText = {(text) => props.onChangeText(text)} value = {props.value} onFocus = {props.onFocus} onBlur = {props.onBlur} secureTextEntry = {props.secureText} />
+      <Icon name={props.rightIcon} onPress = {props.showPassword}></Icon>
     </Item>
   );
 };

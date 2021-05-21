@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Image, ScrollView, Modal, ActivityIndicator} from 'react-native';
 import {Container, Content, View, Text} from 'native-base';
 import axios from 'axios';
@@ -23,7 +23,7 @@ import Loading from '../LoadingScreen/Loading'
 
 const Signin = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [hidePassword, setHidePassword] = useState(true);
   const [error, setError] = useState('')
   const [data, setData] = useState({
     email: '',
@@ -31,6 +31,13 @@ const Signin = ({navigation}) => {
     isValidEmail: true,
     isValidPassword: true,
   });
+
+  useEffect(async() => {
+    const userEmail = await AsyncStorage.getItem('email')
+    if(userEmail !== null){
+      setData({...data, email: userEmail})
+    }
+  }, [])
 
   const getEmail = _email => {
     setData({...data, email: _email});
@@ -58,8 +65,9 @@ const Signin = ({navigation}) => {
 
   const storeData = async value => {
     try {
-      await AsyncStorage.setItem('token', value);
-      console.log(value);
+      await AsyncStorage.setItem('token', value.token);
+      await AsyncStorage.setItem('email', value.userData.email)
+      await AsyncStorage.setItem('userData', value.userData.name)
     } catch (e) {
       // saving error
       console.log(e);
@@ -67,8 +75,8 @@ const Signin = ({navigation}) => {
   };
 
   var signinUser = JSON.stringify({
-    email: data.email,
-    password: data.password,
+    "email": data.email,
+    "password": data.password,
   });
 
   var config = {
@@ -85,18 +93,16 @@ const Signin = ({navigation}) => {
     if(data.email !== '' && data.password !== ''){ 
       axios(config)
         .then(function (res) {
-          // console.log(res.data.token)
-          storeData(res.data.token);
-          setData({
-            password: '',
-            isValidPassword: true,
-          });
-          navigation.navigate('Home');
+          // const userToken = JSON.parse(res.data)
+          // console.log(userToken)
+          // console.log(res.data.userData.email);
+          storeData(res.data);
+          navigation.navigate('Home')
         })
         .catch(function (error) {
           // console.log(error.response.data.error_description);
-          console.log(error.response.data.error);
-          setError(error.response.data.error)
+          console.log(error);
+          setError(error)
         });
     }else {
       setError('All the fields are required')
@@ -146,6 +152,9 @@ const Signin = ({navigation}) => {
               value={data.password}
               onChangeText={getPassword}
               onBlur={() => handleValidPassword()}
+              rightIcon = {hidePassword ? 'eye-off-outline' : 'eye-outline'}
+              showPassword={() => setHidePassword(!hidePassword)}
+              secureText = {hidePassword ? true : false}
             />
             {data.isValidPassword ? null : (
               <Text
