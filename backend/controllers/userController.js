@@ -32,7 +32,7 @@ exports.removeUserById = async (req, res) => {
   }
 };
 
-exports.updateUserRole = (req, res) => {
+exports.updateUserRole = async (req, res) => {
   const user = req.userProfile;
   user.isAdmin = req.body.role;
 

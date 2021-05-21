@@ -21,6 +21,12 @@ exports.isAuthenticated = (req, res, next) => {
   const authToken = req.user && authHeader && authHeader.split(" ")[1];
 
   if (!authToken) return res.status(401).json({ error: "No authorized token found" });
+
+  if(req.cookies.token !== authToken) {
+    res.status(401).json({ error: "Invalid authorized token" });
+    return;
+  }
+
   jwt.verify(authToken, process.env.JWT_SECRETS, (err, decodedValue) => {
     if (err) {
       return res

@@ -10,7 +10,7 @@ const {
 } = require('../controllers/placeController');
 const { isSignedIn, isAuthenticated, isAdmin } = require('../middleware/authMiddleware');
 
-router.params('placeId', getPlaceById);
+router.param('placeId', getPlaceById);
 
 //create place only by admin
 router.post('/place/create', isSignedIn, isAuthenticated, isAdmin, createPlace);

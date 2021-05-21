@@ -1,12 +1,15 @@
 const Review = require('../models/reviewModel');
+const Place = require('../models/placeModel');
 
-exports.createReview = async (req, res) => {
+exports.createPlaceReview = async (req, res) => {
     const userReview = req.body;
     userReview.userId = req.user.id;
-
     try {
-        const review = new Review(userReview);
-        await review.save()
+        const userReview = new Review(userReview);
+        const place = await Place.findById({ _id: req.place._id});
+        place.reviews.push(userReview);
+        await review.save();
+        await place.save()
         res.status(200).json(review)
     } catch (error) {
         console.log(error);
