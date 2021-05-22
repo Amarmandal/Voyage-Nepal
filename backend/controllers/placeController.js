@@ -3,7 +3,14 @@ const Place = require("../models/placeModel");
 exports.getPlaceById = async (req, res, next, id) => {
   try {
     const place = await Place.findById({_id: id})
-      .populate({ path: "reviews", select: "userId -_id" })
+      .populate({
+        path: "reviews", 
+        select: "user -_id",
+        populate: {
+            path: "user",
+            select: "_id"
+        } 
+    })
       .exec();
     req.place = place;
     next();
@@ -48,7 +55,14 @@ exports.updatePlace = async (req, res) => {
 exports.getAllPlace = async (req, res) => {
   try {
     const places = await Place.find({})
-      .populate({ path: "reviews", select: "userId reviewText rating -_id" })
+      .populate({ 
+        path: "reviews", 
+        select: "user reviewText rating -_id",
+        populate: {
+            path: "user",
+            select: "name profileImgURL"
+        }
+    })
       .exec();
     return res.status(200).json(places);
   } catch (error) {

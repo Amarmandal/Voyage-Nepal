@@ -2,13 +2,14 @@ const Review = require("../models/reviewModel");
 
 exports.createPlaceReview = async (req, res) => {
   const userReview = req.body;
-  userReview.userId = req.user.id;
+  userReview.user = req.user.id;
+  
   try {
     const newReview = new Review(userReview);
     const place = req.place;
 
     const foundValue = place.reviews.findIndex((item) => {
-      return item.userId.toString() === req.user.id;
+      return item.user._id.toString() === req.user.id;
     });
 
     if (foundValue !== -1) {
