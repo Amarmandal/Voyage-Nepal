@@ -27,13 +27,14 @@ import {GenderCheckbox} from '../../Components/Signup/Signup';
 import signupStyles from '../../Components/Signup/signup.styles';
 import FormData from '../../utils/formData';
 import Colors from '../../constants/Color';
+import GoBack from '../../Components/Signin/GoBack';
+
+import {registerUser} from '../../redux/action/register/registerUser'
+import {useDispatch} from 'react-redux'
 
 const Signup = ({navigation}, props) => {
-  const formData = new FormData({
-    isAdmin: false,
-  });
 
-  const filledData = formData.getData();
+  const dispatch = useDispatch()
 
   const today = new Date();
 
@@ -78,23 +79,15 @@ const Signup = ({navigation}, props) => {
   };
 
   const getName = _name => {
-    //setName(_name);
-    // formData.addData({Name: _name});
     setData({...data, name: _name, isValidName: true});
   };
   const getEmail = _email => {
-    // setEmail(_email);
-    // formData.addData({Email: _email});
     setData({...data, email: _email, isValidEmail: true});
   };
   const getPassword = _password => {
-    // setPassword(_password);
-    // formData.addData({Password: _password});
     setData({...data, password: _password, isValidPassword: true});
   };
   const getConfirmPassword = _confirmPassword => {
-    // setConfirmPAssword(_confirmPassword);
-    // formData.addData({ConfirmPassword: _confirmPassword});
     setData({
       ...data,
       confirmPassword: _confirmPassword,
@@ -106,11 +99,11 @@ const Signup = ({navigation}, props) => {
   };
   const getCity = _city => {
     setCity(_city);
-    formData.addData({City: _city});
+    // formData.addData({City: _city});
   };
   const getDOB = _dob => {
     setDob(_dob);
-    formData.addData({DOB: _dob});
+    // formData.addData({DOB: _dob});
   };
 
   const handleValidName = () => {
@@ -178,15 +171,15 @@ const Signup = ({navigation}, props) => {
     setDobError(false)
   }
 
-  var newUser = JSON.stringify({
+  var newUser = {
     name: data.name,
     email: data.email,
     password: data.password,
     gender: gender.name,
     isAdmin: false,
     city: city,
-    DOB: dob,
-  });
+    dob: dob,
+  };
 
   var config = {
     method: 'post',
@@ -200,28 +193,11 @@ const Signup = ({navigation}, props) => {
 
   const submitValues = () => {
     if(data.name !== '' && data.email !== '' && data.password !== '' && data.confirmPassword !== '' && dob !== '' && gender !== '' && city !== ''){
-      axios(config)
-        .then(function (res) {
-          console.log(res);
-          setData({
-            name: '',
-            email: '',
-            password: '',
-            confirmPassword: '',
-  
-            check_textInputChange: false,
-            isValidName: true,
-            isValidEmail: true,
-            isValidPassword: true,
-            isValidConfirmPassword: true,
-          });
-          //alert('Check Email for verification')
-          navigation.navigate('Home');
+      dispatch(registerUser(newUser))
+        .then(() => {
+          navigation.navigate('Home')
         })
-        .catch(function (error) {
-          // console.log(error.response.data.error_description);
-          console.log(error);
-        });
+        .catch(err => console.log(err))
     } else {
       alert('All fields are mandatory; Please fill up the form correctly')
     }
@@ -229,13 +205,14 @@ const Signup = ({navigation}, props) => {
 
   return (
     <Container style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
+      <GoBack goBack = {() => navigation.goBack()} />
       <Content padder>
         <ScrollView>
           <View style={{alignItems: 'center', margin: 12}}>
-            <GifComponent />
-            <Title />
-            <ActionText text="CREATE AN ACCOUNT" />
-            <View
+            {/* <GifComponent />
+            <Title /> */}
+            {/* <ActionText text="CREATE AN ACCOUNT" /> */}
+            {/* <View
               style={{
                 borderWidth: 3,
                 borderColor: 'black',
@@ -245,7 +222,8 @@ const Signup = ({navigation}, props) => {
                 borderRadius: 10,
                 shadowColor: 'black',
                 elevation: 8,
-              }}></View>
+              }}></View> */}
+              <Text style = {{alignSelf: 'flex-start', fontSize: 25, fontWeight: 'bold', marginBottom: 20, marginTop: 20}}>Create an Account</Text>
             <Form>
               <FormInput
                 icon="pencil"
@@ -382,7 +360,7 @@ const Signup = ({navigation}, props) => {
               </View>
             </Form>
 
-            <ActionButton buttonName="Sign up" home={() => submitValues()} />
+            <ActionButton mt = {30} buttonName="Sign up" home={() => submitValues()} />
             <Account
               text="Already have an Account? "
               action="Login"

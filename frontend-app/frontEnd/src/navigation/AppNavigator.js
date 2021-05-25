@@ -15,12 +15,16 @@ import Map from '../screens/Homepage/Map';
 import Profile from '../screens/Homepage/Profile';
 import Starter from '../screens/starter/Starter';
 import Loading from '../screens/LoadingScreen/Loading';
+import OTPScreen from '../screens/Signin/forgotPAssword/OTPScreen'
+import Email from '../screens/Signin/forgotPAssword/Email'
+import ResetPassword from '../screens/Signin/forgotPAssword/ResetPassword'
 import Colors from '../constants/Color';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const activeColor = '#CF3838';
 
-const Stack = createStackNavigator();
+const MainStack = createStackNavigator();
+const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const Home = () => {
@@ -109,7 +113,7 @@ const Home = () => {
   );
 };
 
-function App() {
+function MainStackScreen() {
   const [userToken, setUserToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(async () => {
@@ -122,15 +126,14 @@ function App() {
     }
   }, []);
   return (
-    <NavigationContainer>
-      <Stack.Navigator
+      <MainStack.Navigator
         screenOptions={{
           headerShown: false,
         }}>
         {isLoading ? (
-          <Stack.Screen name="Loading" component={Loading} />
+          <MainStack.Screen name="Loading" component={Loading} />
         ) : userToken !== null ? (
-          <Stack.Screen
+          <MainStack.Screen
             name="Home"
             component={Home}
             options={{
@@ -142,7 +145,7 @@ function App() {
           />
         ) : (
           <>
-            <Stack.Screen
+            <MainStack.Screen
               name="Starter"
               component={Starter}
               options={{
@@ -152,7 +155,7 @@ function App() {
                 },
               }}
             />
-            <Stack.Screen
+            <MainStack.Screen
               name="Signin"
               component={Signin}
               options={{
@@ -162,7 +165,7 @@ function App() {
                 },
               }}
             />
-            <Stack.Screen
+            <MainStack.Screen
               name="Signup"
               component={Signup}
               options={{
@@ -172,7 +175,7 @@ function App() {
                 },
               }}
             />
-            <Stack.Screen
+            <MainStack.Screen
             name="Home"
             component={Home}
             options={{
@@ -184,7 +187,19 @@ function App() {
           />
           </>
         )}
-      </Stack.Navigator>
+      </MainStack.Navigator>
+  );
+}
+
+function App() {
+  return (
+    <NavigationContainer>
+      <RootStack.Navigator mode="modal" headerMode="none">
+        <RootStack.Screen name="Main" component={MainStackScreen} />
+        <RootStack.Screen name="Email" component={Email} />
+        <RootStack.Screen name="MyModal" component={OTPScreen} />
+        <RootStack.Screen name="Reset" component={ResetPassword} />
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 }

@@ -3,8 +3,7 @@ import Colors from '../../constants/Color';
 
 export default StyleSheet.create({
   SocialMediaLoginBtn: {
-    alignSelf: 'center',
-    padding: 10,
+    marginLeft: 10
   },
   horizontalLine: {
     borderWidth: 3,
