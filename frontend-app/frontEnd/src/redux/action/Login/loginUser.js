@@ -23,25 +23,19 @@ export const loginUser = userData => {
       data: user,
     };
 
-    const result = await axios(config);
+    var Data = {}
 
-    const resultData = result
-    // console.log(resultData);
-    dispatch({
+   await axios(config)
+   .then(res => {
+     const data = res.data
+     Data = res.data
+     dispatch({
       type: LOGIN_USER_SUCCESS,
-      payload: resultData
+      payload: data
     });
-    return resultData
+   })
+   .catch(err => console.log(err))
+    
+    return Data
   };
 };
-
-// export const registerUserFail = (userData) => {
-//     const {userId, name, email, password, city, dob, gender } = userData
-
-//     return async dispatch => {
-//         dispatch({
-//             type: REGISTER_USER_FAIL,
-//             payload: 1
-//         })
-//     }
-// }

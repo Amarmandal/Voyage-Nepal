@@ -25,9 +25,11 @@ import GoBack from '../../Components/Signin/GoBack';
 
 import {loginUser} from '../../redux/action/Login/loginUser'
 
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 
 const Signin = ({navigation}) => {
+
+  const state = useSelector(state => state.loginUser)
 
   const dispatch = useDispatch()
 
@@ -87,7 +89,6 @@ const Signin = ({navigation}) => {
     try {
       await AsyncStorage.setItem('token', result.token);
       await AsyncStorage.setItem('email', result.userData.email);
-      await AsyncStorage.setItem('userData', result.userData.name);
   
     } catch (e) {
       // saving error
@@ -105,15 +106,17 @@ const Signin = ({navigation}) => {
     if (data.email !== '' && data.password !== '') {
       dispatch(loginUser(signinUser))
         .then(result => {
-          storeData(result.data);
-          console.log(result.data.userData);
+          // storeData(result);
+          // console.log(result.data.userData);
+          console.log(state.user);
           navigation.navigate('Home');
+          // console.log(result);
         })
-        .catch(function (error) {
-          // console.log(error.response.data.error);
-          console.log(error)
-          setError(error);
-        });
+        // .catch(function (error) {
+        //   // console.log(error.response.data.error);
+        //   console.log(error)
+        //   setError(error);
+        // });
     } else {
       setError('All the fields are required');
     }
