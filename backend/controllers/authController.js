@@ -6,9 +6,9 @@ exports.userSignup = async (req, res) => {
   const { email } = req.body;
 
   try {
-    const user = await User.findOne({email});
+    const user = await User.findOne({ email });
 
-    if(user) {
+    if (user) {
       // if(req.profilePath) {
       //   //delete the existing file
       //   fs.unlink(req.profilePath, (err) => {
@@ -18,13 +18,17 @@ exports.userSignup = async (req, res) => {
       //   });
 
       // }
-      res.status(302).json({ error: 'User with this Email Already exist'})
+      res.status(302).json({ error: "User with this Email Already exist" });
       return;
     }
 
-    const jwtToken = jwt.sign({...req.body, profileImgURL: req.profilePath}, process.env.JWT_SECRETS, {
-      expiresIn: "10m",
-    });
+    const jwtToken = jwt.sign(
+      { ...req.body, profileImgURL: req.profilePath },
+      process.env.JWT_SECRETS,
+      {
+        expiresIn: "10m",
+      }
+    );
 
     const transporter = await getTransporter();
     const mailOptions = {
@@ -69,11 +73,13 @@ exports.userEmailVerification = async (req, res) => {
       .save()
       .then((doc) => {
         const { _id, name, email, isAdmin, gender, city } = doc;
-        res.status(200).json({id: _id, name, email, isAdmin, gender, city });
+        res.status(200).json({ id: _id, name, email, isAdmin, gender, city });
       })
       .catch((err) => {
         console.log(err);
-        return res.status(400).json({ error: 'User Account Cannot be created!'})
+        return res
+          .status(400)
+          .json({ error: "User Account Cannot be created!" });
       });
   });
 };
@@ -140,7 +146,6 @@ exports.forgetPassword = async (req, res) => {
     res.status(200).json({ message: "Please check Email for OTP" });
     const info = await transporter.sendMail(mailOptions);
     return info;
-
   } catch (error) {
     console.log(error);
   }
@@ -148,13 +153,22 @@ exports.forgetPassword = async (req, res) => {
 
 exports.resetPassword = async (req, res) => {
   const { password } = req.body;
-  const user = req.profile;
   
-  user.password = password;
-  user.encryptOtp = undefined;
-  user.otpExpires = undefined;
+  try {
+    const user = req.userProfile;
+    if(!user.encryptOtp) {
+      throw new Error('Otp not found');
+    }
 
-  await user.save();
+    user.password = password;
+    user.encryptOtp = undefined;
+    user.otpExpires = undefined;
 
-  res.status(200).json('Password Reset Successful');
-}
+    await user.save();
+
+    res.status(200).json("Password Reset Successful");
+    return;
+  } catch (error) {
+    return res.status(400).json({error: "Unable to Reset Password"});
+  }
+};
