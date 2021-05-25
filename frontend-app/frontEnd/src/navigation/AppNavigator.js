@@ -7,15 +7,15 @@ import {Icon} from 'native-base';
 
 import Signin from '../screens/Signin/Signin';
 import Signup from '../screens/Signup/Signup';
-import Feed from '../screens/Homepage/Feed';
-import Explore from '../screens/Homepage/Explore';
-import Category from '../screens/Homepage/Category';
-import Map from '../screens/Homepage/Map';
-import Profile from '../screens/Homepage/Profile';
+import Feed from '../screens/Homepage/Feed/Feed';
+import Explore from '../screens/Homepage/Explore/Explore';
+import HotelScreen from '../screens/HotelScreen';
+
+import Profile from '../screens/Homepage/Profile/Profile';
 import Starter from '../screens/starter/Starter';
 import Colors from '../constants/Color'
 
-const activeColor = '#CF3838'
+const activeColor = Colors.green;
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -24,7 +24,8 @@ const Home = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: Colors.primary,
+        activeTintColor: Colors.green,
+        inactiveTintColor: Colors.dimGray,
         showLabel: false,
         style: {
           backgroundColor: '#ffffff',
@@ -37,43 +38,31 @@ const Home = () => {
       <Tab.Screen
         name="Feed"
         component={Feed}
-        options={{tabBarIcon: ({focused}) => <Icon name="home" size={26} style={{ color: focused ? Colors.themeColor : 'black' }} />}}
+        options={{tabBarIcon: ({focused}) => <Icon name="home" size={26} style={{ color: focused ? Colors.green : 'black' }} />}}
       />
       <Tab.Screen
         name="Explore"
         component={Explore}
         options={{
           tabBarIcon: ({focused}) => (
-            <Icon type="MaterialIcons" name="explore" size={26} style={{ color: focused ? Colors.themeColor : 'black' }}/>
+            <Icon type="MaterialIcons" name="explore" size={26} style={{ color: focused ? Colors.green : 'black' }}/>
           ),
         }}
       />
       <Tab.Screen
-        name="Category"
-        component={Category}
+        name="HotelScreen"
+        component={HotelScreen}
         options={{
-          tabBarIcon: ({focused}) => <Icon type="FontAwesome5" name="book" size={26} style={{ color: focused ? Colors.themeColor : 'black' }}/>,
+          tabBarIcon: ({focused}) => <Icon type="Fontisto" name="hotel" size={26} style={{ color: focused ? Colors.green : 'black' }}/>,
         }}
       />
-      <Tab.Screen
-        name="Map"
-        component={Map}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <Icon
-              type='FontAwesome5'
-              name="map-marked-alt"
-              style={{ color: focused ? Colors.themeColor : 'black' }}
-            />
-          ),
-        }}
-      />
+      
       <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
           tabBarIcon: ({focused}) => (
-            <Icon type="FontAwesome5" name="user-alt" size={26} style={{ color: focused ? Colors.themeColor : 'black' }}/>
+            <Icon type="FontAwesome5" name="user-alt" size={26} style={{ color: focused ? Colors.green : 'black' }}/>
           ),
         }}
       />

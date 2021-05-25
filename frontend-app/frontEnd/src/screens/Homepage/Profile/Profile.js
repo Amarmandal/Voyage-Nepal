@@ -5,7 +5,7 @@ import {
   ImageBackground,
   ScrollView,
 } from 'react-native';
-import {View, Text, Item, Icon, Button} from 'native-base';
+import {View, Text, SafeAreaView,Item, Icon, Button} from 'native-base';
 
 import {
   Divider,
@@ -13,9 +13,9 @@ import {
   List,
   SignOut,
   UserName,
-} from '../../Components/Home/profile/Profile';
+} from '../../../Components/Home/profile/Profile';
 
-import Colors from "../../constants/Color";
+import Colors from "../../../constants/Color";
 
 const Profile = ({navigation}) => {
   const imageWidth = useWindowDimensions().width;
