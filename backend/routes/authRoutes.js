@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { getUserById } = require("../controllers/userController");
 const {
   userSignup,
   userEmailVerification,
@@ -14,8 +15,6 @@ const {
   getUserByOtp
 } = require("../middleware/authMiddleware");
 
-router.param("otp", getUserByOtp);
-
 //Activate User
 router.post("/user/verify-email", userEmailVerification);
 
@@ -28,8 +27,13 @@ router.post("/user/signin", userSingin);
 //forget Password
 router.post('/user/forget-password', forgetPassword);
 
-//reset Password
-router.post('/user/:otp/reset-password', resetPassword)
+//reset user otp
+router.post('/user/verify-reset-otp', getUserByOtp);
+
+router.param('userId', getUserById);
+//reset password
+router.post('/user/:userId/reset-password', resetPassword);
+
 
 //Protected route test
 router.get("/protected", isSignedIn, isAuthenticated, isAdmin, (req, res) => {

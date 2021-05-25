@@ -15,7 +15,7 @@ const reviewSchema = new Schema({
         required: true,
         max: 5
     },
-    userId: {
+    user: {
         type: Schema.Types.ObjectId,
         ref: 'User'
     }

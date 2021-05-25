@@ -50,7 +50,9 @@ exports.isAdmin = (req, res, next) => {
   next();
 };
 
-exports.getUserByOtp = async (req, res, next, otp) => {
+exports.getUserByOtp = async (req, res) => {
+  const { otp } = req.body;
+
   const hashedOtp = crypto
     .createHash('sha256')
     .update(otp)
@@ -62,9 +64,10 @@ exports.getUserByOtp = async (req, res, next, otp) => {
     });
  
     if(!user) {
-      return res.status(408).json({error: 'Otp Has Expired'});
+      return res.status(408).json({error: 'Invalid or Expired OTP'});
     }
     
-    req.profile = user;
-    next()
+    // req.profile = user;
+    res.status(200).json({ userResetId: user._id});
+    return;
 }
