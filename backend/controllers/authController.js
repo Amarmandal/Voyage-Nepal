@@ -117,6 +117,28 @@ exports.userSingin = (req, res) => {
     .catch((err) => console.log(err));
 };
 
+exports.changeCurrentPassword = async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  const user = req.userProfile;
+
+  try {
+    const isCurrentPasswordOk = user.authenticate(currentPassword);
+
+    if(!isCurrentPasswordOk) {
+      throw new Error('Current Password do not match');
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({success: "Password changed Successfully" });
+    return;
+  } catch (error) {
+    res.status(403).json({ error: "Please check if your current password match"})
+    return;
+  }
+}
+
 exports.forgetPassword = async (req, res) => {
   const { email } = req.body;
   try {

@@ -6,7 +6,8 @@ const {
   userEmailVerification,
   userSingin,
   forgetPassword,
-  resetPassword
+  resetPassword,
+  changeCurrentPassword
 } = require("../controllers/authController");
 const {
   isSignedIn,
@@ -34,7 +35,7 @@ router.param('userId', getUserById);
 //reset password
 router.post('/user/:userId/reset-password', resetPassword);
 
-
+router.put('/user/:userId/change-password', isSignedIn, isAuthenticated, changeCurrentPassword);
 //Protected route test
 router.get("/protected", isSignedIn, isAuthenticated, isAdmin, (req, res) => {
   res.send("With an admin privelages");

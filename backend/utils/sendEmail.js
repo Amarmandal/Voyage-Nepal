@@ -16,17 +16,29 @@ oauth2Client.setCredentials({
 exports.getTransporter = async () => {
   try {
     const accessToken = await oauth2Client.getAccessToken();
+    //with oauth2
+    // const transporter = nodemailer.createTransport({
+    //   service: "gmail",
+    //   auth: {
+    //     type: "OAuth2",
+    //     user: process.env.EMAIL,
+    //     clientId: process.env.OAUTH_CLIENT_ID,
+    //     clientSecret: process.env.OAUTH_CLIENT_SECRET,
+    //     refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+    //     accessToken: accessToken,
+    //   },
+    // });
 
+    //with app password
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      requireTLS: true,
       auth: {
-        type: "OAuth2",
-        user: process.env.EMAIL,
-        clientId: process.env.OAUTH_CLIENT_ID,
-        clientSecret: process.env.OAUTH_CLIENT_SECRET,
-        refreshToken: process.env.OAUTH_REFRESH_TOKEN,
-        accessToken: accessToken,
-      },
+          user: process.env.EMAIL,
+          pass: process.env.APP_PASSWORD
+      }
     });
 
     return transporter;
