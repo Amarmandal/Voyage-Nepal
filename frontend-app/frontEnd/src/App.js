@@ -1,10 +1,14 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 import AppNavigator from './navigation/AppNavigator'
+import {Provider} from 'react-redux'
+import store from './redux/store'
 
 const App = () => {
   return (
-    <AppNavigator />
+    <Provider store = {store}>
+      <AppNavigator />
+    </Provider>
   )
 }
 

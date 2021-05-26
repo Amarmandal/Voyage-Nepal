@@ -30,6 +30,7 @@ const Profile = ({navigation}) => {
 
   const handleLogOut = async() => {
     await AsyncStorage.removeItem('token')
+    await AsyncStorage.removeItem('userData')
     if(await AsyncStorage.getItem('token') === null){
       console.log('no Token');
       navigation.navigate('Starter')

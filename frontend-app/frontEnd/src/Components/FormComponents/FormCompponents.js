@@ -10,6 +10,7 @@ import {
   Input,
   Item,
 } from 'native-base';
+import Colors from '../../constants/Color'
 
 export const GifComponent = props => {
   return (
@@ -68,10 +69,11 @@ export const FormInput = props => {
 
 export const ActionButton = props => {
   return (
-    <Button rounded block light style = {{marginBottom: 15}}>
+    <Button rounded block style = {{marginBottom: 15, backgroundColor: Colors.themeColor, marginTop: props.mt}}>
       <Text
+      uppercase = {false}
         onPress={props.home}
-        style={{fontSize: 22, fontFamily: 'GentiumBookBasic-Bold'}}>
+        style={{fontSize: 20}}>
         {props.buttonName}
       </Text>
     </Button>

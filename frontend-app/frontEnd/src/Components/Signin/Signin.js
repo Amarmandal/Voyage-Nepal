@@ -21,10 +21,10 @@ export const HorizontalLine = () => {
   );
 };
 
-export const ForgotPassword = () => {
+export const ForgotPassword = (props) => {
   return (
     <Text
-      style={SigninStyles.forgotPasswordText}>
+      style={SigninStyles.forgotPasswordText} onPress = {props.forgotPassword} >
       Forgot Password?
     </Text>
   );
@@ -48,7 +48,7 @@ export const LineWithText = () => {
           fontSize: 18,
           color: Colors.dimGray,
         }}>
-        Or login with
+        Or
       </Text>
       <View
         style={{
@@ -66,13 +66,13 @@ export const SocialMediaLogin = (props) => {
   return (
     <View style={{flexDirection: 'column', marginBottom: 10}}>
       <Button
-        iconLeft
+        transparent
         rounded
         style={[SigninStyles.SocialMediaLoginBtn, {backgroundColor: props.bgcolor}]}>
-        <Icon type="FontAwesome" name={props.iconName} style={{fontSize: 25}} />
-        <Text uppercase={false} style={{fontSize: 18}}>
+        <Icon type="FontAwesome" name={props.iconName} style={{fontSize: 15, color: '#ffffff'}} />
+        {/* <Text uppercase={false} style={{fontSize: 18}}>
           {props.text}
-        </Text>
+        </Text> */}
       </Button>
     </View>
   );

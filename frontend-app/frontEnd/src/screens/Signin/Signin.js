@@ -3,6 +3,7 @@ import {Image, ScrollView, Modal, ActivityIndicator} from 'react-native';
 import {Container, Content, View, Text} from 'native-base';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// import FormData from '../../utils/formData';
 
 import {
   FormInput,
@@ -16,15 +17,34 @@ import {
   ForgotPassword,
   HorizontalLine,
   LineWithText,
-  SocialMediaLogin,
+  SocialMediaLogin
 } from '../../Components/Signin/Signin';
 import Colors from '../../constants/Color';
-import Loading from '../LoadingScreen/Loading'
+import Loading from '../LoadingScreen/Loading';
+import GoBack from '../../Components/Signin/GoBack';
+
+import {loginUser} from '../../redux/action/Login/loginUser'
+
+import {useDispatch, useSelector} from 'react-redux'
 
 const Signin = ({navigation}) => {
+
+  const state = useSelector(state => state.loginUser)
+
+  const dispatch = useDispatch()
+
   const [isLoading, setIsLoading] = useState(true);
   const [hidePassword, setHidePassword] = useState(true);
-  const [error, setError] = useState('')
+  const [userData, setUserData] = useState({
+    userId: '',
+    name: '',
+    email: '',
+    isAdmin: false,
+    city: '',
+    gender: '',
+    dob: '',
+  });
+  const [error, setError] = useState('');
   const [data, setData] = useState({
     email: '',
     password: '',
@@ -32,12 +52,13 @@ const Signin = ({navigation}) => {
     isValidPassword: true,
   });
 
-  useEffect(async() => {
-    const userEmail = await AsyncStorage.getItem('email')
-    if(userEmail !== null){
-      setData({...data, email: userEmail})
+
+  useEffect(async () => {
+    const userEmail = await AsyncStorage.getItem('email');
+    if (userEmail !== null) {
+      setData({...data, email: userEmail});
     }
-  }, [])
+  }, []);
 
   const getEmail = _email => {
     setData({...data, email: _email});
@@ -63,71 +84,84 @@ const Signin = ({navigation}) => {
     }
   };
 
-  const storeData = async value => {
+  const storeData = async result => {
+
     try {
-      await AsyncStorage.setItem('token', value.token);
-      await AsyncStorage.setItem('email', value.userData.email)
-      await AsyncStorage.setItem('userData', value.userData.name)
+      await AsyncStorage.setItem('token', result.token);
+      await AsyncStorage.setItem('email', result.userData.email);
+  
     } catch (e) {
       // saving error
       console.log(e);
     }
   };
 
-  var signinUser = JSON.stringify({
-    "email": data.email,
-    "password": data.password,
-  });
 
-  var config = {
-    method: 'post',
-    url: 'http://10.0.2.2:8080/api/user/signin',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    data: signinUser,
-  };
+  var signinUser = {
+    email: data.email,
+    password: data.password,
+  }
 
   const submitValues = () => {
-    if(data.email !== '' && data.password !== ''){ 
-      axios(config)
-        .then(function (res) {
-          // const userToken = JSON.parse(res.data)
-          // console.log(userToken)
-          // console.log(res.data.userData.email);
-          storeData(res.data);
-          navigation.navigate('Home')
+    if (data.email !== '' && data.password !== '') {
+      dispatch(loginUser(signinUser))
+        .then(result => {
+          // storeData(result);
+          // console.log(result.data.userData);
+          console.log(state.user);
+          navigation.navigate('Home');
+          // console.log(result);
         })
-        .catch(function (error) {
-          // console.log(error.response.data.error_description);
-          console.log(error);
-          setError(error)
-        });
-    }else {
-      setError('All the fields are required')
+        // .catch(function (error) {
+        //   // console.log(error.response.data.error);
+        //   console.log(error)
+        //   setError(error);
+        // });
+    } else {
+      setError('All the fields are required');
     }
-    
+  };
+
+  const handleForgotPAssword = () => {
+    navigation.navigate('Email');
   };
 
   return (
     <Container style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
-      <Content padder>
+      <GoBack goBack = {() => navigation.goBack()} />
+      <Content padder keyboardShouldPersistTaps={'handled'}>
         <ScrollView>
+          
           <View style={{alignItems: 'center', margin: 12}}>
-            <GifComponent />
-            <Title />
-            <ActionText text="SIGN IN" />
-            <HorizontalLine />
-            {error === '' ? null : (<Text
+            {/* <GifComponent /> */}
+            {/* <Title /> */}
+            {/* <ActionText text="SIGN IN" /> */}
+            <Text style = {{alignSelf: 'flex-start', fontSize: 25, fontWeight: 'bold', marginBottom: 20, marginTop: 20}}>Get Started</Text>
+            {/* <HorizontalLine /> */}
+            {error === '' ? null : (
+              <Text
                 style={{
                   color: '#FF0000',
                   fontSize: 14,
                   marginBottom: 10,
-                  fontWeight: 'bold'
+                  fontWeight: 'bold',
                 }}>
                 {'error: ' + error + '**'}
-              </Text>)}
+              </Text>
+            )}
+            <View style = {{flexDirection: 'row'}}>
+            <SocialMediaLogin
+              
+              iconName="google"
+              bgcolor={Colors.google}
+            />
+            <SocialMediaLogin
+              
+              iconName="facebook"
+              bgcolor={Colors.facebook}
+            />
+            </View>
+            <LineWithText />
             <FormInput
               icon="mail-outline"
               placeholder="Email Address"
@@ -152,9 +186,9 @@ const Signin = ({navigation}) => {
               value={data.password}
               onChangeText={getPassword}
               onBlur={() => handleValidPassword()}
-              rightIcon = {hidePassword ? 'eye-off-outline' : 'eye-outline'}
+              rightIcon={hidePassword ? 'eye-off-outline' : 'eye-outline'}
               showPassword={() => setHidePassword(!hidePassword)}
-              secureText = {hidePassword ? true : false}
+              secureText={hidePassword ? true : false}
             />
             {data.isValidPassword ? null : (
               <Text
@@ -167,20 +201,9 @@ const Signin = ({navigation}) => {
                 Required!
               </Text>
             )}
-            <ForgotPassword />
-            
-            <ActionButton buttonName="Login" home={() => submitValues()} />
-            <LineWithText />
-            <SocialMediaLogin
-              text="Login with Google"
-              iconName="google"
-              bgcolor={Colors.google}
-            />
-            <SocialMediaLogin
-              text="Login with Facebook"
-              iconName="facebook"
-              bgcolor={Colors.facebook}
-            />
+            <ForgotPassword forgotPassword={() => handleForgotPAssword()} />
+
+            <ActionButton mt = {80} buttonName="Continue" home={() => submitValues()} />
             <Account
               text="Don't have an Account? "
               action="Signup"
