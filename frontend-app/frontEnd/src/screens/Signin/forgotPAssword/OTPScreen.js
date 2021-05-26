@@ -26,6 +26,9 @@ import styles, {
 import GoBack from '../../../Components/Signin/GoBack';
 // import CountDown from '../../Components/Signin/CountDown';
 
+import {resetPassword} from '../../../redux/action/Login/resetPassword'
+import {useDispatch, useSelector} from 'react-redux'
+
 const {Value, Text: AnimatedText} = Animated;
 
 const CELL_COUNT = 6;
@@ -52,6 +55,7 @@ const animateCell = ({hasValue, index, isFocused}) => {
 };
 
 const OTPScreen = ({navigation}) => {
+  const dispatch = useDispatch()
   const [value, setValue] = useState('');
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -63,32 +67,36 @@ const OTPScreen = ({navigation}) => {
     await AsyncStorage.setItem('OTPCode', _data);
   }
 
-  var data = JSON.stringify({
-    "password": value,
-  });
+  var data = {
+    otp: value,
+  }
 
-  var config = {
-    method: 'post',
-    url: `http://localhost:8080/api/user/${value}/reset-password`,
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    data: data,
-  };
+  // var config = {
+  //   method: 'post',
+  //   url: `http://localhost:8080/api/user/${value}/reset-password`,
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     Accept: 'application/json',
+  //   },
+  //   data: data,
+  // };
 
   const handleSubmit = async() => {
     if (value.length === 6) {
-      axios(config)
-        .then(function (response) {
-          console.log(JSON.stringify(response.data));
-          storeData(response.data)
-          navigation.navigate('Reset');
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      // console.log('password');
+      // axios(config)
+      //   .then(function (response) {
+      //     console.log(JSON.stringify(response.data));
+      //     storeData(response.data)
+      //     navigation.navigate('Reset');
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error);
+      //   });
+      // // console.log('password');
+      dispatch(resetPassword(data))
+      .then(result => {
+        console.log(result);
+      })
       
     }
   };

@@ -1,15 +1,15 @@
-import {LOGIN_USER_SUCCESS, LOGIN_USER_FAIL} from '../action/action.types'
+import {RESET_PASSWORD, RESET_PASSWORD_FAIL} from '../action/action.types'
 
 const initialState = {
-    user: {},
+    resetID: '',
     errors: {}
 }
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case LOGIN_USER_SUCCESS:
-            return{...state, user: action.payload}
-        case LOGIN_USER_FAIL:
+        case RESET_PASSWORD:
+            return{...state, resetID: action.payload}
+        case RESET_PASSWORD_FAIL:
             return{...state, errors: action.payload}
 
         default: 

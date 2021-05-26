@@ -1,6 +1,7 @@
 import React from 'react';
-import {ImageBackground, ScrollView} from 'react-native';
+import {ImageBackground, ScrollView, TouchableOpacity} from 'react-native';
 import {Text, Button, View, Icon} from 'native-base';
+import Colors from '../../constants/Color';
 
 const Starter = ({navigation}) => {
   return (
@@ -19,45 +20,32 @@ const Starter = ({navigation}) => {
               }}>
               Voyage Nepal
             </Text>
-            <View padder style={{top: '60%'}}>
-              {/* <Button
-                iconLeft
-                block
-                rounded
-                light
-                style={{marginBottom: 10, justifyContent: 'flex-start'}}>
-                <Icon name="mail-outline" />
+            <View padder style={{top: '33%'}}>
+              <View style={{marginTop: 120, alignItems: 'center'}}>
                 <Text
-                  style={{fontSize: 19, fontWeight: '700'}}
+                  style={{fontSize: 30, fontWeight: '700', color: '#ffffff', marginBottom: 10}}
                   uppercase={false}>
-                  Continue with Gmail
+                  Let's Travel
                 </Text>
-              </Button> */}
-              {/* <Button iconLeft block rounded light style={{marginBottom: 10}}>
-                <Icon name="logo-facebook" />
-                <Text
-                  style={{fontSize: 19, fontWeight: '700'}}
-                  uppercase={false}>
-                  Continue with Facebook
-                </Text>
-              </Button> */}
-              <View
-                style={{marginTop: 120}}>
-                {/* <Button block rounded light style = {{padding: 13}} onPress = {() => {navigation.navigate('Signup')}}>
-                  <Text
-                    style={{fontSize: 19, fontWeight: '700'}}
-                    uppercase={false}>
-                    Signup
-                  </Text>
-                </Button> */}
-                <Button transparent iconRight style = {{ alignItems: 'center', justifyContent: 'center'}} onPress = {() => {navigation.navigate('Signin')}}>
-                  <Text
-                    style={{fontSize: 30, fontWeight: '700', color: '#ffffff'}}
-                    uppercase={false}>
-                    Let's Travel
-                  </Text>
-                  <Icon name = 'arrow-forward' style = {{fontSize: 40, color: '#ffffff'}} />
-                </Button>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('Signin');
+                  }}
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: Colors.themeColor,
+                    padding: 10,
+                    height: 60,
+                    width: 60,
+                    borderRadius: 30,
+                  }}>
+                  <Icon
+                    type="AntDesign"
+                    name="forward"
+                    style={{fontSize: 30, color: '#ffffff', padding: 1}}
+                  />
+                </TouchableOpacity>
               </View>
             </View>
           </View>

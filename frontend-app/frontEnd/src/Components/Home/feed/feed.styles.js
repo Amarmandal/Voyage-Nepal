@@ -25,9 +25,7 @@ export default StyleSheet.create({
   },
 
   userName: {
-    fontSize: 40,
-    fontWeight: '400',
-    color: Colors.themeColor,
-    fontFamily: 'Playball-Regular',
+    fontSize: 22,
+    fontWeight: 'bold',
   },
 });

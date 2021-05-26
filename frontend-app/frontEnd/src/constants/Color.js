@@ -7,7 +7,8 @@ const Colors = {
     primary: '#001370',
     success: '#6FCF38',
     error: '#CF3838',
-    themeColor: '#52c0b4'
+    themeColor: '#52c0b4',
+    green:'#52c0b4',
 
 }
 

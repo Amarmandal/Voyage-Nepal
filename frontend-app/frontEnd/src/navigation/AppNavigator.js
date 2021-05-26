@@ -9,9 +9,9 @@ import {Icon} from 'native-base';
 import Signin from '../screens/Signin/Signin';
 import Signup from '../screens/Signup/Signup';
 import Feed from '../screens/Homepage/feed/Feed';
-import Explore from '../screens/Homepage/Explore';
-import Category from '../screens/Homepage/Category';
-import Map from '../screens/Homepage/Map';
+import Explore from '../screens/Homepage/explore/Explore';
+import HotelScreen from '../screens/Homepage/hotelScreen/HotelScreen';
+import Map from '../screens/Homepage/map/Map';
 import Profile from '../screens/Homepage/Profile';
 import Starter from '../screens/starter/Starter';
 import Loading from '../screens/LoadingScreen/Loading';
@@ -31,7 +31,8 @@ const Home = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: Colors.primary,
+        activeTintColor: Colors.green,
+        inactiveTintColor: Colors.dimGray,
         showLabel: false,
         style: {
           backgroundColor: '#ffffff',
@@ -49,7 +50,7 @@ const Home = () => {
             <Icon
               name="home"
               size={26}
-              style={{color: focused ? Colors.themeColor : 'black'}}
+              style={{color: focused ? Colors.themeColor : Colors.dimGray}}
             />
           ),
         }}
@@ -62,35 +63,22 @@ const Home = () => {
             <Icon
               type="MaterialIcons"
               name="explore"
-              size={26}
-              style={{color: focused ? Colors.themeColor : 'black'}}
+              size={29}
+              style={{color: focused ? Colors.themeColor : Colors.dimGray}}
             />
           ),
         }}
       />
       <Tab.Screen
-        name="Category"
-        component={Category}
+        name="HotelScreen"
+        component={HotelScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <Icon
-              type="FontAwesome5"
-              name="book"
+              type="Fontisto"
+              name="hotel"
               size={26}
-              style={{color: focused ? Colors.themeColor : 'black'}}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Map"
-        component={Map}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <Icon
-              type="FontAwesome5"
-              name="map-marked-alt"
-              style={{color: focused ? Colors.themeColor : 'black'}}
+              style={{color: focused ? Colors.themeColor : Colors.dimGray}}
             />
           ),
         }}
@@ -104,7 +92,7 @@ const Home = () => {
               type="FontAwesome5"
               name="user-alt"
               size={26}
-              style={{color: focused ? Colors.themeColor : 'black'}}
+              style={{color: focused ? Colors.themeColor : Colors.dimGray}}
             />
           ),
         }}
@@ -130,21 +118,8 @@ function MainStackScreen() {
         screenOptions={{
           headerShown: false,
         }}>
-        {isLoading ? (
-          <MainStack.Screen name="Loading" component={Loading} />
-        ) : userToken !== null ? (
-          <MainStack.Screen
-            name="Home"
-            component={Home}
-            options={{
-              title: 'Home',
-              headerStyle: {
-                backgroundColor: '#5eaaa8',
-              },
-            }}
-          />
-        ) : (
-          <>
+        
+          
             <MainStack.Screen
               name="Starter"
               component={Starter}
@@ -185,8 +160,8 @@ function MainStackScreen() {
               },
             }}
           />
-          </>
-        )}
+          
+        
       </MainStack.Navigator>
   );
 }
