@@ -30,9 +30,12 @@ exports.getPlaceById = async (req, res, next, id) => {
 exports.createPlace = async (req, res) => {
   try {
     const place = new Place(req.body);
+    place.placePhoto = req.placeImgUrl;
     await place.save();
+
     return res.status(200).json(place);
   } catch (error) {
+    console.log(error);
     res.status(400).json({ error: "Cannot save place in db" });
     return;
   }

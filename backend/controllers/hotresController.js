@@ -13,6 +13,7 @@ exports.getHotelById = async (req, res, next, id) => {
 
 exports.createHotelForPlace = async (req, res) => {
   const hotel = new HotRes(req.body);
+  hotel.hotelPhotoUrl = req.hotelImgUrl;
   
   try {
     await hotel.save();

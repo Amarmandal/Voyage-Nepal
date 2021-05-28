@@ -194,3 +194,12 @@ exports.resetPassword = async (req, res) => {
     return res.status(400).json({error: "Unable to Reset Password"});
   }
 };
+
+exports.handleSignout = async (req, res) => {
+  try {
+    await res.clearCookie("token");
+    return res.status(200).json({ message: 'User Signout successfully'});
+  } catch (error) {
+    return res.status(400).json({ error: "Cannot logout the user"});
+  }
+}
