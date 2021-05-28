@@ -16,7 +16,7 @@ oauth2Client.setCredentials({
 exports.getTransporter = async () => {
   try {
     const accessToken = await oauth2Client.getAccessToken();
-    //with oauth2
+    //oauth Token method
     // const transporter = nodemailer.createTransport({
     //   service: "gmail",
     //   auth: {
@@ -29,7 +29,7 @@ exports.getTransporter = async () => {
     //   },
     // });
 
-    //with app password
+    //App password Method
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,

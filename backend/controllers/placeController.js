@@ -2,18 +2,21 @@ const Place = require("../models/placeModel");
 
 exports.getPlaceById = async (req, res, next, id) => {
   try {
-    const place = await Place.findById({_id: id})
+    const place = await Place.findById(id)
       .populate({
-        path: "reviews", 
+        path: "reviews",
         select: "user -_id",
         populate: {
-            path: "user",
-            select: "_id"
-        } 
-    })
+          path: "user",
+          select: "_id",
+        },
+      })
+      .populate({
+        path: "stayPlace",
+        select: "name rating stayType hotelPhotoUrl -_id",
+      })
       .exec();
-    req.place = place;
-    next();
+    (req.place = place), next();
   } catch (error) {
     res.status(200).json({ error: "Cannot find the place associated with Id" });
     return;
@@ -36,12 +39,19 @@ exports.createPlace = async (req, res) => {
 };
 
 exports.updatePlace = async (req, res) => {
-  const { name, placePhoto, category } = req.body;
+  let { name, placePhoto, category, stayPlace } = req.body;
   const place = req.place;
+
+  name = name || place.name;
+  placePhoto = placePhoto || place.placePhoto;
+  category = category || place.category;
+  stayPlace = stayPlace || place.stayPlace;
+
   try {
     place.name = name;
     place.placePhoto = placePhoto;
     place.category = category;
+    place.stayPlace = stayPlace;
 
     await place.save();
     return res.status(200).json({ data: place });
@@ -55,14 +65,18 @@ exports.updatePlace = async (req, res) => {
 exports.getAllPlace = async (req, res) => {
   try {
     const places = await Place.find({})
-      .populate({ 
-        path: "reviews", 
+      .populate({
+        path: "reviews",
         select: "user reviewText rating -_id",
         populate: {
-            path: "user",
-            select: "name profileImgURL"
-        }
-    })
+          path: "user",
+          select: "name profileImgURL",
+        },
+      })
+      .populate({
+        path: "stayPlace",
+        select: "name rating stayType hotelPhotoUrl -_id",
+      })
       .exec();
     return res.status(200).json(places);
   } catch (error) {

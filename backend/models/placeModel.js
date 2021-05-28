@@ -21,7 +21,7 @@ const placeSchema = new Schema({
     }],
     stayPlace: [{
         type: ObjectId,
-        ref: 'HotRes',
+        ref: 'Hotel',
         trim: true,
     }],
     reviews: [{

@@ -20,7 +20,8 @@ const hotResSchema = new Schema({
         type: String,
         enum: ['Hotel', 'Restaurant'],
         default: 'Hotel'
-    }
+    },
+    hotelPhotoUrl: String
 
 }, {timestamps: true});
 
