@@ -1,9 +1,10 @@
 const Review = require("../models/reviewModel");
+const { getAvgRatings } = require("../utils/getAvgRating");
 
 exports.createPlaceReview = async (req, res) => {
   const userReview = req.body;
   userReview.user = req.user.id;
-  
+
   try {
     const newReview = new Review(userReview);
     const place = req.place;
@@ -13,15 +14,18 @@ exports.createPlaceReview = async (req, res) => {
     });
 
     if (foundValue !== -1) {
-        res.status(400).json({ error: "You have already reviewed this place "});
-        return;
+      res.status(400).json({ error: "You have already reviewed this place " });
+      return;
     }
 
     place.reviews.push(newReview._id);
+    const avgRating = await getAvgRatings(req.place._id, place.reviews.length, newReview.rating);
+    place.ratings = avgRating;
+
     await newReview.save();
     await place.save();
-    return res.status(200).json({ message: "New review has been added" });
 
+    return res.status(200).json({ message: "New review has been added" });
   } catch (error) {
     console.log(error);
     res.status(400).json("Cannot Create the User Review");
@@ -32,20 +36,22 @@ exports.getReviewByUserId = async (req, res) => {
   const userId = req.params.userId;
 
   try {
-    const reviews = await Review.find({ user: userId.toString()})
+    const reviews = await Review.find({ user: userId.toString() });
     return res.status(200).json(reviews);
   } catch (error) {
-    return res.status(400).json({error: "No reviews found"});
+    return res.status(400).json({ error: "No reviews found" });
   }
-}
+};
 
 exports.deleteReviewById = async (req, res) => {
   const reviewId = req.params.reviewId;
 
   try {
     await Review.findOneAndDelete({ _id: reviewId.toString() });
-    return res.status(200).json({ message: 'Review has been deleted successfully'});
-  }catch (err) {
-    return res.status(400).json({ error: 'Unable to delete a review'});
+    return res
+      .status(200)
+      .json({ message: "Review has been deleted successfully" });
+  } catch (err) {
+    return res.status(400).json({ error: "Unable to delete a review" });
   }
-}
+};

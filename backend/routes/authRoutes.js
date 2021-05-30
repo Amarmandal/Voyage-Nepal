@@ -7,12 +7,12 @@ const {
   userSingin,
   forgetPassword,
   resetPassword,
-  changeCurrentPassword
+  changeCurrentPassword,
+  handleSignout
 } = require("../controllers/authController");
 const {
   isSignedIn,
   isAuthenticated,
-  isAdmin,
   getUserByOtp
 } = require("../middleware/authMiddleware");
 
@@ -36,9 +36,7 @@ router.param('userId', getUserById);
 router.post('/user/:userId/reset-password', resetPassword);
 
 router.put('/user/:userId/change-password', isSignedIn, isAuthenticated, changeCurrentPassword);
-//Protected route test
-router.get("/protected", isSignedIn, isAuthenticated, isAdmin, (req, res) => {
-  res.send("With an admin privelages");
-});
+
+router.get('/user/:userId/signout', isSignedIn, isAuthenticated, handleSignout);
 
 module.exports = router;
