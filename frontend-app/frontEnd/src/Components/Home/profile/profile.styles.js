@@ -37,13 +37,12 @@ export default StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'row',
-      marginTop: 12
+      marginTop: 20,
   },
 
   signoutText: {
     fontSize: 25,
     fontWeight: '200',
     color: '#000000',
-    fontFamily: 'GentiumBookBasic-Bold'
   }
 });

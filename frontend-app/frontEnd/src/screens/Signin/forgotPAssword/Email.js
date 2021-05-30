@@ -6,8 +6,12 @@ import styles from './OTP.styles';
 import axios from 'axios';
 import Colors from '../../../constants/Color';
 import GoBack from '../../../Components/Signin/GoBack';
+import {useSelector, useDispatch} from 'react-redux'
+import {getUserEmail} from '../../../redux/action/Login/email'
 
 const Email = ({navigation}) => {
+  const state = useSelector(state => state.userEmail)
+  const dispatch = useDispatch()
   const [email, setEmail] = useState('');
   const [valid, setValid] = useState(true);
   const [res, setRes] = useState('');
@@ -36,16 +40,14 @@ const Email = ({navigation}) => {
 
   const handleSubmit = () => {
     if (email !== '') {
-      axios(config)
-        .then(function (response) {
-          console.log(JSON.stringify(response.data.message));
-          alert(response.data.message);
+      dispatch(getUserEmail(email))
+        .then((response) => {
+          alert(response.message);
+          setRes(response.message)
+          console.log(state);
           navigation.navigate('MyModal');
         })
-        .catch(function (error) {
-          console.log(error);
-          setRes('No user found with this email');
-        });
+        
     } else {
       console.log('Required Email');
       setValid(false);

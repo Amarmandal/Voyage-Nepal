@@ -4,7 +4,7 @@ import axios from 'axios';
 const BASE_URL = 'http://10.0.2.2:8080/api';
 
 export const resetPassword = otp => {
-  const {code} = otp;
+  const code = otp;
 
   return async dispatch => {
     var data = JSON.stringify({

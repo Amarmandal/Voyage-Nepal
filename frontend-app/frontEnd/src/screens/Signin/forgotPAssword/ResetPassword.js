@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Alert} from 'react-native';
 import {FormInput} from '../../../Components/FormComponents/FormCompponents';
 import {Button} from 'native-base'
 import styles from './OTP.styles'
 import GoBack from '../../../Components/Signin/GoBack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const ResetPassword = ({navigation}) => {
-    const [otp, setOTP] = useState()
+  const state = useSelector(state => state.resetOtp.resetID.userResetId)
   const [hidePassword, setHidePassword] = useState(true);
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
   const [data, setData] = useState({
@@ -17,20 +18,13 @@ const ResetPassword = ({navigation}) => {
     isValidPassword: true,
     isValidConfirmPassword: true,
   });
+  const [error, setError] = useState('')
 
-  useEffect(async() => {
-      const getOtp = await AsyncStorage.getItem('OTPCode')
-      setOTP(getOtp)
-  }, [])
 
   const getPassword = _password => {
-    // setPassword(_password);
-    // formData.addData({Password: _password});
     setData({...data, password: _password, isValidPassword: true});
   };
   const getConfirmPassword = _confirmPassword => {
-    // setConfirmPAssword(_confirmPassword);
-    // formData.addData({ConfirmPassword: _confirmPassword});
     setData({
       ...data,
       confirmPassword: _confirmPassword,
@@ -71,13 +65,27 @@ const ResetPassword = ({navigation}) => {
   
   var config = {
     method: 'post',
-    url: `http://localhost:8080/api/user/${otp}/reset-password`,
+    url: `http://10.0.2.2:8080/api/user/${state}/reset-password`,
     headers: { 
       'Content-Type': 'application/json', 
       'Accept': 'application/json'
     },
     data : userData
   };
+
+  const handleSubmit = () => {
+    if(data.password !== '' && data.confirmPassword !== ''){
+      axios(config)
+      .then(res => {
+        alert('Password Changed Successfully. Please login!')
+        navigation.navigate('Signin')
+      })
+      .catch(err => {
+        setError(err.data)
+      })
+    }
+  }
+
   return (
     <View style = {{backgroundColor: '#ffffff', flex: 1,}}>
         <GoBack goBack = {() => navigation.goBack()}  />
@@ -118,7 +126,8 @@ const ResetPassword = ({navigation}) => {
             Password and confirm password doesn't match
           </Text>
         )}
-        <Button rounded style = {styles.nextButton}><Text style = {styles.nextButtonText}>Submit</Text></Button>
+        <Button onPress = {() => handleSubmit()} rounded style = {styles.nextButton}><Text style = {styles.nextButtonText}>Submit</Text></Button>
+        
       </View>
     </View>
   );

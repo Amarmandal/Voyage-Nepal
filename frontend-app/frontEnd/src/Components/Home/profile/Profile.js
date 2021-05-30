@@ -1,6 +1,7 @@
 import React from 'react';
 import {Image, ImageBackground, useWindowDimensions} from 'react-native';
 import {View, Text, Button, Icon} from 'native-base';
+import Colors from '../../../constants/Color'
 
 import profileStyles from './profile.styles';
 
@@ -48,8 +49,8 @@ export const SignOut = props => {
   return (
     <View style={profileStyles.signoutContainer}>
       <Button transparent onPress={props.signOut}>
-        <Icon type="MaterialIcons" name="logout" style={{color: '#000000'}} />
-        <Text style={profileStyles.signoutText}>Signout</Text>
+        <Icon type= 'AntDesign' name="logout" style={{color: Colors.primary}} />
+        <Text style={profileStyles.signoutText} uppercase = {false}>Log out</Text>
       </Button>
     </View>
   );
