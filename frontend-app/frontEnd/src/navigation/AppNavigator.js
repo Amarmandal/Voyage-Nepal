@@ -9,15 +9,16 @@ import {Icon} from 'native-base';
 import Signin from '../screens/Signin/Signin';
 import Signup from '../screens/Signup/Signup';
 import Feed from '../screens/Homepage/feed/Feed';
-import Explore from '../screens/Homepage/Explore';
-import Category from '../screens/Homepage/Category';
-import Map from '../screens/Homepage/Map';
-import Profile from '../screens/Homepage/Profile';
+import Explore from '../screens/Homepage/explore/Explore';
+import HotelScreen from '../screens/Homepage/hotelScreen/HotelScreen';
+import Map from '../screens/Homepage/hotelScreen/Map';
+import Profile from '../screens/Homepage/ProfileScreen/Profile';
+import AboutMe from '../screens/Homepage/ProfileScreen/AboutMe';
 import Starter from '../screens/starter/Starter';
 import Loading from '../screens/LoadingScreen/Loading';
-import OTPScreen from '../screens/Signin/forgotPAssword/OTPScreen'
-import Email from '../screens/Signin/forgotPAssword/Email'
-import ResetPassword from '../screens/Signin/forgotPAssword/ResetPassword'
+import OTPScreen from '../screens/Signin/forgotPAssword/OTPScreen';
+import Email from '../screens/Signin/forgotPAssword/Email';
+import ResetPassword from '../screens/Signin/forgotPAssword/ResetPassword';
 import Colors from '../constants/Color';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -26,12 +27,15 @@ const activeColor = '#CF3838';
 const MainStack = createStackNavigator();
 const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const Maps = createBottomTabNavigator();
+const AccountStack = createBottomTabNavigator();
 
 const Home = () => {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        activeTintColor: Colors.primary,
+        activeTintColor: Colors.green,
+        inactiveTintColor: Colors.dimGray,
         showLabel: false,
         style: {
           backgroundColor: '#ffffff',
@@ -49,7 +53,7 @@ const Home = () => {
             <Icon
               name="home"
               size={26}
-              style={{color: focused ? Colors.themeColor : 'black'}}
+              style={{color: focused ? Colors.themeColor : Colors.dimGray}}
             />
           ),
         }}
@@ -62,49 +66,36 @@ const Home = () => {
             <Icon
               type="MaterialIcons"
               name="explore"
-              size={26}
-              style={{color: focused ? Colors.themeColor : 'black'}}
+              size={29}
+              style={{color: focused ? Colors.themeColor : Colors.dimGray}}
             />
           ),
         }}
       />
       <Tab.Screen
-        name="Category"
-        component={Category}
+        name="HotelScreen"
+        component={HotelMapScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <Icon
-              type="FontAwesome5"
-              name="book"
+              type="Fontisto"
+              name="hotel"
               size={26}
-              style={{color: focused ? Colors.themeColor : 'black'}}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Map"
-        component={Map}
-        options={{
-          tabBarIcon: ({focused}) => (
-            <Icon
-              type="FontAwesome5"
-              name="map-marked-alt"
-              style={{color: focused ? Colors.themeColor : 'black'}}
+              style={{color: focused ? Colors.themeColor : Colors.dimGray}}
             />
           ),
         }}
       />
       <Tab.Screen
         name="Profile"
-        component={Profile}
+        component={AccountScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <Icon
               type="FontAwesome5"
               name="user-alt"
               size={26}
-              style={{color: focused ? Colors.themeColor : 'black'}}
+              style={{color: focused ? Colors.themeColor : Colors.dimGray}}
             />
           ),
         }}
@@ -112,6 +103,25 @@ const Home = () => {
     </Tab.Navigator>
   );
 };
+
+function HotelMapScreen() {
+  return (
+    <Maps.Navigator>
+      <Maps.Screen name="Hotels" component={HotelScreen} />
+      <Maps.Screen name="Map" component={Map} />
+    </Maps.Navigator>
+  );
+}
+
+function AccountScreen(){
+  return(
+    <AccountStack.Navigator>
+      <AccountStack.Screen name = 'Account' component = {Profile} />
+      <AccountStack.Screen name = 'About me' component = {AboutMe} />
+      {/* <AccountStack.Screen /> */}
+    </AccountStack.Navigator>
+  )
+}
 
 function MainStackScreen() {
   const [userToken, setUserToken] = useState(null);
@@ -126,68 +136,51 @@ function MainStackScreen() {
     }
   }, []);
   return (
-      <MainStack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}>
-        {isLoading ? (
-          <MainStack.Screen name="Loading" component={Loading} />
-        ) : userToken !== null ? (
-          <MainStack.Screen
-            name="Home"
-            component={Home}
-            options={{
-              title: 'Home',
-              headerStyle: {
-                backgroundColor: '#5eaaa8',
-              },
-            }}
-          />
-        ) : (
-          <>
-            <MainStack.Screen
-              name="Starter"
-              component={Starter}
-              options={{
-                title: 'Starter',
-                headerStyle: {
-                  backgroundColor: '#1597bb',
-                },
-              }}
-            />
-            <MainStack.Screen
-              name="Signin"
-              component={Signin}
-              options={{
-                title: 'Signin',
-                headerStyle: {
-                  backgroundColor: '#1597bb',
-                },
-              }}
-            />
-            <MainStack.Screen
-              name="Signup"
-              component={Signup}
-              options={{
-                title: 'Signup',
-                headerStyle: {
-                  backgroundColor: '#5eaaa8',
-                },
-              }}
-            />
-            <MainStack.Screen
-            name="Home"
-            component={Home}
-            options={{
-              title: 'Home',
-              headerStyle: {
-                backgroundColor: '#5eaaa8',
-              },
-            }}
-          />
-          </>
-        )}
-      </MainStack.Navigator>
+    <MainStack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <MainStack.Screen
+        name="Starter"
+        component={Starter}
+        options={{
+          title: 'Starter',
+          headerStyle: {
+            backgroundColor: '#1597bb',
+          },
+        }}
+      />
+      <MainStack.Screen
+        name="Signin"
+        component={Signin}
+        options={{
+          title: 'Signin',
+          headerStyle: {
+            backgroundColor: '#1597bb',
+          },
+        }}
+      />
+      <MainStack.Screen
+        name="Signup"
+        component={Signup}
+        options={{
+          title: 'Signup',
+          headerStyle: {
+            backgroundColor: '#5eaaa8',
+          },
+        }}
+      />
+      <MainStack.Screen
+        name="Home"
+        component={Home}
+        options={{
+          title: 'Home',
+          headerStyle: {
+            backgroundColor: '#5eaaa8',
+          },
+        }}
+      />
+    </MainStack.Navigator>
   );
 }
 

@@ -7,8 +7,7 @@ import feedStyles from './feed.styles'
 export const HelloUser = (props) => {
     return (
         <View style={feedStyles.helloUSer}>
-            <Text style = {feedStyles.userName}>Hello, {props.name}</Text>
-            <Text style = {[feedStyles.userName, {fontSize: 26, fontFamily: 'KaushanScript-Regular', color: '#000000'}]}>Welcome to Nepal</Text>
+            <Text style = {feedStyles.userName}>Hello, {props.name}!</Text>
         </View>
     )
 }
@@ -18,6 +17,7 @@ export const UserImage = () => {
         <Image source = {require('../../../assets/pictures/face.jpg')} style = {feedStyles.userImg} />
     )
 }
+
 
 export const WelcomeContainer = (props) => {
     const imageWidth = useWindowDimensions().width;

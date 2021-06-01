@@ -1,34 +1,30 @@
 import React, {useState, useEffect} from 'react';
-import {Image, ScrollView} from 'react-native';
-import {View, Text} from 'native-base'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import {SafeAreaView,Text, ScrollView} from 'react-native';
+import {HelloUser} from '../../../Components/Home/feed/Feed';
+import {useSelector} from 'react-redux';
+import Header from '../../../Components/Home/feed/header'
+import Popular from '../../../Components/Home/feed/Popular';
+import SearchContainer from '../../../Components/Home/feed/searchContainer';
 
-import { WelcomeContainer} from '../../../Components/Home/feed/Feed'
-import FormData from '../../../utils/formData'
+// import Geolocation from 'react-native-geolocation-service';
+// import Geolocation from '@react-native-community/geolocation';
+import Geocoder from 'react-native-geocoding';
+// import RNLocation from 'react-native-location';
+import {Button} from 'native-base';
 
-import {useSelector} from 'react-redux'
+const Feed = () => {
+  const state = useSelector(state => state.loginUser);
 
-const Feed = ({navigation}) => {
-
-  const state = useSelector(state => state.loginUser)
-  const [name, setName] = useState()
-
-  useEffect(async() => {
-    // const userName = await AsyncStorage.getItem('userData')
-    // // const firstName = userName.split(' ', 1)
-    // setName(userName)
-    // const filledData = FormData({})
-    // const data = filledData.getData()
-    // console.log(data);
-  }, [])
-  const userName = AsyncStorage.getItem('userData')
-  // setName(name)
   return (
-    <ScrollView>
-      {/* {userName} */}
-      <WelcomeContainer user = {state.user.userData.name} />
+    <SafeAreaView style={{flex:1,backgroundColor:'white'}}>
+    <ScrollView showsVerticalScrollIndicator={false}>
+     <Header/>
+       <Popular />
     </ScrollView>
+
+    </SafeAreaView>
   );
 };
 
 export default Feed;
+

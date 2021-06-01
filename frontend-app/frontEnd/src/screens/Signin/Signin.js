@@ -17,21 +17,20 @@ import {
   ForgotPassword,
   HorizontalLine,
   LineWithText,
-  SocialMediaLogin
+  SocialMediaLogin,
 } from '../../Components/Signin/Signin';
 import Colors from '../../constants/Color';
 import Loading from '../LoadingScreen/Loading';
 import GoBack from '../../Components/Signin/GoBack';
 
-import {loginUser} from '../../redux/action/Login/loginUser'
+import {loginUser} from '../../redux/action/Login/loginUser';
 
-import {useDispatch, useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux';
 
 const Signin = ({navigation}) => {
+  const state = useSelector(state => state.loginUser);
 
-  const state = useSelector(state => state.loginUser)
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(true);
   const [hidePassword, setHidePassword] = useState(true);
@@ -51,7 +50,6 @@ const Signin = ({navigation}) => {
     isValidEmail: true,
     isValidPassword: true,
   });
-
 
   useEffect(async () => {
     const userEmail = await AsyncStorage.getItem('email');
@@ -85,11 +83,9 @@ const Signin = ({navigation}) => {
   };
 
   const storeData = async result => {
-
     try {
       await AsyncStorage.setItem('token', result.token);
       await AsyncStorage.setItem('email', result.userData.email);
-  
     } catch (e) {
       // saving error
       console.log(e);
@@ -100,23 +96,23 @@ const Signin = ({navigation}) => {
   var signinUser = {
     email: data.email,
     password: data.password,
-  }
+  };
 
-  const submitValues = () => {
+  const submitValues = async () => {
     if (data.email !== '' && data.password !== '') {
-      dispatch(loginUser(signinUser))
-        .then(result => {
-          // storeData(result);
-          // console.log(result.data.userData);
-          console.log(state.user);
+      dispatch(loginUser(signinUser)).then(result => {
+        if (result.token) {
+          storeData(result);
           navigation.navigate('Home');
-          // console.log(result);
-        })
-        // .catch(function (error) {
-        //   // console.log(error.response.data.error);
-        //   console.log(error)
-        //   setError(error);
-        // });
+          
+        } else if(result.response.data.error) {
+          // console.log(result.response.data.error);
+          console.log(result.response.data.error);
+          setError(result.response.data.error)
+        } else {
+          alert('Something went wrong')
+        }
+      });
     } else {
       setError('All the fields are required');
     }
@@ -128,16 +124,26 @@ const Signin = ({navigation}) => {
 
   return (
     <Container style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
-      <GoBack goBack = {() => navigation.goBack()} />
+      <GoBack goBack={() => navigation.goBack()} />
       <Content padder keyboardShouldPersistTaps={'handled'}>
         <ScrollView>
-          
           <View style={{alignItems: 'center', margin: 12}}>
-            {/* <GifComponent /> */}
-            {/* <Title /> */}
-            {/* <ActionText text="SIGN IN" /> */}
-            <Text style = {{alignSelf: 'flex-start', fontSize: 25, fontWeight: 'bold', marginBottom: 20, marginTop: 20}}>Get Started</Text>
-            {/* <HorizontalLine /> */}
+            <Text
+              style={{
+                alignSelf: 'flex-start',
+                fontSize: 25,
+                fontWeight: 'bold',
+                marginBottom: 20,
+                marginTop: 20,
+              }}>
+              Get Started
+            </Text>
+            
+            <View style={{flexDirection: 'row'}}>
+              <SocialMediaLogin iconName="google" bgcolor={Colors.google} />
+              <SocialMediaLogin iconName="facebook" bgcolor={Colors.facebook} />
+            </View>
+            <LineWithText />
             {error === '' ? null : (
               <Text
                 style={{
@@ -146,22 +152,9 @@ const Signin = ({navigation}) => {
                   marginBottom: 10,
                   fontWeight: 'bold',
                 }}>
-                {'error: ' + error + '**'}
+                {'Error: ' + error + '!!'}
               </Text>
             )}
-            <View style = {{flexDirection: 'row'}}>
-            <SocialMediaLogin
-              
-              iconName="google"
-              bgcolor={Colors.google}
-            />
-            <SocialMediaLogin
-              
-              iconName="facebook"
-              bgcolor={Colors.facebook}
-            />
-            </View>
-            <LineWithText />
             <FormInput
               icon="mail-outline"
               placeholder="Email Address"
@@ -203,7 +196,11 @@ const Signin = ({navigation}) => {
             )}
             <ForgotPassword forgotPassword={() => handleForgotPAssword()} />
 
-            <ActionButton mt = {80} buttonName="Continue" home={() => submitValues()} />
+            <ActionButton
+              mt={80}
+              buttonName="Continue"
+              home={() => submitValues()}
+            />
             <Account
               text="Don't have an Account? "
               action="Signup"

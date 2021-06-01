@@ -1,12 +1,12 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 
-const Explore = () => {
+const ChangePassword = () => {
     return (
         <View>
-            <Text>Explore here</Text>
+            <Text>Change Password here</Text>
         </View>
     )
 }
 
-export default Explore
+export default ChangePassword

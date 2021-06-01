@@ -34,7 +34,14 @@ export const loginUser = userData => {
       payload: data
     });
    })
-   .catch(err => console.log(err))
+   .catch(err => {
+     const error = err
+     Data = error
+     dispatch({
+       type: LOGIN_USER_FAIL,
+       payload: error
+     })
+   })
     
     return Data
   };
