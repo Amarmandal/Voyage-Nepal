@@ -7,6 +7,7 @@ const {
   deletePlace,
   createPlace,
   updatePlace,
+  recommendsPlace
 } = require("../controllers/placeController");
 const {
   isSignedIn,
@@ -28,6 +29,10 @@ router.post(
   uploadPlacePhoto,
   createPlace
 );
+
+//recommendation routes
+router.post('/place/recommends', isSignedIn, isAuthenticated, recommendsPlace);
+
 //update place
 router.put(
   "/place/:placeId/update",

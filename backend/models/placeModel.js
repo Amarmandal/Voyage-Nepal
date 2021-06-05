@@ -9,7 +9,8 @@ const placeSchema = new Schema({
         trim: true,
         required: true,
         minLength: 1,
-        unique: true
+        unique: true,
+        lowercase: true
     },
     placePhoto: {
         type: String,
@@ -29,6 +30,10 @@ const placeSchema = new Schema({
         ref: 'Review',
         trim: true,
     }],
+    distance: {
+        type: String,
+        trim: true
+    },
     ratings: {
         type: Number,
         default: 0,
@@ -36,6 +41,11 @@ const placeSchema = new Schema({
         max: 5
     }
 }, {timestamps: true});
+
+placeSchema.virtual('placeDis')
+    .set(function(value) {
+        return this.distance = `${value} KM`;
+    })
 
 const Place = mongoose.model('Place', placeSchema);
 

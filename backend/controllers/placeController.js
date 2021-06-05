@@ -1,4 +1,5 @@
 const Place = require("../models/placeModel");
+const axios = require("axios");
 
 exports.getPlaceById = async (req, res, next, id) => {
   try {
@@ -23,9 +24,34 @@ exports.getPlaceById = async (req, res, next, id) => {
   }
 };
 
-// exports.getPlaceByLocation = () => {
-//     //
-// }
+
+exports.recommendsPlace = async (req, res) => {
+  const givenData = req.body;
+  try {
+    const { data } = await axios.post(`${process.env.FLASK_API_URL}/recommends`, givenData);
+    const nearByPlaceName = data.userData.near_you.map(item => item.place_name.toLowerCase());
+    const recommendedPlaceName = data.userData.special_recommendation.map(place => place.toLowerCase());
+
+    const nearByPlaceDetails = await Place.find({ name: { $in: nearByPlaceName }});
+    const recommendedPlaceDetails = await Place.find({ name: { $in: recommendedPlaceName }});
+
+    nearByPlaceDetails.map(place => {
+      data.userData.near_you.map(placeObj => {
+        if(place.name === placeObj.place_name.toLowerCase()) {
+          const placeDistance = placeObj.distance;
+          place.placeDis = placeDistance;
+        }
+      })
+    });
+
+    return res.status(200).json({
+      data: { nearByPlaceDetails, recommendedPlaceDetails }
+    });
+  } catch(err) {
+    console.log(err);
+    return res.status(402).json({ error: "An error has occured"});
+  }
+}
 
 exports.createPlace = async (req, res) => {
   try {
