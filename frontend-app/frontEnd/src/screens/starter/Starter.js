@@ -1,32 +1,42 @@
 import React from 'react';
-import {ImageBackground, ScrollView, TouchableOpacity} from 'react-native';
+import {Image, ScrollView, TouchableOpacity, useWindowDimensions} from 'react-native';
 import {Text, Button, View, Icon} from 'native-base';
 import Colors from '../../constants/Color';
 
 const Starter = ({navigation}) => {
+  const width = useWindowDimensions().width
+  const height = Math.round(width * 251/458);
   return (
-    <View style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
+    <View style={{display: 'flex', flex: 1}}>
       <View>
-        <ImageBackground
-          source={require('../../assets/pictures//boarding.jpg')}
-          style={{width: '100%', height: '100%'}}>
-          <View style={{alignItems: 'center'}}>
+        <Image
+          source={require('../../assets/pictures/start.png')}
+          style={{marginTop: 60, width: width, height: height}}/>
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
             <Text
               style={{
-                color: '#ffffff',
-                fontSize: 75,
-                fontWeight: '200',
-                fontFamily: 'GentiumBookBasic-Bold',
+                color: '#000000',
+                fontSize: 20,
+                fontWeight: '700',
+                top: '-100%',
+                marginLeft: 250,
+                color: Colors.themeColor
               }}>
               Voyage Nepal
             </Text>
-            <View padder style={{top: '33%'}}>
-              <View style={{marginTop: 120, alignItems: 'center'}}>
-                <Text
-                  style={{fontSize: 30, fontWeight: '700', color: '#ffffff', marginBottom: 10}}
-                  uppercase={false}>
-                  Let's Travel
-                </Text>
+            <Text
+              style={{
+                color: '#000000',
+                fontSize: 40,
+                fontWeight: 'bold',
+                marginTop: 90,
+                marginBottom: 20,
+                color: Colors.themeColor
+              }}>
+              Let's Travel
+            </Text>
+            <View padder>
+              <View style={{ alignItems: 'center'}}>
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate('Signin');
@@ -49,7 +59,7 @@ const Starter = ({navigation}) => {
               </View>
             </View>
           </View>
-        </ImageBackground>
+        
       </View>
     </View>
   );

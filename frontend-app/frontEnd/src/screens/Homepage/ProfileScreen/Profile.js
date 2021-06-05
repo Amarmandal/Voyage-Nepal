@@ -4,7 +4,7 @@ import {
   useWindowDimensions,
   ImageBackground,
   ScrollView,
-  StyleSheet
+  StyleSheet,
 } from 'react-native';
 import {
   View,
@@ -20,20 +20,15 @@ import {
 } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {
-  Divider,
-  Img,
-  List,
-  SignOut,
-  UserName,
-} from '../../../Components/Home/profile/Profile';
+import {SignOut} from '../../../Components/Home/profile/Profile';
 import LinearGradient from 'react-native-linear-gradient';
-import {useSelector} from 'react-redux'
+import {useSelector} from 'react-redux';
+import axios from 'axios';
 
 import Colors from '../../../constants/Color';
 
 const Profile = ({navigation}) => {
-  const state = useSelector(state => state.loginUser)
+  const state = useSelector(state => state.loginUser);
   const imageWidth = useWindowDimensions().width;
   const imageHeight = Math.round(imageWidth * (1105 / 2004));
   const [name, setName] = useState();
@@ -43,12 +38,28 @@ const Profile = ({navigation}) => {
     setName(userName);
   }, []);
 
+  const token = state.user.token
+
+  var config = {
+    method: 'get',
+    url: `http://10.0.2.2:8080/api/user/${state.user.userData.id}/signout`,
+    headers: {
+      'Authorization': `'Bearer' ${state.user.token}`
+  }
+
+  };
+
   const handleLogOut = async () => {
     await AsyncStorage.removeItem('token');
-    if ((await AsyncStorage.getItem('token')) === null) {
-      console.log('no Token');
-      navigation.navigate('Starter');
-    }
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        navigation.navigate('Signin')
+      })
+      .catch(function (error) {
+        console.log(error);
+        alert(error)
+      });
   };
 
   return (
@@ -61,6 +72,7 @@ const Profile = ({navigation}) => {
           alignItems: 'center',
           justifyContent: 'center',
           borderRadius: 20,
+          marginBottom: 25,
         }}>
         <View
           style={{
@@ -73,28 +85,42 @@ const Profile = ({navigation}) => {
           <Image
             source={require('../../../assets/pictures/profile.png')}
             style={{width: 150, height: 150, marginBottom: 10}}></Image>
-          <H1 style={{fontWeight: 'bold', color: '#ffffff'}}>{state.user.userData.name}</H1>
+          <H1 style={{fontWeight: 'bold', color: '#ffffff'}}>
+            {state.user.userData.name}
+          </H1>
           <Text note style={{color: '#000000'}}>
             {state.user.userData.email}
           </Text>
-          <Text style={{color: '#000000', fontSize: 20}}>{state.user.userData.city}</Text>
+          <Text style={{color: '#000000', fontSize: 20}}>
+            {state.user.userData.city}
+          </Text>
         </View>
       </LinearGradient>
-      <Divider />
 
-      <Content style = {{marginTop: 20, margin: 10}}>
-        <View
-          style={styles.listContainer}>
-          <Icon active type="Feather" name="user" style = {{marginRight: 15}} />
-          <Text style = {{fontSize: 19}}>About me</Text>
+      <Content style={{marginTop: 20, margin: 10}}>
+        <View style={styles.listContainer}>
+          <Icon active type="Feather" name="user" style={{marginRight: 15}} />
+          <Text style={{fontSize: 19}}>About me</Text>
           <Right>
-            <Icon type="Entypo" name="chevron-right" onPress = {() => navigation.navigate('About me')}/>
+            <Icon
+              type="Entypo"
+              name="chevron-right"
+              onPress={() => {
+                console.log(state);
+                navigation.navigate('About me')
+              
+              }}
+            />
           </Right>
         </View>
-        <View
-          style={styles.listContainer}>
-          <Icon active type = 'Ionicons' name="ios-key-outline" style = {{marginRight: 15}} />
-          <Text style = {{fontSize: 19}}>Change Password</Text>
+        <View style={styles.listContainer}>
+          <Icon
+            active
+            type="Ionicons"
+            name="ios-key-outline"
+            style={{marginRight: 15}}
+          />
+          <Text style={{fontSize: 19}}>Change Password</Text>
           <Right>
             <Icon type="Entypo" name="chevron-right" />
           </Right>
@@ -124,5 +150,5 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 3,
     marginBottom: 15,
-  }
-})
+  },
+});

@@ -1,7 +1,7 @@
 import {REGISTER_USER_SUCCESS, REGISTER_USER_FAIL} from '../action.types';
 import axios from 'axios';
 
-const BASE_URL = 'http://10.0.2.2:8080/api';
+const BASE_URL = 'https://voyage-nepal.uc.r.appspot.com/api';
 
 export const registerUser = userData => {
   const {name, email, password, gender, isAdmin, city, dob} = userData;
