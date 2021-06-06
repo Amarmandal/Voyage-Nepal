@@ -1,7 +1,7 @@
 import {LOGIN_USER_SUCCESS, LOGIN_USER_FAIL} from '../action.types';
 import axios from 'axios';
 
-const BASE_URL = 'http://10.0.2.2:8080/api';
+const BASE_URL = 'https://voyage-nepal.uc.r.appspot.com/api';
 
 export const loginUser = userData => {
   const {email, password} = userData;

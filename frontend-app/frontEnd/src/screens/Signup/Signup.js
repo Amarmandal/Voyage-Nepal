@@ -209,20 +209,7 @@ const Signup = ({navigation}, props) => {
       <Content padder>
         <ScrollView>
           <View style={{alignItems: 'center', margin: 12}}>
-            {/* <GifComponent />
-            <Title /> */}
-            {/* <ActionText text="CREATE AN ACCOUNT" /> */}
-            {/* <View
-              style={{
-                borderWidth: 3,
-                borderColor: 'black',
-                width: '80%',
-                marginBottom: 20,
-                opacity: 0.1,
-                borderRadius: 10,
-                shadowColor: 'black',
-                elevation: 8,
-              }}></View> */}
+            
               <Text style = {{alignSelf: 'flex-start', fontSize: 25, fontWeight: 'bold', marginBottom: 20, marginTop: 20}}>Create an Account</Text>
             <Form>
               <FormInput

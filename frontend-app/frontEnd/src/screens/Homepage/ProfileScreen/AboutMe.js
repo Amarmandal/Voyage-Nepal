@@ -1,17 +1,84 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, Image} from 'react-native';
-import {Container, Content, Item, Input, H2, Icon, Button, H1} from 'native-base';
+import {
+  Container,
+  Content,
+  Item,
+  Input,
+  H2,
+  Icon,
+  Button,
+  H1,
+} from 'native-base';
 import Colors from '../../../constants/Color';
 import {useSelector} from 'react-redux';
+import axios from 'axios';
+var FormData = require('form-data');
+import * as ImagePicker from 'react-native-image-picker';
+
+var data = new FormData();
 
 const AboutMe = ({navigation}) => {
   const state = useSelector(state => state.loginUser);
+  const [filePath, setFilePath] = useState({})
+
+  const selectFile = async () => {
+    ImagePicker.launchImageLibrary({
+      mediaType: 'photo',
+      maxHeight: 200,
+      maxWidth: 200,
+    }, (response) => {
+      console.log('Response = ', response);
+      data.append('photo', {
+        uri: response.assets[0].uri,
+        type: response.assets[0].type,
+        name: response.assets[0].fileName,
+        size: response.assets[0].fileSize
+      });
+      var config = {
+        method: 'post',
+        url: `https://voyage-nepal.uc.r.appspot.com/api/upload/photo/${state.user.userData.id}`,
+        headers: { 
+          'Authorization': `Bearer ${state.user.token}`, 
+          'Accept': 'application/json'
+        },
+        data : data
+      };
+
+      axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        console.log('success!');
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log(
+          'User tapped custom button: ',
+          response.customButton
+        );
+        alert(response.customButton);
+      } else {
+        let source = response;
+        // You can also display the image using data:
+        // let source = {
+        //   uri: 'data:image/jpeg;base64,' + response.data
+        // };
+        setFilePath(source);
+      }
+    });
+  
+  };
+
   return (
     <Container style={{backgroundColor: '#ffffff'}}>
-      <Button
-        transparent
-        onPress={() => navigation.goBack()}
-        large>
+      <Button transparent onPress={() => navigation.goBack()} large>
         <Icon name="arrow-back" style={{color: '#52c0b4', fontSize: 25}} />
       </Button>
       <View
@@ -28,9 +95,15 @@ const AboutMe = ({navigation}) => {
         />
         <View>
           <H2>Profile</H2>
-          <Text style={{color: Colors.warning}}>Change Picture</Text>
+          <Text style={{color: Colors.warning}} onPress={() => selectFile()}>
+            Change Picture
+          </Text>
         </View>
       </View>
+      <Image
+          source={{uri: filePath.uri}}
+        />
+      
       <Content style={{margin: 20, marginLeft: 40}}>
         <H1 style={{fontSize: 23, fontWeight: '900', color: '#000000'}}>
           Name
@@ -38,7 +111,7 @@ const AboutMe = ({navigation}) => {
         <Item style={{marginBottom: 25}}>
           <Input
             disabled
-            placeholder={state.user.userData.name}
+            // placeholder={state.user.userData.name}
             style={{fontSize: 22, fontWeight: '600'}}
           />
         </Item>
@@ -48,7 +121,7 @@ const AboutMe = ({navigation}) => {
         <Item style={{marginBottom: 25}}>
           <Input
             disabled
-            placeholder={state.user.userData.email}
+            // placeholder={state.user.userData.email}
             style={{fontSize: 22, fontWeight: '600'}}
           />
         </Item>
@@ -68,7 +141,7 @@ const AboutMe = ({navigation}) => {
         <Item style={{marginBottom: 25}}>
           <Input
             disabled
-            placeholder={state.user.userData.city}
+            // placeholder={state.user.userData.city}
             style={{fontSize: 22, fontWeight: '600'}}
           />
         </Item>
@@ -78,7 +151,7 @@ const AboutMe = ({navigation}) => {
         <Item style={{marginBottom: 35}}>
           <Input
             disabled
-            placeholder={state.user.userData.gender}
+            // placeholder={state.user.userData.gender}
             style={{fontSize: 22, fontWeight: '600'}}
           />
         </Item>

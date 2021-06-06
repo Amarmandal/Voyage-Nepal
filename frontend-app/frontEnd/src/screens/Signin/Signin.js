@@ -1,9 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Image, ScrollView, Modal, ActivityIndicator} from 'react-native';
 import {Container, Content, View, Text} from 'native-base';
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import FormData from '../../utils/formData';
 
 import {
   FormInput,
@@ -102,14 +100,18 @@ const Signin = ({navigation}) => {
     if (data.email !== '' && data.password !== '') {
       dispatch(loginUser(signinUser)).then(result => {
         if (result.token) {
+          setData({...data, password: '', isValidEmail: true, isValidPassword: true})
+          setError('')
           storeData(result);
           navigation.navigate('Home');
           
-        } else if(result.response.data.error) {
+        } 
+        else if(result.response.data.error) {
           // console.log(result.response.data.error);
           console.log(result.response.data.error);
           setError(result.response.data.error)
-        } else {
+        } 
+        else {
           alert('Something went wrong')
         }
       });
@@ -199,6 +201,7 @@ const Signin = ({navigation}) => {
             <ActionButton
               mt={80}
               buttonName="Continue"
+              // home={() => submitValues()}
               home={() => submitValues()}
             />
             <Account
