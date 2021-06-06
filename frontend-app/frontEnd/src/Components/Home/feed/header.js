@@ -10,9 +10,10 @@ const header=(props) =>{
         <SafeAreaView >
         <View style={styles.container}>
                 <View style={styles.headerText}>
-                <Text style={styles.userName}>Hello, {state.user.userData.name}</Text>
+                <Text style={styles.userName} onPress = {console.log(state.user)} >Hello, {state.user.userData.name}</Text>
                 <Text style={styles.Greetings}>Good Morning</Text>
             </View>
+                
                <Image source={require('../../../assets/pictures/face.jpg')} style={styles.userImage} />
         </View>
 

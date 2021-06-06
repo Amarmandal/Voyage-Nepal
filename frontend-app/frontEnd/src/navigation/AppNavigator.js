@@ -10,6 +10,7 @@ import Signin from '../screens/Signin/Signin';
 import Signup from '../screens/Signup/Signup';
 import Feed from '../screens/Homepage/feed/Feed';
 import Explore from '../screens/Homepage/explore/Explore';
+import Details from '../screens/Homepage/explore/Details';
 import HotelScreen from '../screens/Homepage/hotelScreen/HotelScreen';
 import Map from '../screens/Homepage/hotelScreen/Map';
 import Profile from '../screens/Homepage/ProfileScreen/Profile';
@@ -21,6 +22,7 @@ import Email from '../screens/Signin/forgotPAssword/Email';
 import ResetPassword from '../screens/Signin/forgotPAssword/ResetPassword';
 import Colors from '../constants/Color';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ChangePassword from '../screens/Homepage/ProfileScreen/ChangePassword';
 
 const activeColor = '#CF3838';
 
@@ -28,6 +30,7 @@ const MainStack = createStackNavigator();
 const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Maps = createBottomTabNavigator();
+const Explores = createBottomTabNavigator();
 const AccountStack = createBottomTabNavigator();
 
 const Home = () => {
@@ -60,7 +63,7 @@ const Home = () => {
       />
       <Tab.Screen
         name="Explore"
-        component={Explore}
+        component={ExploreScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <Icon
@@ -104,6 +107,15 @@ const Home = () => {
   );
 };
 
+function ExploreScreen() {
+  return(
+    <Explores.Navigator>
+      <Explores.Screen name = 'Explore' component = {Explore} />
+      <Explores.Screen name = 'Details' component = {Details} />
+    </Explores.Navigator>
+  )
+}
+
 function HotelMapScreen() {
   return (
     <Maps.Navigator>
@@ -118,7 +130,7 @@ function AccountScreen(){
     <AccountStack.Navigator>
       <AccountStack.Screen name = 'Account' component = {Profile} />
       <AccountStack.Screen name = 'About me' component = {AboutMe} />
-      {/* <AccountStack.Screen /> */}
+      <AccountStack.Screen name = 'Change Password' component = {ChangePassword} />
     </AccountStack.Navigator>
   )
 }
