@@ -19,6 +19,17 @@ exports.getUserById = async (req, res, next, userId) => {
   }
 };
 
+exports.getUserDetails = async (req, res) => {
+  const currentUser = req.userProfile;
+  if(currentUser) {
+    currentUser.salt = undefined;
+    currentUser.hashPassword = undefined;
+    return res.status(200).json(currentUser);
+  }
+
+  return res.status(404).json({error: 'Cannot fetch user details'});
+}
+
 //only admin
 exports.removeUserById = async (req, res) => {
   try {
