@@ -78,6 +78,7 @@ const OTPScreen = ({navigation}) => {
 
   const resendOtp = () => {
     const userEmail = state.email
+    console.log(state);
     dispatch(getUserEmail(userEmail))
     .then(alert('Please Check email for otp'))
   }

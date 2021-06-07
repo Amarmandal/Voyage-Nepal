@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView,Text, ScrollView} from 'react-native';
 import {HelloUser} from '../../../Components/Home/feed/Feed';
-import {useSelector} from 'react-redux';
 import Header from '../../../Components/Home/feed/header'
 import Popular from '../../../Components/Home/feed/Popular';
 import SearchContainer from '../../../Components/Home/feed/searchContainer';
@@ -11,9 +10,39 @@ import SearchContainer from '../../../Components/Home/feed/searchContainer';
 import Geocoder from 'react-native-geocoding';
 // import RNLocation from 'react-native-location';
 import {Button} from 'native-base';
+import api from '../../../services/ApiServices'
+import {useDispatch, useSelector} from 'react-redux';
+import {userDetails} from '../../../redux/action/Login/userDetails';
 
 const Feed = () => {
+
+  useEffect(() => {
+    fetchDetails()
+  }, [])
   const state = useSelector(state => state.loginUser);
+
+  const dispatch = useDispatch();
+
+  const fetchDetails = () => {
+    var config = {
+      method: 'get',
+      url: `/user/user-details/${state.user.userData.id}`,
+      headers: {
+        Authorization: `Bearer ${state.user.token}`,
+        Cookie: `token=${state.user.token}`,
+      },
+    };
+
+    api(config)
+    .then(res => {
+      console.log(res.data);
+      dispatch(userDetails(res.data))
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  };
+
 
   return (
     <SafeAreaView style={{flex:1,backgroundColor:'white'}}>
