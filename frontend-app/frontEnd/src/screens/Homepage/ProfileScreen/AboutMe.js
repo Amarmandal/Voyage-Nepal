@@ -13,6 +13,7 @@ import {
 import Colors from '../../../constants/Color';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
+import api from '../../../services/ApiServices'
 var FormData = require('form-data');
 import * as ImagePicker from 'react-native-image-picker';
 
@@ -37,7 +38,7 @@ const AboutMe = ({navigation}) => {
       });
       var config = {
         method: 'post',
-        url: `https://voyage-nepal.uc.r.appspot.com/api/upload/photo/${state.user.userData.id}`,
+        url: `/upload/photo/${state.user.userData.id}`,
         headers: { 
           'Authorization': `Bearer ${state.user.token}`, 
           'Accept': 'application/json'
@@ -45,7 +46,7 @@ const AboutMe = ({navigation}) => {
         data : data
       };
 
-      axios(config)
+      api(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         console.log('success!');

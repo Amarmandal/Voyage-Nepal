@@ -24,6 +24,7 @@ import {SignOut} from '../../../Components/Home/profile/Profile';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
+import api from '../../../services/ApiServices'
 
 import Colors from '../../../constants/Color';
 
@@ -42,7 +43,7 @@ const Profile = ({navigation}) => {
 
   var config = {
     method: 'get',
-    url: `https://voyage-nepal.uc.r.appspot.com/api/user/${state.user.userData.id}/signout`,
+    url: `/user/${state.user.userData.id}/signout`,
     headers: {
       'Authorization': `'Bearer' ${state.user.token}`
   }
@@ -51,7 +52,7 @@ const Profile = ({navigation}) => {
 
   const handleLogOut = async () => {
     await AsyncStorage.removeItem('token');
-    axios(config)
+    api(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         navigation.navigate('Signin')

@@ -4,7 +4,8 @@ import {Button, Toast, Container} from 'native-base'
 import styles from '../../Signin/forgotPAssword/OTP.styles'
 import {FormInput} from '../../../Components/FormComponents/FormCompponents';
 import GoBack from '../../../Components/Signin/GoBack';
-import axios from 'axios'
+
+import api from '../../../services/ApiServices'
 import {useSelector} from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
 
@@ -99,7 +100,7 @@ const ChangePassword = () => {
     
     var config = {
       method: 'put',
-      url: `https://voyage-nepal.uc.r.appspot.com/api/user/${state.user.userData.id}/change-password`,
+      url: `/user/${state.user.userData.id}/change-password`,
       headers: { 
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${state.user.token}`, 
@@ -109,7 +110,7 @@ const ChangePassword = () => {
     };
     
     if(data.newPassword === data.confirmNewPassword && data.newPassword !== '' && data.currentPassword !== ''){
-      await axios(config)
+      await api(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data.success));
         Toast.show({
