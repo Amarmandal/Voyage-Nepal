@@ -12,7 +12,6 @@ import {
 } from 'native-base';
 import Colors from '../../../constants/Color';
 import {useSelector} from 'react-redux';
-import axios from 'axios';
 import api from '../../../services/ApiServices'
 var FormData = require('form-data');
 import * as ImagePicker from 'react-native-image-picker';
@@ -34,14 +33,14 @@ const AboutMe = ({navigation}) => {
         uri: response.assets[0].uri,
         type: response.assets[0].type,
         name: response.assets[0].fileName,
-        size: response.assets[0].fileSize
       });
       var config = {
         method: 'post',
         url: `/upload/photo/${state.user.userData.id}`,
         headers: { 
           'Authorization': `Bearer ${state.user.token}`, 
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Cookie': `token=${state.user.token}`,
         },
         data : data
       };

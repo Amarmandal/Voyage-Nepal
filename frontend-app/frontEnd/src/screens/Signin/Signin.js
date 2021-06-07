@@ -25,9 +25,12 @@ import {loginUser} from '../../redux/action/Login/loginUser';
 
 import {useDispatch, useSelector} from 'react-redux';
 
-const Signin = ({navigation}) => {
-  const state = useSelector(state => state.loginUser);
+import api from '../../services/ApiServices';
 
+const Signin = ({navigation}) => {
+  
+  const state = useSelector(state => state.loginUser);
+  
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -90,7 +93,6 @@ const Signin = ({navigation}) => {
     }
   };
 
-
   var signinUser = {
     email: data.email,
     password: data.password,
@@ -100,19 +102,21 @@ const Signin = ({navigation}) => {
     if (data.email !== '' && data.password !== '') {
       dispatch(loginUser(signinUser)).then(result => {
         if (result.token) {
-          setData({...data, password: '', isValidEmail: true, isValidPassword: true})
-          setError('')
+          setData({
+            ...data,
+            password: '',
+            isValidEmail: true,
+            isValidPassword: true,
+          });
+          setError('');
           storeData(result);
           navigation.navigate('Home');
-          
-        } 
-        else if(result.response.data.error) {
+        } else if (result.response.data.error) {
           // console.log(result.response.data.error);
           console.log(result.response.data.error);
-          setError(result.response.data.error)
-        } 
-        else {
-          alert('Something went wrong')
+          setError(result.response.data.error);
+        } else {
+          alert('Something went wrong');
         }
       });
     } else {
@@ -140,7 +144,7 @@ const Signin = ({navigation}) => {
               }}>
               Get Started
             </Text>
-            
+
             <View style={{flexDirection: 'row'}}>
               <SocialMediaLogin iconName="google" bgcolor={Colors.google} />
               <SocialMediaLogin iconName="facebook" bgcolor={Colors.facebook} />

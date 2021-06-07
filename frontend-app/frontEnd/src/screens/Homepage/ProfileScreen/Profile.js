@@ -2,8 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {
   Image,
   useWindowDimensions,
-  ImageBackground,
-  ScrollView,
   StyleSheet,
 } from 'react-native';
 import {
@@ -14,8 +12,6 @@ import {
   Button,
   H1,
   Content,
-  CardItem,
-  Card,
   Right,
 } from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -23,18 +19,23 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SignOut} from '../../../Components/Home/profile/Profile';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
-import axios from 'axios';
 import api from '../../../services/ApiServices'
 
 import Colors from '../../../constants/Color';
 
 const Profile = ({navigation}) => {
   const state = useSelector(state => state.loginUser);
+  const detail = useSelector(state => state.userDetails)
+
   const imageWidth = useWindowDimensions().width;
   const imageHeight = Math.round(imageWidth * (1105 / 2004));
   const [name, setName] = useState();
 
   useEffect(async () => {
+    console.log(detail);
+    if(detail.userDetail.photo){
+      console.log(detail.userDetail);
+    }
     const userName = await AsyncStorage.getItem('userData');
     setName(userName);
   }, []);
@@ -63,6 +64,11 @@ const Profile = ({navigation}) => {
       });
   };
 
+  const source = {
+    uri:
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmBG1Bl_akIk0oU-pFMLCCH8m-q2TGIU9fKA&usqp=CAU',
+  };
+
   return (
     <View style={{flex: 1, backgroundColor: '#ffffff', padding: 20}}>
       <LinearGradient
@@ -83,9 +89,10 @@ const Profile = ({navigation}) => {
             marginLeft: 25,
             marginRight: 25,
           }}>
-          <Image
-            source={require('../../../assets/pictures/profile.png')}
-            style={{width: 150, height: 150, marginBottom: 10}}></Image>
+            {detail.userDetail.photo ? <Image source={{uri: detail.userDetail.photo}} style={{width: 150, height: 150, marginBottom: 10}} /> : <Image
+            source={require('../../../assets/pictures/user.png')}
+            style={{width: 130, height: 130, marginBottom: 10}}></Image>}
+          
           <H1 style={{fontWeight: 'bold', color: '#ffffff'}}>
             {state.user.userData.name}
           </H1>
