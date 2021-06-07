@@ -62,7 +62,7 @@ const Category = ({navigation}) => {
         </CardItem>
         <MapView
         provider={PROVIDER_GOOGLE}
-        style = {{height: 400, width: 500, justifyContent: 'flex-end', alignItems: 'center'}}
+        style = {{height: 455, width: 500, justifyContent: 'flex-end', alignItems: 'center'}}
         region={{
           latitude: 28.200460390329287,
           longitude: 84.00785545598033,

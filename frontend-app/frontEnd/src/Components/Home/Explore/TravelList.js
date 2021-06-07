@@ -9,14 +9,18 @@ import {
   Dimensions,
   FlatList,
   SafeAreaView,
+  Pressable,
+  TouchableOpacity,
 } from 'react-native';
 import SearchContainer from '../feed/searchContainer';
 import Colors from '../../../constants/Color';
 import places from '../../../constants/places';
 const {width} = Dimensions.get('window');
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {useNavigation} from '@react-navigation/native';
 
-const TravelList = ({navigation}) => {
+const TravelList = props => {
+  const navigation = useNavigation();
   const Card = ({place}) => {
     return (
       <View style={styles.card}>
@@ -51,12 +55,25 @@ const TravelList = ({navigation}) => {
 
         <View>
           <Text style={styles.activityText}>Hiking</Text>
+
           <View>
             <FlatList
               horizontal
               showsHorizontalScrollIndicator={false}
               data={places}
-              renderItem={({item}) => <Card place={item} />}
+              renderItem={({item}) => (
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate('Details', {
+                      image: item.images,
+                      location: item.location,
+                      name: item.name,
+                      details: item.details
+                    })
+                  }>
+                  <Card place={item} />
+                </Pressable>
+              )}
             />
           </View>
         </View>
@@ -104,7 +121,7 @@ const TravelList = ({navigation}) => {
             />
           </View>
         </View>
-        <View style = {{marginBottom: 100}}>
+        <View style={{marginBottom: 100}}>
           <Text style={styles.activityText}>Religious</Text>
           <View>
             <FlatList

@@ -111,8 +111,8 @@ const AboutMe = ({navigation}) => {
         <Item style={{marginBottom: 25}}>
           <Input
             disabled
-            // placeholder={state.user.userData.name}
-            style={{fontSize: 22, fontWeight: '600'}}
+            placeholder={state.user.userData.name}
+            style={{fontSize: 20, fontWeight: '600'}}
           />
         </Item>
         <H1 style={{fontSize: 23, fontWeight: '900', color: '#000000'}}>
@@ -121,8 +121,8 @@ const AboutMe = ({navigation}) => {
         <Item style={{marginBottom: 25}}>
           <Input
             disabled
-            // placeholder={state.user.userData.email}
-            style={{fontSize: 22, fontWeight: '600'}}
+            placeholder={state.user.userData.email}
+            style={{fontSize: 20, fontWeight: '600'}}
           />
         </Item>
         <H1 style={{fontSize: 23, fontWeight: '900', color: '#000000'}}>
@@ -132,7 +132,7 @@ const AboutMe = ({navigation}) => {
           <Input
             disabled
             placeholder="1999-02-28"
-            style={{fontSize: 22, fontWeight: '600'}}
+            style={{fontSize: 20, fontWeight: '600'}}
           />
         </Item>
         <H1 style={{fontSize: 23, fontWeight: '900', color: '#000000'}}>
@@ -141,8 +141,8 @@ const AboutMe = ({navigation}) => {
         <Item style={{marginBottom: 25}}>
           <Input
             disabled
-            // placeholder={state.user.userData.city}
-            style={{fontSize: 22, fontWeight: '600'}}
+            placeholder={state.user.userData.city}
+            style={{fontSize: 20, fontWeight: '600'}}
           />
         </Item>
         <H1 style={{fontSize: 23, fontWeight: '900', color: '#000000'}}>
@@ -151,8 +151,8 @@ const AboutMe = ({navigation}) => {
         <Item style={{marginBottom: 35}}>
           <Input
             disabled
-            // placeholder={state.user.userData.gender}
-            style={{fontSize: 22, fontWeight: '600'}}
+            placeholder={state.user.userData.gender}
+            style={{fontSize: 20, fontWeight: '600'}}
           />
         </Item>
       </Content>

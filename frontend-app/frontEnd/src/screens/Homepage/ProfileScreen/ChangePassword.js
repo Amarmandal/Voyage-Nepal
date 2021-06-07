@@ -1,12 +1,206 @@
-import React from 'react'
-import { View, Text } from 'react-native'
+import React, {useState} from 'react';
+import {View, Text} from 'react-native';
+import {Button, Toast, Container} from 'native-base'
+import styles from '../../Signin/forgotPAssword/OTP.styles'
+import {FormInput} from '../../../Components/FormComponents/FormCompponents';
+import GoBack from '../../../Components/Signin/GoBack';
+import axios from 'axios'
+import {useSelector} from 'react-redux'
+import { useNavigation } from '@react-navigation/native';
 
 const ChangePassword = () => {
-    return (
-        <View>
-            <Text>Change Password here</Text>
-        </View>
-    )
-}
+  const navigation = useNavigation();
+  
+  const state = useSelector(state => state.loginUser)
+  const [hideCurrentPassword, setHideCurrentPassword] = useState(true);
+  const [hideNewPassword, setHideNewPassword] = useState(true);
+  const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
+  const [passwordError, setPasswordError] = useState('')
+  const [showToast, setShowToast] = useState(false)
+  const [data, setData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmNewPassword: '',
 
-export default ChangePassword
+    isValidCurrentPassword: true,
+    isValidNewPassword: true,
+    isValidConfirmNewPassword: true,
+  });
+
+  const getPassword = _password => {
+    setData({
+      ...data,
+      currentPassword: _password,
+      isValidCurrentPassword: true,
+    });
+  };
+
+  const getNewPassword = _password => {
+    setData({
+      ...data,
+      newPassword: _password,
+      isValidNewPassword: true,
+    });
+  };
+
+  const getConfirmPassword = _confirmPassword => {
+    setData({
+      ...data,
+      confirmNewPassword: _confirmPassword,
+      isValidConfirmNewPassword: true,
+    });
+  };
+
+  const handleValidCurrentPassword = () => {
+    if (data.currentPassword.length === 0) {
+      setData({
+        ...data,
+        isValidCurrentPassword: false,
+      });
+    } 
+  };
+
+  const handleValidNewPassword = () => {
+    if (data.newPassword.length >= 6) {
+      setData({
+        ...data,
+        isValidNewPassword: true,
+      });
+    } else if(data.newPassword.length === 0) {
+      setPasswordError('Required')
+    } 
+    else {
+      setData({
+        ...data,
+        isValidNewPassword: false,
+      });
+    }
+  };
+
+  const handleValidNewConfirmPassword = () => {
+    if (data.newPassword === data.confirmNewPassword) {
+      setData({
+        ...data,
+        isValidConfirmNewPassword: true,
+      });
+    } else {
+      setData({
+        ...data,
+        isValidConfirmNewPassword: false,
+      });
+    }
+  };
+
+  const handleSubmit = async() => {
+    var info = JSON.stringify({
+      "currentPassword": data.currentPassword,
+      "newPassword": data.newPassword
+    });
+    
+    var config = {
+      method: 'put',
+      url: `https://voyage-nepal.uc.r.appspot.com/api/user/${state.user.userData.id}/change-password`,
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${state.user.token}`, 
+        'Cookie': `token=${state.user.token}`
+      },
+      data : info
+    };
+    
+    if(data.newPassword === data.confirmNewPassword && data.newPassword !== '' && data.currentPassword !== ''){
+      await axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data.success));
+        Toast.show({
+          text: response.data.success,
+          buttonText: "Okay",
+          type: "success",
+          duration: 5000
+        })
+      })
+      .catch(function (error) {
+        console.log(error.response.data.error);
+        Toast.show({
+          text: error.response.data.error,
+          buttonText: "Okay",
+          type: "danger",
+          duration: 5000
+        })
+      });
+    }
+    
+  }
+
+  return (
+    <View style={{backgroundColor: '#ffffff', flex: 1}}>
+      <GoBack goBack={() => navigation.goBack()} />
+      <View style={{margin: 20}}>
+        <FormInput
+          icon="key"
+          placeholder="Current Password"
+          value={data.currentPassword}
+          onChangeText={getPassword}
+          onBlur={() => handleValidCurrentPassword()}
+          rightIcon={hideCurrentPassword ? 'eye-off-outline' : 'eye-outline'}
+          showPassword={() => setHideCurrentPassword(!hideCurrentPassword)}
+          secureText={hideCurrentPassword ? true : false}
+        />
+        {data.isValidCurrentPassword ? null : (
+          <Text
+            style={{
+              color: '#FF0000',
+              fontSize: 14,
+              marginBottom: 10,
+              alignSelf: 'flex-end',
+            }}>
+            Required!
+          </Text>
+        )}
+        <FormInput
+          icon="key"
+          placeholder="New Password"
+          value={data.newPassword}
+          onChangeText={getNewPassword}
+          onBlur={() => handleValidNewPassword()}
+          rightIcon={hideNewPassword ? 'eye-off-outline' : 'eye-outline'}
+          showPassword={() => setHideNewPassword(!hideConfirmPassword)}
+          secureText={hideNewPassword ? true : false}
+        />
+        {data.isValidNewPassword ? null : (
+          <Text style={{color: '#FF0000', fontSize: 14, marginBottom: 10}}>
+            Password must be 6 characters long!
+          </Text>
+        )}
+        {passwordError === '' ? null : (
+          <Text style={{color: '#FF0000', fontSize: 14, marginBottom: 10}}>
+            {passwordError}
+          </Text>
+        )} 
+        <FormInput
+          icon="key"
+          placeholder="Confirm New Password"
+          value={data.confirmNewPassword}
+          onChangeText={getConfirmPassword}
+          onBlur={() => handleValidNewConfirmPassword()}
+          rightIcon={hideConfirmPassword ? 'eye-off-outline' : 'eye-outline'}
+          showPassword={() => setHideConfirmPassword(!hideConfirmPassword)}
+          secureText={hideConfirmPassword ? true : false}
+        />
+        {data.isValidConfirmNewPassword ? null : (
+          <Text style={{color: '#FF0000', fontSize: 14, marginBottom: 10}}>
+            New Password and confirm password doesn't match
+          </Text>
+        )}
+        <Button
+          onPress={() => handleSubmit()}
+          rounded
+          style={styles.nextButton}>
+          <Text style={styles.nextButtonText}>Submit</Text>
+        </Button>
+      </View>
+    </View>
+  );
+};
+
+export default ChangePassword;

@@ -42,7 +42,7 @@ const Profile = ({navigation}) => {
 
   var config = {
     method: 'get',
-    url: `http://10.0.2.2:8080/api/user/${state.user.userData.id}/signout`,
+    url: `https://voyage-nepal.uc.r.appspot.com/api/user/${state.user.userData.id}/signout`,
     headers: {
       'Authorization': `'Bearer' ${state.user.token}`
   }
@@ -106,7 +106,6 @@ const Profile = ({navigation}) => {
               type="Entypo"
               name="chevron-right"
               onPress={() => {
-                console.log(state);
                 navigation.navigate('About me')
               
               }}
@@ -122,7 +121,29 @@ const Profile = ({navigation}) => {
           />
           <Text style={{fontSize: 19}}>Change Password</Text>
           <Right>
-            <Icon type="Entypo" name="chevron-right" />
+            <Icon type="Entypo" name="chevron-right" 
+            onPress={() => {
+              navigation.navigate('Change Password')
+            
+            }}
+            />
+          </Right>
+        </View>
+        <View style={styles.listContainer}>
+          <Icon
+            active
+            type="Ionicons"
+            name="settings-outline"
+            style={{marginRight: 15}}
+          />
+          <Text style={{fontSize: 19}}>Settings</Text>
+          <Right>
+            <Icon type="Entypo" name="chevron-right" 
+            onPress={() => {
+              navigation.navigate('Change Password')
+            
+            }}
+            />
           </Right>
         </View>
         <SignOut signOut={() => handleLogOut()} />

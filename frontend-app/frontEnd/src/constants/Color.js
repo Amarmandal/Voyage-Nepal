@@ -16,7 +16,8 @@ const Colors = {
     s_light: '#7effff',
     s_dark: '#00a6ab',
     warning: '#dfa00a',
-    dimthemeColor:'#68e8ad'
+    dimthemeColor:'#68e8ad',
+    white: '#ffffff'
 
 }
 
