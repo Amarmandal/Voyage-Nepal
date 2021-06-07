@@ -89,7 +89,7 @@ const Profile = ({navigation}) => {
             marginLeft: 25,
             marginRight: 25,
           }}>
-            {detail.userDetail.photo ? <Image source={{uri: detail.userDetail.photo}} style={{width: 150, height: 150, marginBottom: 10}} /> : <Image
+            {detail.userDetail.profileImgURL ? <Image source={{uri: detail.userDetail.profileImgURL}} style={{width: 150, height: 150, marginBottom: 10, borderRadius: 80}} /> : <Image
             source={require('../../../assets/pictures/user.png')}
             style={{width: 130, height: 130, marginBottom: 10}}></Image>}
           
