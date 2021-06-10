@@ -1,25 +1,21 @@
 import React, {useEffect} from 'react';
 import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import TravelList from '../../../Components/Home/Explore/TravelList';
-import axios from 'axios';
-
-// MaterialIcons.loadFont();
+import api from '../../../services/ApiServices'
+import {useSelector, useDispatch} from 'react-redux'
+import {Category} from '../../../redux/action/Data/Category'
 
 const Explore = ({navigation}, props) => {
-  
-  // useEffect(() => {
-  //   var config = {
-  //     method: 'get',
-  //     url: 'http://10.0.2.2:8080/api/categories',
-  //     headers: {},
-  //   };
-  //   axios(config)
-  //     .then(function (response) {
-  //       console.log(JSON.stringify(response.data));
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
+
+  const state = useSelector(state => state.loginUser)
+  const category = useSelector(state => state.category)
+
+  const dispatch = useDispatch()
+
+ 
+  // useEffect(async() => {
+  //   // await fetchCategory()
+  //   console.log(category);
   // }, []);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>

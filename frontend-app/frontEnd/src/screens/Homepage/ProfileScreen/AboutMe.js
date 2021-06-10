@@ -9,12 +9,14 @@ import {
   Icon,
   Button,
   H1,
+  Toast
 } from 'native-base';
 import Colors from '../../../constants/Color';
 import {useSelector} from 'react-redux';
 import api from '../../../services/ApiServices'
 var FormData = require('form-data');
 import * as ImagePicker from 'react-native-image-picker';
+import moment from 'moment'
 
 var data = new FormData();
 
@@ -61,25 +63,46 @@ const AboutMe = ({navigation}) => {
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         console.log('success!');
+        Toast.show({
+          text: response.data,
+          buttonText: "Okay",
+          type: "success",
+          duration: 5000
+        })
       })
       .catch(function (error) {
         console.log(error);
         console.log('upload error');
+        Toast.show({
+          text: 'Something went wrong',
+          buttonText: "Okay",
+          type: "success",
+          duration: 5000
+        })
       });
       } else if(detail.userDetail.profileImgURL) {
         api(config1)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         console.log('update success!');
+        Toast.show({
+          text: response.data,
+          buttonText: "Okay",
+          type: "success",
+          duration: 5000
+        })
       })
       .catch(function (error) {
         console.log(error);
         console.log('update error');
+        Toast.show({
+          text: 'Something went wrong',
+          buttonText: "Okay",
+          type: "warning",
+          duration: 5000
+        })
       });
       }
-
-      
-      
 
       if (response.didCancel) {
         console.log('User cancelled image picker');
@@ -102,6 +125,15 @@ const AboutMe = ({navigation}) => {
     });
   
   };
+
+  var options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  };
+
+  var date = new Date(detail.userDetail.DOB)
+  var dob = moment(date).utc().format('DD/MM/YYYY')
 
   return (
     <Container style={{backgroundColor: '#ffffff'}}>
@@ -157,7 +189,7 @@ const AboutMe = ({navigation}) => {
         <Item style={{marginBottom: 25}}>
           <Input
             disabled
-            placeholder="1999-02-28"
+            placeholder={dob}
             style={{fontSize: 20, fontWeight: '600'}}
           />
         </Item>

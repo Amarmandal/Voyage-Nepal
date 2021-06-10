@@ -31,7 +31,6 @@ export const GenderCheckbox = (props) => {
   const onBtnClick = (item) => {
     let updatedState = isChecked.map((isCheckedItem) => {
       if (isCheckedItem.id === item.id) {
-        // props.formData.addData({Gender: isCheckedItem.name});
         props.setGender(isCheckedItem);
 
         return {...isCheckedItem, selected: true};

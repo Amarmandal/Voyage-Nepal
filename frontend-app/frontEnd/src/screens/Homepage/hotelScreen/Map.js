@@ -4,18 +4,36 @@ import {Icon, Button, CardItem, Body, Left, Thumbnail, Text, H3} from 'native-ba
 import Geolocation from 'react-native-geolocation-service';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import Colors from '../../../constants/Color'
+import Geocoder from 'react-native-geocoding';
+import MapViewDirections from 'react-native-maps-directions';
+
 
 const Category = ({navigation}) => {
   const [position, setPosition] = useState({
-    latitude: 28.200460390329287,
-    longitude: 84.00785545598033,
+    latitude: 27.7172,
+    longitude: 85.3240,
     latitudeDelta: 0.05,
     longitudeDelta: 0.05,
   });
+  const [pos, setPos] = useState({
+    latitude: 27.7172,
+    longitude: 85.3240,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  })
   useEffect(async () => {
+    Geocoder.init("AIzaSyDziZCJwC1dqy7vRGhVEyhWbnuSc0pTeAI");
+    await Geocoder.from('Kathmandu')
+    .then(json => {
+			var location = json.results[0].geometry.location;
+			// console.log(location.lat);
+      setPos({...pos, latitude: location.lat, longitude: location.lng})
+		})
+		.catch(error => console.warn(error));
+
     Geolocation.getCurrentPosition(
       position => {
-        console.log(position);
+        // console.log(position);
         const longitude = position.coords.longitude;
         const latitude = position.coords.latitude;
         setPosition({...position, longitude: longitude, latitude: latitude});
@@ -63,26 +81,29 @@ const Category = ({navigation}) => {
         <MapView
         provider={PROVIDER_GOOGLE}
         style = {{height: 455, width: 500, justifyContent: 'flex-end', alignItems: 'center'}}
-        region={{
-          latitude: 28.200460390329287,
-          longitude: 84.00785545598033,
-          latitudeDelta: 0.05,
-          longitudeDelta: 0.05,
-        }}
-        onRegionChangeComplete={region => setPosition(region)}>
+        region={pos}
+        >
         <Marker
           coordinate={{
-            latitude: 28.200460390329287,
-            longitude: 84.00785545598033,
+            latitude: pos.latitude,
+            longitude: pos.longitude,
           }}
           title={'Pokhara'}></Marker>
+        <Marker
+          coordinate={{
+            latitude: position.latitude,
+            longitude: position.longitude,
+          }}
+          title={'Kathmandu'}
+          ></Marker>
+        <MapViewDirections
+        origin={position}
+        destination={pos}
+        apikey="AIzaSyDziZCJwC1dqy7vRGhVEyhWbnuSc0pTeAI"
+        />
       </MapView>
       </View>
     </View>
-
-    // <View>
-    //   <Text>HEllo</Text>
-    // </View>
   );
 };
 

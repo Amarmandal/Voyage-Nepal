@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -18,9 +18,17 @@ import places from '../../../constants/places';
 const {width} = Dimensions.get('window');
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 const TravelList = props => {
   const navigation = useNavigation();
+
+  const category = useSelector(state => state.category);
+
+  useEffect(() => {
+    
+  }, [])
+
   const Card = ({place}) => {
     return (
       <View style={styles.card}>
@@ -52,86 +60,32 @@ const TravelList = props => {
           <Text style={styles.headerText}>Explore Destinations </Text>
           <SearchContainer />
         </View>
-
-        <View>
-          <Text style={styles.activityText}>Hiking</Text>
-
-          <View>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={places}
-              renderItem={({item}) => (
-                <Pressable
-                  onPress={() =>
-                    navigation.navigate('Details', {
-                      image: item.images,
-                      location: item.location,
-                      name: item.name,
-                      details: item.details
-                    })
-                  }>
-                  <Card place={item} />
-                </Pressable>
-              )}
-            />
+        {category.map(category => (
+          <View key={category.id}>
+            <Text style={styles.activityText}>{category.name}</Text>
+            <View>
+              <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={places}
+                renderItem={({item}) => (
+                  <Pressable
+                    onPress={() =>
+                      navigation.navigate('Details', {
+                        image: item.images,
+                        location: item.location,
+                        name: item.name,
+                        details: item.details
+                      })
+                    }>
+                      {item.category.includes(category.name) ? <Card key = {item.id} place={item} /> : null}
+                    
+                  </Pressable>
+                )}
+              />
+            </View>
           </View>
-        </View>
-        <View>
-          <Text style={styles.activityText}>Adventures</Text>
-          <View>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={places}
-              renderItem={({item}) => <Card place={item} />}
-            />
-          </View>
-        </View>
-        <View>
-          <Text style={styles.activityText}>Historical Places</Text>
-          <View>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={places}
-              renderItem={({item}) => <Card place={item} />}
-            />
-          </View>
-        </View>
-        <View>
-          <Text style={styles.activityText}>Fun</Text>
-          <View>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={places}
-              renderItem={({item}) => <Card place={item} />}
-            />
-          </View>
-        </View>
-        <View>
-          <Text style={styles.activityText}>Party</Text>
-          <View>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={places}
-              renderItem={({item}) => <Card place={item} />}
-            />
-          </View>
-        </View>
-        <View style={{marginBottom: 100}}>
-          <Text style={styles.activityText}>Religious</Text>
-          <View>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={places}
-              renderItem={({item}) => <Card place={item} />}
-            />
-          </View>
-        </View>
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
