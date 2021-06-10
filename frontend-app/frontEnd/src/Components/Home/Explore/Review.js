@@ -15,208 +15,90 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../../constants/Color';
 
-const Review = () => {
+const Review = props => {
   const navigation = useNavigation();
 
   return (
     <Container>
       <Content showsVerticalScrollIndicator={false}>
         <Card>
-          <CardItem bordered>
-            <Body>
-              {/* <Thumbnail square large  source={require('../../../assets/pictures/face.jpg')} style={{width: 80, height: 80}}/> */}
-              <Text style={{fontSize: 20, color: Colors.themeColor, marginBottom: 10}}>
-                John Doe
-              </Text>
+          {props.reviews.map(review => (
+            <CardItem bordered key={review.user._id}>
+              <Body style={{marginBottom: 20, flexDirection: 'row'}}>
+                <Thumbnail
+                  large
+                  source={{uri: review.user.profileImgURL}}
+                  style={{width: 80, height: 80, marginRight: 10}}
+                />
+                <View>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      color: Colors.themeColor,
+                      marginBottom: 10,
+                      fontWeight: 'bold',
+                    }}>
+                    {review.user.name}
+                    {/* name */}
+                  </Text>
+                  {review.reviewText !== '' ? (
+                    <Text note style={{fontSize: 18, marginBottom: 5}}>
+                      {review.reviewText}
+                      {/* review */}
+                    </Text>
+                  ) : null}
 
-              <Body>
-                <Left>
-                <Text note style={{fontSize: 18, marginBottom: 5}}>
-                  Loreum ipsum Neque porro quisquam est qui dolorem{' '}
-                </Text>
-
-                <View style={{flexDirection: 'row'}}>
-                  <Icon
-                    type="FontAwesome"
-                    name="star"
-                    style={{
-                      color: Colors.warning,
-                      marginRight: 3,
-                      fontSize: 22,
-                    }}
-                  />
-                  <Icon
-                    type="FontAwesome"
-                    name="star"
-                    style={{
-                      color: Colors.warning,
-                      marginRight: 3,
-                      fontSize: 22,
-                    }}
-                  />
-                  <Icon
-                    type="FontAwesome"
-                    name="star"
-                    style={{
-                      color: Colors.warning,
-                      marginRight: 3,
-                      fontSize: 22,
-                    }}
-                  />
-                  <Icon
-                    type="FontAwesome"
-                    name="star-half-empty"
-                    style={{
-                      color: Colors.warning,
-                      marginRight: 3,
-                      fontSize: 22,
-                    }}
-                  />
-                  <Icon
-                    type="FontAwesome"
-                    name="star-o"
-                    style={{
-                      color: Colors.warning,
-                      marginRight: 3,
-                      fontSize: 22,
-                    }}
-                  />
+                  <View style={{flexDirection: 'row'}}>
+                    <Icon
+                      type="FontAwesome"
+                      name="star"
+                      style={{
+                        color: Colors.warning,
+                        marginRight: 3,
+                        fontSize: 22,
+                      }}
+                    />
+                    <Icon
+                      type="FontAwesome"
+                      name="star"
+                      style={{
+                        color: Colors.warning,
+                        marginRight: 3,
+                        fontSize: 22,
+                      }}
+                    />
+                    <Icon
+                      type="FontAwesome"
+                      name="star"
+                      style={{
+                        color: Colors.warning,
+                        marginRight: 3,
+                        fontSize: 22,
+                      }}
+                    />
+                    <Icon
+                      type="FontAwesome"
+                      name="star-half-empty"
+                      style={{
+                        color: Colors.warning,
+                        marginRight: 3,
+                        fontSize: 22,
+                      }}
+                    />
+                    <Icon
+                      type="FontAwesome"
+                      name="star-o"
+                      style={{
+                        color: Colors.warning,
+                        marginRight: 3,
+                        fontSize: 22,
+                      }}
+                    />
+                  </View>
                 </View>
-                </Left>
-                
               </Body>
-            </Body>
-          </CardItem>
-          <CardItem bordered>
-            <Body>
-              {/* <Thumbnail square large  source={require('../../../assets/pictures/face.jpg')} style={{width: 80, height: 80}}/> */}
-              <Text style={{fontSize: 20, color: Colors.themeColor, marginBottom: 10}}>
-                John Doe
-              </Text>
-
-              <Body>
-                <Left>
-                <Text note style={{fontSize: 18, marginBottom: 5}}>
-                  Loreum ipsum Neque porro quisquam est qui dolorem{' '}
-                </Text>
-
-                <View style={{flexDirection: 'row'}}>
-                  <Icon
-                    type="FontAwesome"
-                    name="star"
-                    style={{
-                      color: Colors.warning,
-                      marginRight: 3,
-                      fontSize: 22,
-                    }}
-                  />
-                  <Icon
-                    type="FontAwesome"
-                    name="star"
-                    style={{
-                      color: Colors.warning,
-                      marginRight: 3,
-                      fontSize: 22,
-                    }}
-                  />
-                  <Icon
-                    type="FontAwesome"
-                    name="star"
-                    style={{
-                      color: Colors.warning,
-                      marginRight: 3,
-                      fontSize: 22,
-                    }}
-                  />
-                  <Icon
-                    type="FontAwesome"
-                    name="star-half-empty"
-                    style={{
-                      color: Colors.warning,
-                      marginRight: 3,
-                      fontSize: 22,
-                    }}
-                  />
-                  <Icon
-                    type="FontAwesome"
-                    name="star-o"
-                    style={{
-                      color: Colors.warning,
-                      marginRight: 3,
-                      fontSize: 22,
-                    }}
-                  />
-                </View>
-                </Left>
-                
-              </Body>
-            </Body>
-          </CardItem>
-          <CardItem bordered>
-            <Body>
-              {/* <Thumbnail square large  source={require('../../../assets/pictures/face.jpg')} style={{width: 80, height: 80}}/> */}
-              <Text style={{fontSize: 20, color: Colors.themeColor, marginBottom: 10}}>
-                John Doe
-              </Text>
-
-              <Body>
-                <Left>
-                <Text note style={{fontSize: 18, marginBottom: 5}}>
-                  Loreum ipsum Neque porro quisquam est qui dolorem{' '}
-                </Text>
-
-                <View style={{flexDirection: 'row'}}>
-                  <Icon
-                    type="FontAwesome"
-                    name="star"
-                    style={{
-                      color: Colors.warning,
-                      marginRight: 3,
-                      fontSize: 22,
-                    }}
-                  />
-                  <Icon
-                    type="FontAwesome"
-                    name="star"
-                    style={{
-                      color: Colors.warning,
-                      marginRight: 3,
-                      fontSize: 22,
-                    }}
-                  />
-                  <Icon
-                    type="FontAwesome"
-                    name="star"
-                    style={{
-                      color: Colors.warning,
-                      marginRight: 3,
-                      fontSize: 22,
-                    }}
-                  />
-                  <Icon
-                    type="FontAwesome"
-                    name="star-half-empty"
-                    style={{
-                      color: Colors.warning,
-                      marginRight: 3,
-                      fontSize: 22,
-                    }}
-                  />
-                  <Icon
-                    type="FontAwesome"
-                    name="star-o"
-                    style={{
-                      color: Colors.warning,
-                      marginRight: 3,
-                      fontSize: 22,
-                    }}
-                  />
-                </View>
-                </Left>
-                
-              </Body>
-            </Body>
-          </CardItem>
+            </CardItem>
+          ))}
         </Card>
       </Content>
     </Container>

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -19,34 +19,62 @@ const {width} = Dimensions.get('window');
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
+import api from '../../../services/ApiServices'
 
 const TravelList = props => {
   const navigation = useNavigation();
 
-  const category = useSelector(state => state.category);
+  const [destinations, setDestinations] = useState()
+  const [loc, setLoc] = useState()
 
-  useEffect(() => {
+  const category = useSelector(state => state.category);
+  const state = useSelector(state => state.loginUser)
+
+  useEffect(async() => {
+    await fetchPlaces()
+    console.log(destinations[0].stayPlace);
     
   }, [])
 
+  const fetchPlaces = async() => {
+    var config = {
+      method: 'get',
+      url: '/places',
+      headers: { 
+        'Authorization': `Bearer ${state.user.token}`, 
+        'Cookie': `token=${state.user.token}`
+      }
+    }
+
+    await api(config)
+    .then(res => {
+      // console.log(res.data)
+      setDestinations(res.data)
+      // return(res.data)
+    })
+    .catch(err => console.log(err))
+
+    return destinations;
+  }
+
   const Card = ({place}) => {
     return (
-      <View style={styles.card}>
+      <View style={styles.card} key = {place._id}>
         <ImageBackground
           style={styles.cardImage}
-          source={place.images}></ImageBackground>
+          source={{uri: place.placePhoto}}></ImageBackground>
         <View style={styles.cardDetails}>
           <Text style={styles.cardText}>{place.name}</Text>
           <Text style={styles.location}>
             <Icon name="location-on" size={12} />
-            {place.location}{' '}
+            'Kathmandu'
           </Text>
           <View style={styles.ratings}>
-            <Icon name="star" size={15} />
-            <Icon name="star" size={15} />
-            <Icon name="star" size={15} />
-            <Icon name="star" size={15} />
-            <Icon name="star-half" size={15} />
+            <Icon name="star" size={20} />
+            <Icon name="star" size={20} />
+            <Icon name="star" size={20} />
+            <Icon name="star" size={20} />
+            <Icon name="star-half" size={20} />
           </View>
         </View>
       </View>
@@ -67,18 +95,23 @@ const TravelList = props => {
               <FlatList
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                data={places}
+                data={destinations}
+                keyExtractor={item => item._id}
                 renderItem={({item}) => (
                   <Pressable
                     onPress={() =>
                       navigation.navigate('Details', {
-                        image: item.images,
-                        location: item.location,
+                        image: item.placePhoto,
+                        location: 'Kathmandu',
                         name: item.name,
-                        details: item.details
+                        details: 'Details',
+                        reviews: item.reviews,
+                        hotel: item.stayPlace,
+                        id: item._id,
+                        ratings: item.ratings
                       })
                     }>
-                      {item.category.includes(category.name) ? <Card key = {item.id} place={item} /> : null}
+                      {item.category.includes(category._id) ? <Card key = {item._id} place={item} /> : null}
                     
                   </Pressable>
                 )}
@@ -121,7 +154,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
   },
   card: {
-    height: 250,
+    height: 300,
     width: width / 1.8,
     padding: 10,
     shadowColor: '#000000',
@@ -143,7 +176,7 @@ const styles = StyleSheet.create({
     height: 180,
     width: width / 2,
     marginRight: 20,
-    marginTop: 10,
+    marginTop: 3,
     padding: 10,
     overflow: 'hidden',
     borderTopLeftRadius: 10,
@@ -165,11 +198,10 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     backgroundColor: 'white',
     position: 'absolute',
-    bottom: 0,
+    bottom: 30,
     padding: 5,
     marginLeft: 10,
     width: width / 2,
-    position: 'absolute',
     justifyContent: 'space-between',
     borderBottomColor: 'black',
   },
@@ -178,5 +210,6 @@ const styles = StyleSheet.create({
   },
   ratings: {
     flexDirection: 'row',
+    marginTop: 2
   },
 });

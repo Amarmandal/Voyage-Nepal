@@ -6,14 +6,16 @@ import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import Colors from '../../../constants/Color'
 import Geocoder from 'react-native-geocoding';
 import MapViewDirections from 'react-native-maps-directions';
+import { useIsFocused } from '@react-navigation/native';
 
-
-const Category = ({navigation}) => {
+const Category = ({navigation, route}) => {
+  const {name} = route.params;
+  
   const [position, setPosition] = useState({
     latitude: 27.7172,
     longitude: 85.3240,
-    latitudeDelta: 0.05,
-    longitudeDelta: 0.05,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
   });
   const [pos, setPos] = useState({
     latitude: 27.7172,
@@ -21,9 +23,12 @@ const Category = ({navigation}) => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   })
-  useEffect(async () => {
+
+  const isFocused = useIsFocused();
+
+  const geoLocation = async () => {
     Geocoder.init("AIzaSyDziZCJwC1dqy7vRGhVEyhWbnuSc0pTeAI");
-    await Geocoder.from('Kathmandu')
+    await Geocoder.from(name)
     .then(json => {
 			var location = json.results[0].geometry.location;
 			// console.log(location.lat);
@@ -45,50 +50,32 @@ const Category = ({navigation}) => {
         maximumAge: 1000,
       },
     );
-  }, []);
+  }
+
+  useEffect(async () => {
+    geoLocation()
+  }, [isFocused]);
+
+
   return (
     <View style = {{backgroundColor: '#ffffff'}}>
-      <View style = {{flexDirection: 'row', alignItems: 'center'}}>
-      <Button transparent onPress = {() => navigation.jumpTo('Hotels')} large ><Icon name = 'arrow-back' style = {{color: '#52c0b4', fontSize: 25}} /></Button>
-      <H3>Hotel Annapurna</H3>
+      <View style = {{flexDirection: 'row', alignItems: 'center',}}>
+      <Button transparent onPress = {() => navigation.navigate('Explore')} large ><Icon name = 'arrow-back' style = {{color: '#52c0b4', fontSize: 25}} /></Button>
+      <H3>{name}</H3>
       </View>
       <View>
-      <CardItem bordered button onPress = {() => navigation.navigate('Map')}>
-          <Left>
-            <Thumbnail
-              source={require('../../../assets/pictures/hotel1.png')}
-              style={{
-                width: 115,
-                height: 115,
-                marginLeft: -12,
-                marginRight: 10,
-                borderRadius: 0
-              }}></Thumbnail>
-            <Body>
-              <Text style = {{fontSize: 22}}>Hotel Annapurna</Text>
-              <Text note style = {{fontSize: 18}}>Kathmandu, Durbar Marg</Text>
-              
-                <View style = {{flexDirection: 'row'}}>
-                  <Icon type="FontAwesome" name="star" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                  <Icon type="FontAwesome" name="star" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                  <Icon type="FontAwesome" name="star" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                  <Icon type="FontAwesome" name="star-half-empty" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                  <Icon type="FontAwesome" name="star-o" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                </View>
-            </Body>
-          </Left>
-        </CardItem>
+      
         <MapView
         provider={PROVIDER_GOOGLE}
-        style = {{height: 455, width: 500, justifyContent: 'flex-end', alignItems: 'center'}}
-        region={pos}
+        style = {{height: 700, width: 500, justifyContent: 'flex-end', alignItems: 'center'}}
+        initialRegion={pos}
         >
         <Marker
           coordinate={{
             latitude: pos.latitude,
             longitude: pos.longitude,
           }}
-          title={'Pokhara'}></Marker>
+          title={name}></Marker>
         <Marker
           coordinate={{
             latitude: position.latitude,
@@ -100,6 +87,8 @@ const Category = ({navigation}) => {
         origin={position}
         destination={pos}
         apikey="AIzaSyDziZCJwC1dqy7vRGhVEyhWbnuSc0pTeAI"
+        strokeWidth={3}
+        strokeColor='red'
         />
       </MapView>
       </View>

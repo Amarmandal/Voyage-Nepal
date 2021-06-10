@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import {View,Container,Content,Text,CardItem,Thumbnail,Icon,Left,Body, Input,Item } from 'native-base';
 import Colors from '../../../constants/Color'
 import { useNavigation } from '@react-navigation/native';
- const Hotel=()=> {
+ const Hotel=(props)=> {
     const navigation = useNavigation();
     return (
       <Container>
-        <Content padder style={{margin: 15}} showsVerticalScrollIndicator = {false}>
-        
-        <CardItem bordered button onPress = {() => navigation.navigate('HotelScreen', {screen: 'Map'})}>
+        <Content padder style={{margin: 5, marginTop: 0}} showsVerticalScrollIndicator = {false}>
+        {props.hotels.map((hotel, index) => (
+          <CardItem key = {index} bordered button onPress = {() => navigation.navigate('Map',{name: hotel.name})}>
           <Left>
             <Thumbnail
-              source={require('../../../assets/pictures/hotel1.png')}
+              source={{uri: hotel.hotelPhotoUrl}}
               style={{
                 width: 115,
                 height: 115,
@@ -20,8 +20,8 @@ import { useNavigation } from '@react-navigation/native';
                 borderRadius: 0
               }}></Thumbnail>
             <Body>
-              <Text style = {{fontSize: 22}}>Hotel Annapurna</Text>
-              <Text note style = {{fontSize: 18}}>Kathmandu, Durbar Marg</Text>
+              <Text style = {{fontSize: 19, fontWeight: 'bold'}}>{hotel.name}</Text>
+              <Text note style = {{fontSize: 16}}>Kathmandu, Durbar Marg</Text>
               
                 <View style = {{flexDirection: 'row'}}>
                   <Icon type="FontAwesome" name="star" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
@@ -33,83 +33,7 @@ import { useNavigation } from '@react-navigation/native';
             </Body>
           </Left>
         </CardItem>
-        <CardItem bordered>
-          <Left>
-            <Thumbnail
-              source={require('../../../assets/pictures/hotel2.png')}
-              style={{
-                width: 115,
-                height: 115,
-                marginLeft: -12,
-                borderRadius: 0,
-                marginRight: 10
-              }}></Thumbnail>
-            <Body>
-              <Text style = {{fontSize: 22}}>Hotel Annapurna</Text>
-              <Text note style = {{fontSize: 18}}>Kathmandu, Durbar Marg</Text>
-              
-                <View style = {{flexDirection: 'row'}}>
-                  <Icon type="FontAwesome" name="star" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                  <Icon type="FontAwesome" name="star" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                  <Icon type="FontAwesome" name="star" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                  <Icon type="FontAwesome" name="star-half-empty" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                  <Icon type="FontAwesome" name="star-o" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                </View>
-            </Body>
-          </Left>
-        </CardItem>
-        
-        <CardItem bordered>
-          <Left>
-            <Thumbnail
-              source={require('../../../assets/pictures/hotel3.png')}
-              style={{
-                width: 115,
-                height: 115,
-                marginLeft: -12,
-                borderRadius: 0,
-                marginRight: 10
-              }}></Thumbnail>
-            <Body>
-              <Text style = {{fontSize: 22}}>Hotel Annapurna</Text>
-              <Text note style = {{fontSize: 18}}>Kathmandu, Durbar Marg</Text>
-              
-                <View style = {{flexDirection: 'row'}}>
-                  <Icon type="FontAwesome" name="star" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                  <Icon type="FontAwesome" name="star" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                  <Icon type="FontAwesome" name="star" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                  <Icon type="FontAwesome" name="star-half-empty" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                  <Icon type="FontAwesome" name="star-o" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                </View>
-            </Body>
-          </Left>
-        </CardItem>
-        
-        <CardItem bordered style = {{marginBottom: 23}}>
-          <Left>
-            <Thumbnail
-              source={require('../../../assets/pictures/hotel1.png')}
-              style={{
-                width: 116,
-                height: 116,
-                marginLeft: -12,
-                borderRadius: 0,
-                marginRight: 10
-              }}></Thumbnail>
-            <Body>
-              <Text style = {{fontSize: 22}}>Hotel Annapurna</Text>
-              <Text note style = {{fontSize: 18}}>Kathmandu, Durbar Marg</Text>
-              
-                <View style = {{flexDirection: 'row'}}>
-                  <Icon type="FontAwesome" name="star" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                  <Icon type="FontAwesome" name="star" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                  <Icon type="FontAwesome" name="star" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                  <Icon type="FontAwesome" name="star-half-empty" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                  <Icon type="FontAwesome" name="star-o" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>
-                </View>
-            </Body>
-          </Left>
-        </CardItem>
+        ))}
         
       </Content>
       </Container>

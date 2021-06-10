@@ -76,8 +76,8 @@ const Home = () => {
         }}
       />
       <Tab.Screen
-        name="HotelScreen"
-        component={HotelMapScreen}
+        name="Map"
+        component={Map}
         options={{
           tabBarIcon: ({focused}) => (
             <Icon
@@ -116,14 +116,14 @@ function ExploreScreen() {
   )
 }
 
-function HotelMapScreen() {
-  return (
-    <Maps.Navigator>
-      <Maps.Screen name="Hotels" component={HotelScreen} />
-      <Maps.Screen name="Map" component={Map} />
-    </Maps.Navigator>
-  );
-}
+// function HotelMapScreen() {
+//   return (
+//     <Maps.Navigator>
+//       {/* <Maps.Screen name="Hotels" component={HotelScreen} /> */}
+//       <Maps.Screen name="Map" component={Map} />
+//     </Maps.Navigator>
+//   );
+// }
 
 function AccountScreen(){
   return(
