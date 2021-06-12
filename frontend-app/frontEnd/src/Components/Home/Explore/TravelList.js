@@ -20,43 +20,15 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import api from '../../../services/ApiServices'
+import StarRating from 'react-native-star-rating';
 
 const TravelList = props => {
   const navigation = useNavigation();
 
-  const [destinations, setDestinations] = useState()
-  const [loc, setLoc] = useState()
-
   const category = useSelector(state => state.category);
   const state = useSelector(state => state.loginUser)
-
-  useEffect(async() => {
-    await fetchPlaces()
-    console.log(destinations[0].stayPlace);
-    
-  }, [])
-
-  const fetchPlaces = async() => {
-    var config = {
-      method: 'get',
-      url: '/places',
-      headers: { 
-        'Authorization': `Bearer ${state.user.token}`, 
-        'Cookie': `token=${state.user.token}`
-      }
-    }
-
-    await api(config)
-    .then(res => {
-      // console.log(res.data)
-      setDestinations(res.data)
-      // return(res.data)
-    })
-    .catch(err => console.log(err))
-
-    return destinations;
-  }
-
+  const places = useSelector(state => state.place)
+  
   const Card = ({place}) => {
     return (
       <View style={styles.card} key = {place._id}>
@@ -69,13 +41,25 @@ const TravelList = props => {
             <Icon name="location-on" size={12} />
             'Kathmandu'
           </Text>
-          <View style={styles.ratings}>
-            <Icon name="star" size={20} />
-            <Icon name="star" size={20} />
-            <Icon name="star" size={20} />
-            <Icon name="star" size={20} />
-            <Icon name="star-half" size={20} />
-          </View>
+          {place.ratings ? (
+                    <View
+                    style={{
+                      alignItems: 'flex-start'
+                    }}>
+                    <StarRating
+                      disabled={false}
+                      emptyStar={'star-o'}
+                      fullStar={'star'}
+                      halfStar={'star-half-empty'}
+                      iconSet={'FontAwesome'}
+                      maxStars={5}
+                      rating={place.ratings}
+                      fullStarColor={Colors.warning}
+                      emptyStarColor={'white'}
+                      starSize={20}
+                    />
+                  </View>
+                  ) : <Text style = {{color: Colors.warning}}>'No ratings yet'</Text>}
         </View>
       </View>
     );
@@ -95,7 +79,7 @@ const TravelList = props => {
               <FlatList
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                data={destinations}
+                data={places}
                 keyExtractor={item => item._id}
                 renderItem={({item}) => (
                   <Pressable

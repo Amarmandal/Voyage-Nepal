@@ -10,13 +10,6 @@ const Explore = ({navigation}, props) => {
   const state = useSelector(state => state.loginUser)
   const category = useSelector(state => state.category)
 
-  const dispatch = useDispatch()
-
- 
-  // useEffect(async() => {
-  //   // await fetchCategory()
-  //   console.log(category);
-  // }, []);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <TravelList />

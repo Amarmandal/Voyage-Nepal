@@ -6,20 +6,19 @@ import {useSelector} from 'react-redux'
 
 const header=(props) =>{
     const state = useSelector(state => state.loginUser)
+    const detail = useSelector(state => state.userDetails);
+    var myDate = new Date();
+    var hrs = myDate.getHours();
     return(
         <SafeAreaView >
         <View style={styles.container}>
                 <View style={styles.headerText}>
                 <Text style={styles.userName} >Hello, {state.user.userData.name}</Text>
-                <Text style={styles.Greetings}>Good Morning</Text>
+                <Text style={styles.Greetings}>{hrs < 12 ? 'Good Morning!' : (hrs >= 12 && hrs <= 17) ? 'Good Afternoon!' : 'Good Evening!'}</Text>
             </View>
                 
-               <Image source={require('../../../assets/pictures/face.jpg')} style={styles.userImage} />
-        </View>
-
-
-            
-            
+               <Image source={{uri: detail.userDetail.profileImgURL}} style={styles.userImage} />
+        </View>    
         </SafeAreaView>
     )
 }
@@ -41,13 +40,12 @@ const styles = StyleSheet.create({
     
     },
     userName:{
-        fontSize:25,
-        fontWeight:'600',
+        fontSize:22,
+        fontWeight:'bold',
         color:'#000000',
     },
     Greetings:{
-        fontSize:18,
-        fontWeight:'500',
+        fontSize:16,
         color:Color.dimGray,
     },
     userImage:{

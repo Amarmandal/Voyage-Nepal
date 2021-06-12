@@ -23,6 +23,13 @@ import ResetPassword from '../screens/Signin/forgotPAssword/ResetPassword';
 import Colors from '../constants/Color';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ChangePassword from '../screens/Homepage/ProfileScreen/ChangePassword';
+import RecommendationDetail from '../screens/Homepage/feed/RecommendationDetail';
+import LoadingScreen from '../screens/Signin/LoadingScreen';
+import FeedMap from '../screens/Homepage/feed/FeedMap';
+import Settings from '../screens/Homepage/ProfileScreen/Settings';
+import FAQ from '../Components/Home/profile/Settings/FAQ'
+import PrivacyPolicy from '../Components/Home/profile/Settings/PrivacyPolicy'
+import TermsAndCond from '../Components/Home/profile/Settings/TermsAndCond'
 
 const activeColor = '#CF3838';
 
@@ -32,6 +39,7 @@ const Tab = createBottomTabNavigator();
 const Maps = createBottomTabNavigator();
 const Explores = createBottomTabNavigator();
 const AccountStack = createBottomTabNavigator();
+const Feeds = createBottomTabNavigator();
 
 const Home = () => {
   return (
@@ -50,7 +58,7 @@ const Home = () => {
       }}>
       <Tab.Screen
         name="Feed"
-        component={Feed}
+        component={FeedScreen}
         options={{
           tabBarIcon: ({focused}) => (
             <Icon
@@ -75,7 +83,7 @@ const Home = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Map"
         component={Map}
         options={{
@@ -88,7 +96,7 @@ const Home = () => {
             />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Profile"
         component={AccountScreen}
@@ -107,23 +115,26 @@ const Home = () => {
   );
 };
 
+function FeedScreen(){
+  return(
+    <Feeds.Navigator>
+      {/* <Feeds.Screen name = 'Loading' component = {Loading} /> */}
+      <Feeds.Screen name = 'Feed' component = {Feed} />
+      <Feeds.Screen name = 'RecommendationDetail' component = {RecommendationDetail} />
+      <Feeds.Screen name = 'FeedMap' component = {FeedMap} />
+    </Feeds.Navigator>
+  )
+}
+
 function ExploreScreen() {
   return(
     <Explores.Navigator>
       <Explores.Screen name = 'Explore' component = {Explore} />
       <Explores.Screen name = 'Details' component = {Details} />
+      <Explores.Screen name = 'ExploreMap' component = {Map} />
     </Explores.Navigator>
   )
 }
-
-// function HotelMapScreen() {
-//   return (
-//     <Maps.Navigator>
-//       {/* <Maps.Screen name="Hotels" component={HotelScreen} /> */}
-//       <Maps.Screen name="Map" component={Map} />
-//     </Maps.Navigator>
-//   );
-// }
 
 function AccountScreen(){
   return(
@@ -131,6 +142,10 @@ function AccountScreen(){
       <AccountStack.Screen name = 'Account' component = {Profile} />
       <AccountStack.Screen name = 'About me' component = {AboutMe} />
       <AccountStack.Screen name = 'Change Password' component = {ChangePassword} />
+      <AccountStack.Screen name = 'Settings' component = {Settings} />
+      <AccountStack.Screen name = 'FAQ' component = {FAQ} />
+      <AccountStack.Screen name = 'Policy' component = {PrivacyPolicy} />
+      <AccountStack.Screen name = 'Terms' component = {TermsAndCond} />
     </AccountStack.Navigator>
   )
 }
@@ -165,6 +180,26 @@ function MainStackScreen() {
       <MainStack.Screen
         name="Signin"
         component={Signin}
+        options={{
+          title: 'Signin',
+          headerStyle: {
+            backgroundColor: '#1597bb',
+          },
+        }}
+      />
+      <MainStack.Screen
+        name="LoadingScreen1"
+        component={LoadingScreen}
+        options={{
+          title: 'Signin',
+          headerStyle: {
+            backgroundColor: '#1597bb',
+          },
+        }}
+      />
+      <MainStack.Screen
+        name="LoadingScreen2"
+        component={Loading}
         options={{
           title: 'Signin',
           headerStyle: {

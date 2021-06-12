@@ -8,7 +8,7 @@ import { useNavigation } from '@react-navigation/native';
       <Container>
         <Content padder style={{margin: 5, marginTop: 0}} showsVerticalScrollIndicator = {false}>
         {props.hotels.map((hotel, index) => (
-          <CardItem key = {index} bordered button onPress = {() => navigation.navigate('ExploreMap',{name: hotel.name})}>
+          <CardItem key = {index} bordered button onPress = {() => navigation.navigate('FeedMap',{name: hotel.name})}>
           <Left>
             <Thumbnail
               source={{uri: hotel.hotelPhotoUrl}}

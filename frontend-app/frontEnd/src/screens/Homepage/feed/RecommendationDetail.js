@@ -15,12 +15,9 @@ import ImageDetail from '../../../Components/Home/Explore/ImageDetail';
 import places from '../../../constants/places';
 import Detail from '../../../Components/Home/Explore/Detail';
 import Review from '../../../Components/Home/Explore/Review';
-import Hotel from '../../../Components/Home/Explore/Hotel';
+import Hotel from '../../../Components/Home/feed/Hotel';
 import Colors from '../../../constants/Color';
-const Details = ({navigation, route}) => {
-  // useEffect(() => {
-  //    console.log(places[0]);
-  // }, [])
+const RecommendationDetail = ({navigation, route}) => {
   const {image, location, name, details, reviews, hotel, id, ratings} =
     route.params;
   const imageWidth = useWindowDimensions().width;
@@ -76,4 +73,4 @@ const Details = ({navigation, route}) => {
   );
 };
 
-export default Details;
+export default RecommendationDetail;

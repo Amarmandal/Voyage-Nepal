@@ -5,24 +5,22 @@ import Header from '../../../Components/Home/feed/header'
 import Popular from '../../../Components/Home/feed/Popular';
 import SearchContainer from '../../../Components/Home/feed/searchContainer';
 
-// import Geolocation from 'react-native-geolocation-service';
-// import Geolocation from '@react-native-community/geolocation';
-import Geocoder from 'react-native-geocoding';
-// import RNLocation from 'react-native-location';
+import Geolocation from 'react-native-geolocation-service';
 import {Button} from 'native-base';
 import api from '../../../services/ApiServices'
 import {useDispatch, useSelector} from 'react-redux';
 import {userDetails} from '../../../redux/action/Login/userDetails';
 import {Category} from '../../../redux/action/Data/Category'
+import {Places} from '../../../redux/action/Data/places'
+import { useIsFocused } from '@react-navigation/native';
 
 const Feed = () => {
 
   useEffect(() => {
-    fetchDetails()
     fetchCategory()
+    fetchPlaces()
   }, [])
   const state = useSelector(state => state.loginUser);
-
   const dispatch = useDispatch();
 
   const fetchCategory = async() => {
@@ -62,6 +60,27 @@ const Feed = () => {
       console.log(err);
     })
   };
+
+  const fetchPlaces = async() => {
+    var config = {
+      method: 'get',
+      url: '/places',
+      headers: { 
+        'Authorization': `Bearer ${state.user.token}`, 
+        'Cookie': `token=${state.user.token}`
+      }
+    }
+
+    await api(config)
+    .then(res => {
+      // console.log(res.data)
+      // setDestinations(res.data)
+      // return(res.data)
+      dispatch(Places(res.data))
+    })
+    .catch(err => console.log(err))
+  }
+
 
 
   return (

@@ -148,7 +148,7 @@ const Profile = ({navigation}) => {
           <Right>
             <Icon type="Entypo" name="chevron-right" 
             onPress={() => {
-              navigation.navigate('Change Password')
+              navigation.navigate('Settings')
             
             }}
             />

@@ -1,11 +1,14 @@
 import React from 'react';
-import {View, Text} from 'react-native';
-import {Container, Content, Icon, Right} from 'native-base';
+import {View, Text, StyleSheet} from 'react-native';
+import {Container, Content, Icon, Right, Button} from 'native-base';
 
-const Settings = () => {
+const Settings = ({navigation}) => {
   return (
     <Container>
-      <Content style={{marginTop: 20, margin: 10}}>
+      <Button transparent onPress={() => navigation.goBack()} large>
+        <Icon name="arrow-back" style={{color: '#52c0b4', fontSize: 25}} />
+      </Button>
+      <Content style={{ margin: 25, marginTop: 0}}>
         <View style={styles.listContainer}>
           <Icon active type="Feather" name="user" style={{marginRight: 15}} />
           <Text style={{fontSize: 19}}>FAQ</Text>
@@ -14,7 +17,7 @@ const Settings = () => {
               type="Entypo"
               name="chevron-right"
               onPress={() => {
-                navigation.navigate('About me');
+                navigation.navigate('FAQ');
               }}
             />
           </Right>
@@ -26,13 +29,13 @@ const Settings = () => {
             name="ios-key-outline"
             style={{marginRight: 15}}
           />
-          <Text style={{fontSize: 19}}>Change Password</Text>
+          <Text style={{fontSize: 19}}>Terms & Condition</Text>
           <Right>
             <Icon
               type="Entypo"
               name="chevron-right"
               onPress={() => {
-                navigation.navigate('Change Password');
+                navigation.navigate('Terms');
               }}
             />
           </Right>
@@ -44,13 +47,13 @@ const Settings = () => {
             name="settings-outline"
             style={{marginRight: 15}}
           />
-          <Text style={{fontSize: 19}}>Settings</Text>
+          <Text style={{fontSize: 19}}>Privacy Policy</Text>
           <Right>
             <Icon
               type="Entypo"
               name="chevron-right"
               onPress={() => {
-                navigation.navigate('Change Password');
+                navigation.navigate('Policy');
               }}
             />
           </Right>
@@ -61,3 +64,24 @@ const Settings = () => {
 };
 
 export default Settings;
+
+const styles = StyleSheet.create({
+  listContainer: {
+    borderRadius: 10,
+    padding: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderColor: 'black',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 3,
+    marginBottom: 15,
+  },
+});
+

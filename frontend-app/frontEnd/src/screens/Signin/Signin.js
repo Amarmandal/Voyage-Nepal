@@ -100,7 +100,9 @@ const Signin = ({navigation}) => {
 
   const submitValues = async () => {
     if (data.email !== '' && data.password !== '') {
-      dispatch(loginUser(signinUser)).then(result => {
+      dispatch(loginUser(signinUser))
+      .then(result => {
+        // fetchDetails()
         if (result.token) {
           setData({
             ...data,
@@ -110,7 +112,7 @@ const Signin = ({navigation}) => {
           });
           setError('');
           storeData(result);
-          navigation.navigate('Home');
+          navigation.navigate('LoadingScreen1', {id: result.userData.id, token: result.token});
         } else if (result.response.data.error) {
           // console.log(result.response.data.error);
           console.log(result.response.data.error);
