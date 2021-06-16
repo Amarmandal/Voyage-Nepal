@@ -1,4 +1,6 @@
 const nodemailer = require("nodemailer");
+const hbs = require('nodemailer-handlebars');
+
 
 exports.getTransporter = async () => {
   try {
@@ -14,6 +16,14 @@ exports.getTransporter = async () => {
       }
     });
 
+    transporter.use("compile", hbs({
+      viewEngine:{
+         partialsDir:"./views/",
+         defaultLayout:""
+     },
+    viewPath:"./views/",
+    extName:".hbs"
+    }));
     return transporter;
   } catch (error) {
     console.log(error);

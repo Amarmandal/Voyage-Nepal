@@ -19,6 +19,10 @@ const { upload } = require("../utils/uploadHelper");
 
 router.param("placeId", getPlaceById);
 
+router.get("/place/:placeId", isSignedIn, isAuthenticated, (req, res) => {
+  return res.status(200).json({ data: req.place});
+});
+
 //create place only by admin
 router.post(
   "/place/create",
