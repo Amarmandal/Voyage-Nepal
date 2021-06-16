@@ -48,9 +48,9 @@ const imagesDetail =(props)=>{
 export default imagesDetail
 const style = StyleSheet.create({ 
     headerImage: {
-    height: 300,
-    borderBottomRightRadius: 28,
-    borderBottomLeftRadius: 28,
+    height: 250,
+    borderBottomRightRadius: 15,
+    borderBottomLeftRadius: 15,
     overflow: 'hidden',
   },
   header: {

@@ -1,6 +1,6 @@
 import {USER_EMAIL} from '../action.types';
 import axios from 'axios';
-
+import api from '../../../services/ApiServices'
 const BASE_URL = 'http://10.0.2.2:8080/api';
 
 export const getUserEmail = userData => {
@@ -14,7 +14,7 @@ export const getUserEmail = userData => {
 
     var config = {
       method: 'post',
-      url: `${BASE_URL}/user/forget-password`,
+      url: `/user/forget-password`,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ export const getUserEmail = userData => {
 
     var Data = {}
 
-   await axios(config)
+   await api(config)
    .then(res => {
      const data = res.data
      Data = res.data

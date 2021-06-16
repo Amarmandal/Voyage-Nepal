@@ -25,7 +25,6 @@ import {
 } from '../../Components/FormComponents/FormCompponents';
 import {GenderCheckbox} from '../../Components/Signup/Signup';
 import signupStyles from '../../Components/Signup/signup.styles';
-import FormData from '../../utils/formData';
 import Colors from '../../constants/Color';
 import GoBack from '../../Components/Signin/GoBack';
 
@@ -97,13 +96,13 @@ const Signup = ({navigation}, props) => {
   const getGender = _gender => {
     setGender(_gender);
   };
+
   const getCity = _city => {
     setCity(_city);
-    // formData.addData({City: _city});
   };
+
   const getDOB = _dob => {
     setDob(_dob);
-    // formData.addData({DOB: _dob});
   };
 
   const handleValidName = () => {
@@ -181,21 +180,12 @@ const Signup = ({navigation}, props) => {
     dob: dob,
   };
 
-  var config = {
-    method: 'post',
-    url: 'http://10.0.2.2:8080/api/user/signup',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    data: newUser,
-  };
-
   const submitValues = () => {
     if(data.name !== '' && data.email !== '' && data.password !== '' && data.confirmPassword !== '' && dob !== '' && gender !== '' && city !== ''){
       dispatch(registerUser(newUser))
         .then(() => {
-          navigation.navigate('Home')
+          alert('Please Check your Email for verification')
+          navigation.navigate('Signin')
         })
         .catch(err => console.log(err))
     } else {

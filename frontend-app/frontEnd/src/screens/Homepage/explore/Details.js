@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {useWindowDimensions} from 'react-native';
+import {useWindowDimensions, View} from 'react-native';
 import {
   Container,
   Header,
@@ -9,6 +9,7 @@ import {
   Icon,
   Text,
   ScrollableTab,
+  Content
 } from 'native-base';
 import ImageDetail from '../../../Components/Home/Explore/ImageDetail';
 import places from '../../../constants/places';
@@ -20,18 +21,20 @@ const Details = ({navigation, route}) => {
   // useEffect(() => {
   //    console.log(places[0]);
   // }, [])
-  const {image, location, name, details} = route.params;
+  const {image, location, name, details, reviews, hotel, id, ratings} =
+    route.params;
   const imageWidth = useWindowDimensions().width;
 
   return (
     <Container>
+      
       <Header
         style={{
-          height: 300,
+          height: 250,
           width: imageWidth,
           backgroundColor: Colors.themeColor,
         }}>
-        <ImageDetail image={image} location={location} name={name} />
+        <ImageDetail image={{uri: image}} location={location} name={name} />
       </Header>
 
       <Tabs
@@ -47,8 +50,7 @@ const Details = ({navigation, route}) => {
           tabStyle={{backgroundColor: Colors.themeColor}}
           textStyle={{color: '#fff', opacity: 0.8}}
           activeTabStyle={{backgroundColor: Colors.themeColor}}
-          activeTextStyle={{color: '#fff', fontSize: 22}}
-          >
+          activeTextStyle={{color: '#fff', fontSize: 22}}>
           <Detail details={details} />
         </Tab>
         <Tab
@@ -57,7 +59,7 @@ const Details = ({navigation, route}) => {
           textStyle={{color: '#fff', opacity: 0.8}}
           activeTabStyle={{backgroundColor: Colors.themeColor}}
           activeTextStyle={{color: '#fff', fontSize: 22}}>
-          <Review />
+          <Review reviews = {reviews} placeId = {id} />
         </Tab>
         <Tab
           heading="Hotels"
@@ -65,10 +67,12 @@ const Details = ({navigation, route}) => {
           textStyle={{color: '#fff', opacity: 0.8}}
           activeTabStyle={{backgroundColor: Colors.themeColor}}
           activeTextStyle={{color: '#fff', fontSize: 22}}>
-          <Hotel />
+          <Hotel hotels = {hotel} id = {id} />
         </Tab>
       </Tabs>
-    </Container>
+
+     
+          </Container>
   );
 };
 

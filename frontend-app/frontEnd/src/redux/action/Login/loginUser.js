@@ -1,5 +1,6 @@
 import {LOGIN_USER_SUCCESS, LOGIN_USER_FAIL} from '../action.types';
 import axios from 'axios';
+import api from '../../../services/ApiServices'
 
 const BASE_URL = 'https://voyage-nepal.uc.r.appspot.com/api';
 
@@ -15,7 +16,7 @@ export const loginUser = userData => {
 
     var config = {
       method: 'post',
-      url: `${BASE_URL}/user/signin`,
+      url: `/user/signin`,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -25,7 +26,7 @@ export const loginUser = userData => {
 
     var Data = {}
 
-   await axios(config)
+   await api(config)
    .then(res => {
      const data = res.data
      Data = res.data

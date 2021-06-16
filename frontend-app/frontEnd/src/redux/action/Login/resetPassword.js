@@ -1,5 +1,6 @@
 import {RESET_PASSWORD, RESET_PASSWORD_FAIL} from '../action.types';
 import axios from 'axios';
+import api from '../../../services/ApiServices'
 
 const BASE_URL = 'http://10.0.2.2:8080/api';
 
@@ -13,7 +14,7 @@ export const resetPassword = otp => {
 
     var config = {
       method: 'post',
-      url: `${BASE_URL}/user/verify-reset-otp`,
+      url: `/user/verify-reset-otp`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -22,7 +23,7 @@ export const resetPassword = otp => {
 
     var Data = {};
 
-    axios(config)
+    api(config)
       .then(response => {
         console.log(JSON.stringify(response.data));
         Data = response.data;

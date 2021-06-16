@@ -1,8 +1,8 @@
-import {LOGIN_USER_SUCCESS, LOGIN_USER_FAIL} from '../action/action.types'
+import {LOGIN_USER_SUCCESS, LOGIN_USER_FAIL, LOGIN_USER_DETAILS} from '../action/action.types'
 
 const initialState = {
     user: {},
-    errors: {}
+    errors: {},
 }
 
 export default (state = initialState, action) => {

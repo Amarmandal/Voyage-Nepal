@@ -9,24 +9,25 @@ import {
   Icon,
   Button,
   H1,
+  Toast
 } from 'native-base';
 import Colors from '../../../constants/Color';
 import {useSelector} from 'react-redux';
-import axios from 'axios';
+import api from '../../../services/ApiServices'
 var FormData = require('form-data');
 import * as ImagePicker from 'react-native-image-picker';
+import moment from 'moment'
 
 var data = new FormData();
 
 const AboutMe = ({navigation}) => {
   const state = useSelector(state => state.loginUser);
+  const detail = useSelector(state => state.userDetails)
   const [filePath, setFilePath] = useState({})
 
   const selectFile = async () => {
     ImagePicker.launchImageLibrary({
       mediaType: 'photo',
-      maxHeight: 200,
-      maxWidth: 200,
     }, (response) => {
       console.log('Response = ', response);
       data.append('photo', {
@@ -37,22 +38,71 @@ const AboutMe = ({navigation}) => {
       });
       var config = {
         method: 'post',
-        url: `https://voyage-nepal.uc.r.appspot.com/api/upload/photo/${state.user.userData.id}`,
+        url: `/upload/photo/${state.user.userData.id}`,
         headers: { 
           'Authorization': `Bearer ${state.user.token}`, 
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Cookie': `token=${state.user.token}`,
         },
         data : data
       };
 
-      axios(config)
+      var config1 = {
+        method: 'put',
+        url: `/update/photo/${state.user.userData.id}`,
+        headers: { 
+          'Authorization': `Bearer ${state.user.token}`, 
+          'Accept': 'application/json',
+          'Cookie': `token=${state.user.token}`,
+        },
+        data : data
+      };
+
+      if(!detail.userDetail.profileImgURL){
+        api(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         console.log('success!');
+        Toast.show({
+          text: response.data,
+          buttonText: "Okay",
+          type: "success",
+          duration: 5000
+        })
       })
       .catch(function (error) {
         console.log(error);
+        console.log('upload error');
+        Toast.show({
+          text: 'Something went wrong',
+          buttonText: "Okay",
+          type: "success",
+          duration: 5000
+        })
       });
+      } else if(detail.userDetail.profileImgURL) {
+        api(config1)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        console.log('update success!');
+        Toast.show({
+          text: response.data,
+          buttonText: "Okay",
+          type: "success",
+          duration: 5000
+        })
+      })
+      .catch(function (error) {
+        console.log(error);
+        console.log('update error');
+        Toast.show({
+          text: 'Something went wrong',
+          buttonText: "Okay",
+          type: "warning",
+          duration: 5000
+        })
+      });
+      }
 
       if (response.didCancel) {
         console.log('User cancelled image picker');
@@ -76,6 +126,15 @@ const AboutMe = ({navigation}) => {
   
   };
 
+  var options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  };
+
+  var date = new Date(detail.userDetail.DOB)
+  var dob = moment(date).utc().format('DD/MM/YYYY')
+
   return (
     <Container style={{backgroundColor: '#ffffff'}}>
       <Button transparent onPress={() => navigation.goBack()} large>
@@ -89,10 +148,9 @@ const AboutMe = ({navigation}) => {
           padding: 10,
           marginBottom: 20,
         }}>
-        <Image
-          source={require('../../../assets/pictures/profile.png')}
-          style={{width: 150, height: 150}}
-        />
+        {detail.userDetail.profileImgURL ? <Image source={{uri: detail.userDetail.profileImgURL}} style={{width: 140, height: 140, marginBottom: 10, borderRadius: 80}} /> : <Image
+            source={require('../../../assets/pictures/user.png')}
+            style={{width: 130, height: 130, marginBottom: 10}}></Image>}
         <View>
           <H2>Profile</H2>
           <Text style={{color: Colors.warning}} onPress={() => selectFile()}>
@@ -131,7 +189,7 @@ const AboutMe = ({navigation}) => {
         <Item style={{marginBottom: 25}}>
           <Input
             disabled
-            placeholder="1999-02-28"
+            placeholder={dob}
             style={{fontSize: 20, fontWeight: '600'}}
           />
         </Item>

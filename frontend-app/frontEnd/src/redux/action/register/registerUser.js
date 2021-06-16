@@ -1,7 +1,5 @@
 import {REGISTER_USER_SUCCESS, REGISTER_USER_FAIL} from '../action.types';
-import axios from 'axios';
-
-const BASE_URL = 'https://voyage-nepal.uc.r.appspot.com/api';
+import api from '../../../services/ApiServices'
 
 export const registerUser = userData => {
   const {name, email, password, gender, isAdmin, city, dob} = userData;
@@ -20,7 +18,7 @@ export const registerUser = userData => {
 
     var config = {
       method: 'post',
-      url: `${BASE_URL}/user/signup`,
+      url: `/user/signup`,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -28,7 +26,7 @@ export const registerUser = userData => {
       data: newUser,
     };
 
-    const result = await axios(config);
+    const result = await api(config);
 
     const resultData = result;
     console.log(resultData);
