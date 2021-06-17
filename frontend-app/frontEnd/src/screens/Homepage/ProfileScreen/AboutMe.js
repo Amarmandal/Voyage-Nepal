@@ -136,7 +136,7 @@ const AboutMe = ({navigation}) => {
   var dob = moment(date).utc().format('DD/MM/YYYY')
 
   return (
-    <Container style={{backgroundColor: '#ffffff'}}>
+    <Container style={{backgroundColor: '#ffffff', marginBottom: 30}}>
       <Button transparent onPress={() => navigation.goBack()} large>
         <Icon name="arrow-back" style={{color: '#52c0b4', fontSize: 25}} />
       </Button>

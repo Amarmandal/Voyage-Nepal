@@ -1,8 +1,5 @@
 import {LOGIN_USER_SUCCESS, LOGIN_USER_FAIL} from '../action.types';
-import axios from 'axios';
 import api from '../../../services/ApiServices'
-
-const BASE_URL = 'https://voyage-nepal.uc.r.appspot.com/api';
 
 export const loginUser = userData => {
   const {email, password} = userData;
@@ -36,6 +33,7 @@ export const loginUser = userData => {
     });
    })
    .catch(err => {
+     console.log(err.message);
      const error = err
      Data = error
      dispatch({

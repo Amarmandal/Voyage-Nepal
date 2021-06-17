@@ -59,10 +59,10 @@ export const ActionText = props => {
 export const FormInput = props => {
 
   return (
-    <Item rounded style={{margin: 10}}>
-      <Icon name={props.icon}></Icon>
+    <Item rounded bordered style={{margin: 10, borderColor: Colors.themeColor}}>
+      <Icon name={props.icon} style = {{color: Colors.themeColor}}></Icon>
       <Input placeholder={props.placeholder} onChangeText = {(text) => props.onChangeText(text)} value = {props.value} onFocus = {props.onFocus} onBlur = {props.onBlur} secureTextEntry = {props.secureText} />
-      <Icon name={props.rightIcon} onPress = {props.showPassword}></Icon>
+      <Icon name={props.rightIcon} style = {{color: Colors.themeColor}} onPress = {props.showPassword}></Icon>
     </Item>
   );
 };

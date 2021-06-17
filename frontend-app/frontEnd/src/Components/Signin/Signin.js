@@ -68,7 +68,7 @@ export const SocialMediaLogin = (props) => {
       <Button
         transparent
         rounded
-        style={[SigninStyles.SocialMediaLoginBtn, {backgroundColor: props.bgcolor}]}>
+        style={[SigninStyles.SocialMediaLoginBtn, {backgroundColor: props.bgcolor}]} onPress = {props.login}>
         <Icon type="FontAwesome" name={props.iconName} style={{fontSize: 15, color: '#ffffff'}} />
         {/* <Text uppercase={false} style={{fontSize: 18}}>
           {props.text}

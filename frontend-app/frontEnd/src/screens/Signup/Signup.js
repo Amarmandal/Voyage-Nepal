@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView, SafeAreaView, Image} from 'react-native';
 import api from '../../services/ApiServices';
 import axios from 'axios';
 import {
@@ -194,13 +194,22 @@ const Signup = ({navigation}, props) => {
   };
 
   return (
-    <Container style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
+    <SafeAreaView style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
       <GoBack goBack = {() => navigation.goBack()} />
+      <Image source = {require('../../assets/pictures/Logo.png')} style = {{width: 150, height: 150, alignSelf: 'center', marginBottom: 40}} />
+      <Container style={{
+          borderWidth: 3,
+          borderTopWidth: 3,
+          borderBottomWidth: 0,
+          borderColor: Colors.themeColor,
+          borderTopRightRadius: 30,
+          borderTopLeftRadius: 30,
+        }}>
       <Content padder>
         <ScrollView>
           <View style={{alignItems: 'center', margin: 12}}>
             
-              <Text style = {{alignSelf: 'flex-start', fontSize: 25, fontWeight: 'bold', marginBottom: 20, marginTop: 20}}>Create an Account</Text>
+              <Text style = {{alignSelf: 'flex-start', fontSize: 25, fontWeight: 'bold', marginBottom: 50, marginTop: 20}}>Create an Account</Text>
             <Form>
               <FormInput
                 icon="pencil"
@@ -346,7 +355,9 @@ const Signup = ({navigation}, props) => {
           </View>
         </ScrollView>
       </Content>
-    </Container>
+      </Container>
+      
+    </SafeAreaView>
   );
 };
 

@@ -60,7 +60,7 @@ const Category = ({navigation, route}) => {
   return (
     <View style = {{backgroundColor: '#ffffff'}}>
       <View style = {{flexDirection: 'row', alignItems: 'center',}}>
-      <Button transparent onPress = {() => navigation.navigate('Explore')} large ><Icon name = 'arrow-back' style = {{color: '#52c0b4', fontSize: 25}} /></Button>
+      <Button transparent onPress = {() => navigation.goBack()} large ><Icon name = 'arrow-back' style = {{color: '#52c0b4', fontSize: 25}} /></Button>
       <H3>{name}</H3>
       </View>
       <View>
