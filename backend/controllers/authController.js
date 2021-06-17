@@ -35,11 +35,12 @@ exports.userSignup = async (req, res) => {
       from: process.env.EMAIL,
       to: `${email}`,
       subject: "Verify You Email by Clicking the Link",
-      html: `
-        <a href='https://google.com'>Activation Link</a>
-        <p>Link Will Expire in 10 minutes </p>
-        <p>${jwtToken}</p>
-      `,
+      text: ' ',
+      template: 'voyageregister',
+      context: {
+        email,
+        jwtToken
+      }
     };
 
     res.status(200).json({ message: "Please check Email for activation link" });
@@ -158,11 +159,12 @@ exports.forgetPassword = async (req, res) => {
       from: process.env.EMAIL,
       to: `${email}`,
       subject: "Verify You Email by Clicking the Link",
-      html: `
-          <a href='https://google.com'>Activation Link</a>
-          <p>This otp will expire in 5 minutes</p>
-          <p>${otp}</p>
-        `,
+      text: ' ',
+      template: 'voyageotp',
+      context: {
+        email,
+        otp
+      }
     };
 
     res.status(200).json({ message: "Please check Email for OTP" });

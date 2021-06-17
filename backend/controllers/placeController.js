@@ -68,19 +68,21 @@ exports.createPlace = async (req, res) => {
 };
 
 exports.updatePlace = async (req, res) => {
-  let { name, placePhoto, category, stayPlace } = req.body;
+  let { name, placePhoto, category, stayPlace, description } = req.body;
   const place = req.place;
 
   name = name || place.name;
   placePhoto = placePhoto || place.placePhoto;
   category = category || place.category;
   stayPlace = stayPlace || place.stayPlace;
+  description = description || place.description;
 
   try {
     place.name = name;
     place.placePhoto = placePhoto;
     place.category = category;
     place.stayPlace = stayPlace;
+    place.description = description;
 
     await place.save();
     return res.status(200).json({ data: place });
