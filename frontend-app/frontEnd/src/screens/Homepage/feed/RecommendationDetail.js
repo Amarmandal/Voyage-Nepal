@@ -9,7 +9,8 @@ import {
   Icon,
   Text,
   ScrollableTab,
-  Content
+  Content,
+  DefaultTabBar
 } from 'native-base';
 import ImageDetail from '../../../Components/Home/Explore/ImageDetail';
 import places from '../../../constants/places';
@@ -21,6 +22,11 @@ const RecommendationDetail = ({navigation, route}) => {
   const {image, location, name, details, reviews, hotel, id, ratings} =
     route.params;
   const imageWidth = useWindowDimensions().width;
+
+  const renderTabBar = (props) => {
+    props.tabStyle = Object.create(props.tabStyle);
+    return <DefaultTabBar {...props} />;
+  };
 
   return (
     <Container>
@@ -36,12 +42,7 @@ const RecommendationDetail = ({navigation, route}) => {
 
       <Tabs
         transparent
-        renderTabBar={() => (
-          <ScrollableTab
-            tabsContainerStyle={{backgroundColor: Colors.themeColor}}
-            underlineStyle={{backgroundColor: Colors.warning}}
-          />
-        )}>
+        renderTabBar={renderTabBar}>
         <Tab
           heading="Details"
           tabStyle={{backgroundColor: Colors.themeColor}}
