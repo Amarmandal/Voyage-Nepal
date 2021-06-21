@@ -3,8 +3,8 @@ import {
   USER_LOGIN_FAIL,
   USER_LOGIN_SUCCESS,
   USER_LOGIN_REQUEST,
+  USER_LOGOUT,
 } from "./action.types";
-
 import { API } from "../backend";
 
 export const login = (email, password) => {
@@ -31,3 +31,12 @@ export const login = (email, password) => {
     }
   };
 };
+
+export const logout = () => {
+
+  return (dispatch) => {
+    localStorage.removeItem('userInfo');
+    dispatch({ type: USER_LOGOUT });
+    window.location.href = "/login";
+  }
+}

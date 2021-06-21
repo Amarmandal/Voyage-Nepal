@@ -21,7 +21,7 @@ router.param('categoryId', getCategoryById);
 
 //Read Category by Id
 router.get('/category/:categoryId', getCategory);
-router.get('/categories', getAllCategories);
+router.get('/categories', isSignedIn, isAuthenticated, getAllCategories);
 //delete category
 router.delete('/category/:categoryId', isSignedIn, isAuthenticated, isAdmin, deleteCategory);
 

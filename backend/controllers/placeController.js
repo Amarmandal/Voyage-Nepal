@@ -16,6 +16,10 @@ exports.getPlaceById = async (req, res, next, id) => {
         path: "stayPlace",
         select: "name rating stayType hotelPhotoUrl -_id",
       })
+      .populate({
+        path: "category",
+        select: "name",
+      })
       .exec();
     (req.place = place), next();
   } catch (error) {
@@ -55,6 +59,10 @@ exports.recommendsPlace = async (req, res) => {
 
 exports.createPlace = async (req, res) => {
   try {
+    //converting to Array of Object Id
+    req.body.category = JSON.parse(req.body.category);
+    req.body.stayPlace = JSON.parse(req.body.stayPlace);
+
     const place = new Place(req.body);
     place.placePhoto = req.placeImgUrl;
     await place.save();
@@ -108,7 +116,12 @@ exports.getAllPlace = async (req, res) => {
         path: "stayPlace",
         select: "name rating stayType hotelPhotoUrl -_id",
       })
+      .populate({
+        path: "category",
+        select: "name -_id",
+      })
       .exec();
+
     return res.status(200).json(places);
   } catch (error) {
     console.log(error);

@@ -1,5 +1,15 @@
 const HotRes = require('../models/hotresModel');
 
+exports.getAllStayPlaces = async (req, res) => {
+    try {
+        const hotels = await HotRes.find({});
+        return res.status(200).json({ data: hotels});
+    } catch (error) {
+        return res.status(404).json({ error: 'no hotels found'});
+    }
+}
+
+
 exports.getHotelById = async (req, res, next, id) => {
   try {
     const hotel = await HotRes.findById(id);

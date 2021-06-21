@@ -6,6 +6,7 @@ const {
   createHotelForPlace,
   deleteHotel,
   updateHotel,
+  getAllStayPlaces
 } = require("../controllers/hotresController");
 const { getUserById } = require("../controllers/userController");
 const {
@@ -18,6 +19,8 @@ const { upload } = require("../utils/uploadHelper");
 
 router.param("hotelId", getHotelById);
 router.param("userId", getUserById);
+
+router.get('/hotels', isSignedIn, isAuthenticated, getAllStayPlaces);
 
 //create hotel
 router.post(
