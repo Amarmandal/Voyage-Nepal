@@ -116,10 +116,6 @@ exports.getAllPlace = async (req, res) => {
         path: "stayPlace",
         select: "name rating stayType hotelPhotoUrl -_id",
       })
-      .populate({
-        path: "category",
-        select: "name -_id",
-      })
       .exec();
 
     return res.status(200).json(places);

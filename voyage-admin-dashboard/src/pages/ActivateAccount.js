@@ -17,7 +17,7 @@ const ActivateAccount = () => {
   };
 
   return (
-    <Container className="my-5 py-5">
+    <Container className="my-5 py-5 email-verify-container">
       <Button color="primary" onClick={handleOnActivate}>
         Activate Now
       </Button>

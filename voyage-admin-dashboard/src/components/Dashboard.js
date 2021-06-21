@@ -20,7 +20,7 @@ const Dashboard = () => {
           <OverviewCard
             title="registered users"
             info={
-              !loading && success && countData.data?.userCount
+              !loading && success && countData.data
                 ? countData.data.userCount
                 : <Loader padding="5px" loaderText={null} />
             }
@@ -32,7 +32,7 @@ const Dashboard = () => {
           <OverviewCard
             title="total places"
             info={
-              !loading && success && countData.data?.placeCount
+              !loading && success && countData.data
                 ? countData.data.placeCount
                 : <Loader padding="5px" loaderText={null} />
             }
@@ -44,7 +44,7 @@ const Dashboard = () => {
           <OverviewCard
             title="total categories"
             info={
-              !loading && success && countData.data?.categoryCount
+              !loading && success && countData.data
                 ? countData.data.categoryCount
                 : <Loader padding="5px" loaderText={null} />
             }
@@ -56,7 +56,7 @@ const Dashboard = () => {
           <OverviewCard
             title="Hotel and Restaurants"
             info={
-              !loading && success && countData.data?.hotelCount
+              !loading && success && countData.data
                 ? countData.data.hotelCount
                 : <Loader padding="5px" loaderText={null} />
             }
