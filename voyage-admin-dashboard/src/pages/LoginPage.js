@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Redirect } from "react-router";
+import { useHistory } from "react-router";
 import { toast } from "react-toastify";
 import { Container } from "reactstrap";
 
@@ -19,13 +19,15 @@ const LoginPage = () => {
     }
   }, [error]);
 
-  const performRedirect = () => {
-    return <Redirect to="/" />
-  }
+  const history = useHistory();
+  useEffect(() => {
+    if(userInfo) {
+      history.push('/');
+    }
+  }, [history, userInfo])
 
   return (
     <Container fluid="true">
-      {userInfo?.token && performRedirect()}
       <LoginForm />
     </Container>
   );

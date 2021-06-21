@@ -12,16 +12,14 @@ exports.getCategoryById = async (req, res, next, categoryId) => {
     }
 }
 
-exports.createCategory = (req, res) => {
+exports.createCategory = async (req, res) => {
     const newCat = new Category(req.body);
-    newCat.save()
-        .then(doc => {
-            res.status(200).json({data: doc});
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(403).json({error: err})
-        })
+    try{
+        const doc = await newCat.save()
+        res.status(200).json({data: doc});
+    }   catch(err) {
+        res.status(403).json({error: 'An Error Creating a Category'})
+    }
 }
 
 exports.deleteCategory = async (req, res) => {
