@@ -9,6 +9,7 @@ import UpdateCategory from "./pages/UpdateCategory";
 import CreateHotel from "./pages/CreateHotel";
 import UserProfile from "./pages/UserProfile";
 import NotFound from './pages/NotFound';
+import ActivateAccount from "./pages/ActivateAccount";
 import { ToastContainer } from "react-toastify";
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -19,6 +20,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/login" component={LoginPage} />
+        <Route path="/user/verify" component={ActivateAccount} />
         <AdminRoute path="/place/create" component={CreatePlace} />
         <AdminRoute path="/place/update" component={UpdatePlace} />
         <AdminRoute path="/category/create" component={CreateCategory} />

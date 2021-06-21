@@ -1,7 +1,7 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { userLoginReducer } from "./reducers/userReducers";
+import { userLoginReducer, userRegisterReducer } from "./reducers/userReducers";
 import { sidebarReducers } from "./reducers/sidebarReducers";
 
 import { createPlaceReducer } from "./reducers/placeReducers";
@@ -15,6 +15,7 @@ import { countReducers } from "./reducers/countReducers";
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
+  userRegister: userRegisterReducer,
   createPlace: createPlaceReducer,
   createCategory: createCategoryReducer,
   // createStayPlace: createStayPlaceReducer,
@@ -29,6 +30,7 @@ const userInfoFromStorage = userInfo ? JSON.parse(userInfo) : null;
 
 const initialState = {
   userLogin: { 'userInfo': userInfoFromStorage },
+  userRegister: {},
   createPlace: {},
   createCategory: {},
   // createStayPlace: {},

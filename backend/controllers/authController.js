@@ -9,17 +9,7 @@ exports.userSignup = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (user) {
-      // if(req.profilePath) {
-      //   //delete the existing file
-      //   fs.unlink(req.profilePath, (err) => {
-      //     if(err) {
-      //       throw err;
-      //     }
-      //   });
-
-      // }
-      res.status(302).json({ error: "User with this Email Already exist" });
-      return;
+      return res.status(302).json({ error: "User with this Email Already exist" });
     }
 
     const jwtToken = jwt.sign(
@@ -51,9 +41,8 @@ exports.userSignup = async (req, res) => {
   }
 };
 
-exports.userEmailVerification = async (req, res) => {
+exports.userEmailVerification = (req, res) => {
   const { token } = req.body;
-
   if (!token) return res.status(404).json({ error: "Token Not Found" });
 
   jwt.verify(token, process.env.JWT_SECRETS, (err, decodedToken) => {
@@ -61,29 +50,29 @@ exports.userEmailVerification = async (req, res) => {
       return res.status(400).json({ error: "Expired Token or Link" });
     }
 
-    User.findOne({ email: decodedToken.email }).then((doc) => {
-      if (doc) {
-        return res.json({ error: "User with this Email Already exist" });
-      }
-    });
+    User.findOne({ email: decodedToken.email})
+      .then(doc => {
+        if(doc) {
+          return res.json({ error: "Already Activated! Enjoy using our App!" });
+        } else {
+          const userData = decodedToken;
+          const user = new User(userData);
 
-    const userData = decodedToken;
-    const user = new User(userData);
-
-    user
-      .save()
-      .then((doc) => {
-        const { _id, name, email, isAdmin, gender, city } = doc;
-        res.status(200).json({ id: _id, name, email, isAdmin, gender, city });
+          user.save()
+          .then(doc => {
+            const { _id, name, email, isAdmin, gender, city } = doc;
+            return res.status(200).json({ id: _id, name, email, isAdmin, gender, city });
+          })
+          .catch(err => {
+            return res.status(400).json({ error: "Error Activating your Account"})
+          })
+        }
       })
-      .catch((err) => {
-        console.log(err);
-        return res
-          .status(400)
-          .json({ error: "User Account Cannot be created!" });
+      .catch(err => {
+        return res.status(400).json({ error: "Internal Server Error"})
       });
   });
-};
+}
 
 exports.userSingin = (req, res) => {
   const { email, password } = req.body;
@@ -204,4 +193,4 @@ exports.handleSignout = async (req, res) => {
   } catch (error) {
     return res.status(400).json({ error: "Cannot logout the user"});
   }
-}
+};
