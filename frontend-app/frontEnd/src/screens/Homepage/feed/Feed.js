@@ -1,9 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView,Text, ScrollView} from 'react-native';
-import {HelloUser} from '../../../Components/Home/feed/Feed';
 import Header from '../../../Components/Home/feed/header'
 import Popular from '../../../Components/Home/feed/Popular';
-import SearchContainer from '../../../Components/Home/feed/searchContainer';
 
 import Geolocation from 'react-native-geolocation-service';
 import {Button} from 'native-base';
@@ -14,7 +12,7 @@ import {Category} from '../../../redux/action/Data/Category'
 import {Places} from '../../../redux/action/Data/places'
 import { useIsFocused } from '@react-navigation/native';
 
-const Feed = () => { 
+const Feed = () => {
 
   useEffect(() => {
     fetchCategory()
@@ -22,14 +20,13 @@ const Feed = () => {
   }, [])
   const state = useSelector(state => state.loginUser);
   const dispatch = useDispatch();
-  console.log(state);
+
   const fetchCategory = async() => {
     var config = {
       method: 'get',
       url: '/categories',
-      headers: { 
-        'Authorization': `Bearer ${state.user.token}`, 
-        
+      headers: {
+        Authorization: `Bearer ${state.user.token}`,
       },
     };
   

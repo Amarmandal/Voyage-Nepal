@@ -98,13 +98,6 @@ const TravelList = props => {
                       })
                     }>
                       {item.category.includes(category._id) ? <Card key = {index.toString()} place={item} /> : null}
-                      {/* {item.category.includes(category._id) ? <Card key = {index.toString()} place={item} /> : null} */}
-                      {/* {console.log(item)} */}
-                      {/* {item.category.map((cat, index) => {
-                        (cat.name === category.name) ? <Text style = {{color: 'red'}}>{item._id}</Text>  :  <Text> place</Text>
-                      })} */}
-                      
-                    
                   </Pressable>
                 )}
               />

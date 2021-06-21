@@ -8,9 +8,7 @@ import Geolocation from 'react-native-geolocation-service';
 import { Recommended } from '../../redux/action/Data/recommended';
 import {userDetails} from '../../redux/action/Login/userDetails';
 import moment from 'moment'
-const Loading = ({navigation, route}) => {
-
-  const {id, token} = route.params;
+const Loading = ({navigation}) => {
 
   const state = useSelector(state => state.loginUser);
   const detail = useSelector(state => state.userDetails)
@@ -33,7 +31,6 @@ const Loading = ({navigation, route}) => {
   var today = new Date()
 
   const geoLocation = async () => {
-
     Geolocation.getCurrentPosition(
       position => {
         // console.log(position);
@@ -59,7 +56,7 @@ const Loading = ({navigation, route}) => {
     const userDOB = moment(detail.userDetail.DOB, 'YYYY/M/D');
     const userAge = moment().diff(userDOB, 'years')
     setAge(userAge)
-    console.log(age)
+    // console.log(age)
     var data = JSON.stringify({
       "placename": "Bhimsen Tower (Dharhara)",
       "age": age,
@@ -72,8 +69,8 @@ const Loading = ({navigation, route}) => {
       url: '/place/recommends',
       headers: { 
         'Content-Type': 'application/json', 
-        'Authorization': `Bearer ${token}`, 
-        'Cookie': `token=${token}`
+        'Authorization': `Bearer ${state.user.token}`, 
+        'Cookie': `token=${state.user.token}`
       },
       data : data
     };

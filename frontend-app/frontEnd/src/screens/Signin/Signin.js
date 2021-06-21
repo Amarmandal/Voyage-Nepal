@@ -63,7 +63,7 @@ const Signin = ({navigation}) => {
 
   useEffect(() => {
     if(state.user){
-      console.log(state);
+      // console.log(state);
       setData({
         ...data,
         password: '',

@@ -25,14 +25,13 @@ const LoadingScreen = ({navigation, route}) => {
       .then(res => {
         // console.log(res.data);
         dispatch(userDetails(res.data));
-        navigation.navigate('LoadingScreen2', {id: id, token: token})
+        navigation.navigate('LoadingScreen2')
       })
       .catch(err => {
         console.log(err);
       });
   } 
     
-
     
   return (
     <View
