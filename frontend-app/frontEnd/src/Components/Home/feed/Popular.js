@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   FlatList,
   ScrollView,
@@ -8,7 +8,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable
+  Pressable,
 } from 'react-native';
 import Colors from '../../../constants/Color';
 import places from '../../../constants/places';
@@ -17,14 +17,53 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch, useSelector} from 'react-redux';
 import StarRating from 'react-native-star-rating';
 import {useNavigation} from '@react-navigation/native';
+import api from '../../../services/ApiServices';
 
 const Popular = () => {
+  const places = useSelector(state => state.place);
+  const {user} = useSelector(state => state.loginUser);
 
-  const places = useSelector(state => state.place)
+  const [loading, setLoading] = useState(true);
 
   const navigation = useNavigation();
 
+  const {recommendedPlaceDetails, nearByPlaceDetails} = useSelector(
+    state => state.recommendedPlace,
+  );
   const recommendedPlace = useSelector(state => state.recommendedPlace);
+
+  // console.log(nearByPlaceDetails);
+
+  const getPlaceById = id => {
+    var config = {
+      method: 'get',
+      url: `/place/${id}`,
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Cookie: `token=${user.token}`,
+      },
+    };
+
+    api(config)
+      .then(function (response) {
+        // console.log(response.data.data)
+        var data = response.data.data
+        navigation.navigate('RecommendationDetail', {
+          image: data.placePhoto,
+          location: data.location,
+          name: data.name,
+          details: data.description,
+          reviews: data.reviews,
+          hotel: data.stayPlace,
+          id: data._id,
+          ratings: data.ratings,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+        alert(error)
+      });
+  };
 
   const Card = ({place}) => {
     return (
@@ -36,7 +75,7 @@ const Popular = () => {
           <Text style={styles.cardText}>{place.name}</Text>
           <Text style={styles.location}>
             <Icon name="location-on" size={12} />
-            'Kathmandu'
+            {place.location}
           </Text>
           {place.ratings ? (
             <View
@@ -65,7 +104,8 @@ const Popular = () => {
   };
 
   return (
-    <SafeAreaView style={{paddingTop: 10, backgroundColor: 'white', marginBottom: 30}}>
+    <SafeAreaView
+      style={{paddingTop: 10, backgroundColor: 'white', marginBottom: 30}}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <Text style={styles.headingText}>Places Near You</Text>
@@ -80,16 +120,19 @@ const Popular = () => {
               renderItem={({item}) => (
                 <Pressable
                   onPress={() =>
-                    navigation.navigate('RecommendationDetail', {
-                      image: item.placePhoto,
-                      location: 'Kathmandu',
-                      name: item.name,
-                      details: 'Details',
-                      reviews: item.reviews,
-                      hotel: item.stayPlace,
-                      id: item._id,
-                      ratings: item.ratings,
-                    })
+                    // navigation.navigate('RecommendationDetail', {
+                    //   image: item.placePhoto,
+                    //   location: 'Kathmandu',
+                    //   name: item.name,
+                    //   details: 'Details',
+                    //   reviews: item.reviews,
+                    //   hotel: item.stayPlace,
+                    //   id: item._id,
+                    //   ratings: item.ratings,
+                    // })
+                    {
+                      getPlaceById(item._id);
+                    }
                   }>
                   <Card place={item} />
                 </Pressable>
@@ -116,16 +159,19 @@ const Popular = () => {
                 renderItem={({item}) => (
                   <Pressable
                     onPress={() =>
-                      navigation.navigate('RecommendationDetail', {
-                        image: item.placePhoto,
-                        location: 'Kathmandu',
-                        name: item.name,
-                        details: 'Details',
-                        reviews: item.reviews,
-                        hotel: item.stayPlace,
-                        id: item._id,
-                        ratings: item.ratings,
-                      })
+                      // navigation.navigate('RecommendationDetail', {
+                      //   image: item.placePhoto,
+                      //   location: 'Kathmandu',
+                      //   name: item.name,
+                      //   details: 'Details',
+                      //   reviews: item.reviews,
+                      //   hotel: item.stayPlace,
+                      //   id: item._id,
+                      //   ratings: item.ratings,
+                      // })
+                      {
+                        getPlaceById(item._id);
+                      }
                     }>
                     <Card place={item} key={item._id} />
                   </Pressable>

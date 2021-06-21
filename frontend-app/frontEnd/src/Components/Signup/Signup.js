@@ -7,7 +7,7 @@ import Colors from '../../constants/Color'
 const Button = ({ onPress, selected, children }) => {
   return (
     <View style={signUpStyles.checkBoxContainer}>
-      <TouchableOpacity onPress={onPress} style = {{marginRight: 12, alignSelf: 'flex-start'}}>
+      <TouchableOpacity onPress={onPress} style = {{ alignSelf: 'flex-start'}}>
         {selected ? (
           <CheckBox name="checkbox-marked" size={25} color = {Colors.primary}/>
         ) : (

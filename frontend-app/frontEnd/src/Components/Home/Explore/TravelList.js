@@ -39,7 +39,7 @@ const TravelList = props => {
           <Text style={styles.cardText}>{place.name}</Text>
           <Text style={styles.location}>
             <Icon name="location-on" size={12} />
-            'Kathmandu'
+            {place.location}
           </Text>
           {place.ratings ? (
                     <View
@@ -86,9 +86,9 @@ const TravelList = props => {
                     onPress={() =>
                       navigation.navigate('Details', {
                         image: item.placePhoto,
-                        location: 'Kathmandu',
+                        location: item.location,
                         name: item.name,
-                        details: 'Details',
+                        details: item.description,
                         reviews: item.reviews,
                         hotel: item.stayPlace,
                         id: item._id,

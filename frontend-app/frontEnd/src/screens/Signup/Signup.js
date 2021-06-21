@@ -194,23 +194,36 @@ const Signup = ({navigation}, props) => {
   };
 
   return (
-    <SafeAreaView style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
-      <GoBack goBack = {() => navigation.goBack()} />
-      <Image source = {require('../../assets/pictures/Logo.png')} style = {{width: 150, height: 150, alignSelf: 'center', marginBottom: 40}} />
-      <Container style={{
-          borderWidth: 3,
-          borderTopWidth: 3,
-          borderBottomWidth: 0,
-          borderColor: Colors.themeColor,
-          borderTopRightRadius: 30,
-          borderTopLeftRadius: 30,
-        }}>
-      <Content padder>
-        <ScrollView>
-          <View style={{alignItems: 'center', margin: 12}}>
+    <Container style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
+      <Content keyboardShouldPersistTaps={'handled'}>
+      <Image
+          source={require('../../assets/images/display.png')}
+          style={{marginBottom: 50, opacity: 0.8}}
+        />
+        <Image
+          source={require('../../assets/pictures/logoEdit.png')}
+          style={{
+            width: 160,
+            height: 160,
+            position: 'absolute',
+            top: 170,
+            alignSelf: 'center',
+            marginBottom: 30,
+          }}></Image>
+        <Button
+          transparent
+          onPress={() => navigation.goBack()}
+          large
+          style={{position: 'absolute', top: 8}}>
+          <Icon
+            name="arrow-back-circle-sharp"
+            style={{color: '#ffffff', fontSize: 38}}
+          />
+        </Button>
+          <View style={{alignItems: 'center', margin: 30}}>
             
-              <Text style = {{alignSelf: 'flex-start', fontSize: 25, fontWeight: 'bold', marginBottom: 50, marginTop: 20}}>Create an Account</Text>
-            <Form>
+              {/* <Text style = {{alignSelf: 'flex-start', fontSize: 25, fontWeight: 'bold', marginBottom: 50, marginTop: 20}}>Create an Account</Text> */}
+            
               <FormInput
                 icon="pencil"
                 placeholder="Full Name"
@@ -344,7 +357,6 @@ const Signup = ({navigation}, props) => {
                   <Option value="Birgunj">Birgunj</Option>
                 </Select>
               </View>
-            </Form>
 
             <ActionButton mt = {30} buttonName="Sign up" home={() => submitValues()} />
             <Account
@@ -353,11 +365,9 @@ const Signup = ({navigation}, props) => {
               signup={() => navigation.navigate('Signin')}
             />
           </View>
-        </ScrollView>
       </Content>
-      </Container>
       
-    </SafeAreaView>
+    </Container>
   );
 };
 

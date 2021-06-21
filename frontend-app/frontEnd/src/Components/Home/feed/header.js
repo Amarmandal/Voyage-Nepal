@@ -13,7 +13,7 @@ const header=(props) =>{
         <SafeAreaView >
         <View style={styles.container}>
                 <View style={styles.headerText}>
-                <Text style={styles.userName} >Hello, {state.user.userData.name}</Text>
+                <Text style={styles.userName} >Hello, {state.user.userData.name.split(' ')[0]}</Text>
                 <Text style={styles.Greetings}>{hrs < 12 ? 'Good Morning!' : (hrs >= 12 && hrs <= 17) ? 'Good Afternoon!' : 'Good Evening!'}</Text>
             </View>
                 
