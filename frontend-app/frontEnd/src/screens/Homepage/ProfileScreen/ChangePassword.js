@@ -4,7 +4,7 @@ import {Button, Toast, Container} from 'native-base'
 import styles from '../../Signin/forgotPAssword/OTP.styles'
 import {FormInput} from '../../../Components/FormComponents/FormCompponents';
 import GoBack from '../../../Components/Signin/GoBack';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../../services/ApiServices'
 import {useSelector} from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
@@ -113,12 +113,8 @@ const ChangePassword = () => {
       await api(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data.success));
-        Toast.show({
-          text: response.data.success,
-          buttonText: "Okay",
-          type: "success",
-          duration: 5000
-        })
+        navigation.navigate('Signin')
+        AsyncStorage.clear()
       })
       .catch(function (error) {
         console.log(error.response.data.error);

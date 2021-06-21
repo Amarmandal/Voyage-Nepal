@@ -14,7 +14,7 @@ import {Category} from '../../../redux/action/Data/Category'
 import {Places} from '../../../redux/action/Data/places'
 import { useIsFocused } from '@react-navigation/native';
 
-const Feed = () => {
+const Feed = () => { 
 
   useEffect(() => {
     fetchCategory()
@@ -22,11 +22,15 @@ const Feed = () => {
   }, [])
   const state = useSelector(state => state.loginUser);
   const dispatch = useDispatch();
-
+  console.log(state);
   const fetchCategory = async() => {
     var config = {
       method: 'get',
       url: '/categories',
+      headers: { 
+        'Authorization': `Bearer ${state.user.token}`, 
+        
+      },
     };
   
     await api(config)

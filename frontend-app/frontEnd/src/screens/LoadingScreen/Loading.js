@@ -8,7 +8,9 @@ import Geolocation from 'react-native-geolocation-service';
 import { Recommended } from '../../redux/action/Data/recommended';
 import {userDetails} from '../../redux/action/Login/userDetails';
 import moment from 'moment'
-const Loading = ({navigation}) => {
+const Loading = ({navigation, route}) => {
+
+  const {id, token} = route.params;
 
   const state = useSelector(state => state.loginUser);
   const detail = useSelector(state => state.userDetails)
@@ -31,6 +33,7 @@ const Loading = ({navigation}) => {
   var today = new Date()
 
   const geoLocation = async () => {
+
     Geolocation.getCurrentPosition(
       position => {
         // console.log(position);
@@ -69,8 +72,8 @@ const Loading = ({navigation}) => {
       url: '/place/recommends',
       headers: { 
         'Content-Type': 'application/json', 
-        'Authorization': `Bearer ${state.user.token}`, 
-        'Cookie': `token=${state.user.token}`
+        'Authorization': `Bearer ${token}`, 
+        'Cookie': `token=${token}`
       },
       data : data
     };

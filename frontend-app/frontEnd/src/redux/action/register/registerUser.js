@@ -4,7 +4,7 @@ import api from '../../../services/ApiServices'
 export const registerUser = userData => {
   const {name, email, password, gender, isAdmin, city, dob} = userData;
 
-  return async dispatch => {
+  return async (dispatch) => {
     //TODO: fetch Data
     var newUser = JSON.stringify({
       name: name,
@@ -20,23 +20,31 @@ export const registerUser = userData => {
       method: 'post',
       url: `/user/signup`,
       headers: {
-        Accept: 'application/json',
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       data: newUser,
     };
 
-    const result = await api(config);
+    var Data={}
 
-    if(result.status !== 200){
-      alert('Something Went Wrong')
+    try {
+      const response = await api(config)
+      console.log(response.data);
+      Data = {response}
+      dispatch({
+        type: REGISTER_USER_SUCCESS,
+        payload: response.data
+      });
+      
+    } catch (error) {
+      Data = {error}
+      dispatch({
+        type: REGISTER_USER_FAIL,
+        payload: error.response && error.response.data.error ? error.response.data.error : error.message
+      })
     }
-
-    const resultData = result;
-    console.log(resultData);
-    dispatch({
-      type: REGISTER_USER_SUCCESS,
-      payload: 1,
-    });
+    // console.log(Data);
+    return Data;
   };
 };

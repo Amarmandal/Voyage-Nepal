@@ -58,6 +58,7 @@ const Profile = ({navigation}) => {
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         navigation.navigate('Signin')
+        AsyncStorage.clear()
       })
       .catch(function (error) {
         console.log(error);

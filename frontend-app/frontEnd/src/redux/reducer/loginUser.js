@@ -1,16 +1,16 @@
 import {LOGIN_USER_SUCCESS, LOGIN_USER_FAIL, LOGIN_USER_DETAILS} from '../action/action.types'
 
-const initialState = {
-    user: {},
-    errors: {},
-}
+// const initialState = {
+//     user: {},
+//     errors: {},
+// }
 
-export default (state = initialState, action) => {
+export default (state = {}, action) => {
     switch (action.type) {
         case LOGIN_USER_SUCCESS:
-            return{...state, user: action.payload}
+            return{user: action.payload}
         case LOGIN_USER_FAIL:
-            return{...state, errors: action.payload}
+            return{errors: action.payload}
 
         default: 
         return state;

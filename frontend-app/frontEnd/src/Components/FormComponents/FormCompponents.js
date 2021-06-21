@@ -55,10 +55,9 @@ export const FormInput = props => {
 
 export const ActionButton = props => {
   return (
-    <Button rounded block style = {{marginBottom: 15, backgroundColor: Colors.themeColor, marginTop: props.mt}}>
+    <Button onPress={props.home} rounded block style = {{marginBottom: 15, backgroundColor: Colors.themeColor, marginTop: props.mt}}>
       <Text
       uppercase = {false}
-        onPress={props.home}
         style={{fontSize: 20}}>
         {props.buttonName}
       </Text>
