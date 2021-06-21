@@ -93,6 +93,7 @@ const Loading = ({navigation}) => {
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent'}}>
       <Image source = {require('../../assets/pictures/Logo.png')} style = {{width: 150, height: 150}} />
       <Text style = {{fontSize: 20, color: Colors.themeColor, marginTop: 20, fontWeight: 'bold'}}>Welcome to Voyage Nepal</Text>
+      <ActivityIndicator color={Colors.themeColor} size="large" />
     </View>
   );
 };

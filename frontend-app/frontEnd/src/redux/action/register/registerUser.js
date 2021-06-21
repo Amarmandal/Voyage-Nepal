@@ -28,6 +28,10 @@ export const registerUser = userData => {
 
     const result = await api(config);
 
+    if(result.status !== 200){
+      alert('Something Went Wrong')
+    }
+
     const resultData = result;
     console.log(resultData);
     dispatch({

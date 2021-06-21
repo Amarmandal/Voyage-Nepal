@@ -31,7 +31,7 @@ const TravelList = props => {
   
   const Card = ({place}) => {
     return (
-      <View style={styles.card} key = {place._id}>
+      <View style={styles.card} key = {place+place._id.toString()}>
         <ImageBackground
           style={styles.cardImage}
           source={{uri: place.placePhoto}}></ImageBackground>
@@ -66,22 +66,22 @@ const TravelList = props => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, marginBottom: 30}}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Explore Destinations </Text>
           <SearchContainer />
         </View>
-        {category.map(category => (
-          <View key={category.id}>
-            <Text style={styles.activityText}>{category.name}</Text>
-            <View>
+        {category.map((category, index) => (
+          <View  key={category._id}>
+            <Text style={styles.activityText} >{category.name}</Text>
+        
               <FlatList
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 data={places}
-                keyExtractor={item => item._id}
-                renderItem={({item}) => (
+                keyExtractor={(item, index) => index.toString()+item}
+                renderItem={({item, index}) => (
                   <Pressable
                     onPress={() =>
                       navigation.navigate('Details', {
@@ -95,12 +95,12 @@ const TravelList = props => {
                         ratings: item.ratings
                       })
                     }>
-                      {item.category.includes(category._id) ? <Card key = {item._id} place={item} /> : null}
+                      {item.category.includes(category._id) ? <Card key = {index.toString()} place={item} /> : null}
                     
                   </Pressable>
                 )}
               />
-            </View>
+          
           </View>
         ))}
       </ScrollView>

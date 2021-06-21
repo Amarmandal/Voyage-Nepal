@@ -65,7 +65,7 @@ const Popular = () => {
   };
 
   return (
-    <SafeAreaView style={{paddingTop: 10, backgroundColor: 'white'}}>
+    <SafeAreaView style={{paddingTop: 10, backgroundColor: 'white', marginBottom: 30}}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <Text style={styles.headingText}>Places Near You</Text>

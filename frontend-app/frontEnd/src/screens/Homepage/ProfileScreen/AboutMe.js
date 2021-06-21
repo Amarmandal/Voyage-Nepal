@@ -30,80 +30,7 @@ const AboutMe = ({navigation}) => {
       mediaType: 'photo',
     }, (response) => {
       console.log('Response = ', response);
-      data.append('photo', {
-        uri: response.assets[0].uri,
-        type: response.assets[0].type,
-        name: response.assets[0].fileName,
-        size: response.assets[0].fileSize
-      });
-      var config = {
-        method: 'post',
-        url: `/upload/photo/${state.user.userData.id}`,
-        headers: { 
-          'Authorization': `Bearer ${state.user.token}`, 
-          'Accept': 'application/json',
-          'Cookie': `token=${state.user.token}`,
-        },
-        data : data
-      };
-
-      var config1 = {
-        method: 'put',
-        url: `/update/photo/${state.user.userData.id}`,
-        headers: { 
-          'Authorization': `Bearer ${state.user.token}`, 
-          'Accept': 'application/json',
-          'Cookie': `token=${state.user.token}`,
-        },
-        data : data
-      };
-
-      if(!detail.userDetail.profileImgURL){
-        api(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        console.log('success!');
-        Toast.show({
-          text: response.data,
-          buttonText: "Okay",
-          type: "success",
-          duration: 5000
-        })
-      })
-      .catch(function (error) {
-        console.log(error);
-        console.log('upload error');
-        Toast.show({
-          text: 'Something went wrong',
-          buttonText: "Okay",
-          type: "success",
-          duration: 5000
-        })
-      });
-      } else if(detail.userDetail.profileImgURL) {
-        api(config1)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        console.log('update success!');
-        Toast.show({
-          text: response.data,
-          buttonText: "Okay",
-          type: "success",
-          duration: 5000
-        })
-      })
-      .catch(function (error) {
-        console.log(error);
-        console.log('update error');
-        Toast.show({
-          text: 'Something went wrong',
-          buttonText: "Okay",
-          type: "warning",
-          duration: 5000
-        })
-      });
-      }
-
+      
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
@@ -121,22 +48,89 @@ const AboutMe = ({navigation}) => {
         //   uri: 'data:image/jpeg;base64,' + response.data
         // };
         setFilePath(source);
+        data.append('photo', {
+          uri: response.assets[0].uri,
+          type: response.assets[0].type,
+          name: response.assets[0].fileName,
+          size: response.assets[0].fileSize
+        });
+        var config = {
+          method: 'post',
+          url: `/upload/photo/${state.user.userData.id}`,
+          headers: { 
+            'Authorization': `Bearer ${state.user.token}`, 
+            'Accept': 'application/json',
+            'Cookie': `token=${state.user.token}`,
+          },
+          data : data
+        };
+  
+        var config1 = {
+          method: 'put',
+          url: `/update/photo/${state.user.userData.id}`,
+          headers: { 
+            'Authorization': `Bearer ${state.user.token}`, 
+            'Accept': 'application/json',
+            'Cookie': `token=${state.user.token}`,
+          },
+          data : data
+        };
+  
+        if(!detail.userDetail.profileImgURL){
+          api(config)
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+          console.log('success!');
+          Toast.show({
+            text: response.data,
+            buttonText: "Okay",
+            type: "success",
+            duration: 5000
+          })
+        })
+        .catch(function (error) {
+          console.log(error);
+          console.log('upload error');
+          Toast.show({
+            text: 'Something went wrong',
+            buttonText: "Okay",
+            type: "success",
+            duration: 5000
+          })
+        });
+        } else if(detail.userDetail.profileImgURL) {
+          api(config1)
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+          console.log('update success!');
+          Toast.show({
+            text: response.data,
+            buttonText: "Okay",
+            type: "success",
+            duration: 5000
+          })
+        })
+        .catch(function (error) {
+          console.log(error);
+          console.log('update error');
+          Toast.show({
+            text: 'Something went wrong',
+            buttonText: "Okay",
+            type: "warning",
+            duration: 5000
+          })
+        });
+        }  
       }
     });
   
-  };
-
-  var options = {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit"
   };
 
   var date = new Date(detail.userDetail.DOB)
   var dob = moment(date).utc().format('DD/MM/YYYY')
 
   return (
-    <Container style={{backgroundColor: '#ffffff'}}>
+    <Container style={{backgroundColor: '#ffffff', marginBottom: 30}}>
       <Button transparent onPress={() => navigation.goBack()} large>
         <Icon name="arrow-back" style={{color: '#52c0b4', fontSize: 25}} />
       </Button>
@@ -158,9 +152,6 @@ const AboutMe = ({navigation}) => {
           </Text>
         </View>
       </View>
-      <Image
-          source={{uri: filePath.uri}}
-        />
       
       <Content style={{margin: 20, marginLeft: 40}}>
         <H1 style={{fontSize: 23, fontWeight: '900', color: '#000000'}}>
