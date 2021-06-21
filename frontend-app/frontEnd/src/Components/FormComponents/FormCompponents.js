@@ -10,21 +10,7 @@ import {
   Input,
   Item,
 } from 'native-base';
-import Colors from '../../constants/Color'
-
-export const GifComponent = props => {
-  return (
-    <Image
-      source={require('../../assets/pictures/bus1.gif')}
-      style={{
-        width: 175,
-        height: 175,
-        borderRadius: 400 / 2,
-        overlayColor: 'white',
-      }}
-    />
-  );
-};
+import Colors from '../../constants/Color';
 
 export const Title = props => {
   return (

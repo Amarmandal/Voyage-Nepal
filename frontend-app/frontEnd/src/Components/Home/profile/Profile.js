@@ -5,27 +5,6 @@ import Colors from '../../../constants/Color'
 
 import profileStyles from './profile.styles';
 
-export const Img = props => {
-  const imageWidth = useWindowDimensions().width;
-  const imageHeight = Math.round(imageWidth * (1105 / 2004));
-  return (
-    <View>
-      <ImageBackground
-        source={require('../../../assets/pictures/bgMountains.jpg')}
-        style={{
-          height: imageHeight,
-          width: imageWidth,
-          alignItems: 'center',
-        }}>
-        <Image
-          source={require('../../../assets/pictures/face.jpg')}
-          style={profileStyles.img}
-        />
-      </ImageBackground>
-    </View>
-  );
-};
-
 export const UserName = props => {
   return <Text style={profileStyles.userName}>{props.name}</Text>;
 };

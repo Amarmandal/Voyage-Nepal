@@ -20,12 +20,14 @@ export default StyleSheet.create({
   },
   dropdown:{
     backgroundColor: '#ffffff',
-    borderColor: '#C0C0C0',
-    borderWidth: 0.5,
+    borderColor: Colors.themeColor,
+    borderWidth: 0.75,
     padding: 4,
     borderRadius: 27,
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf:'flex-start',
+    width: '100%',
     // shadowColor: '#000',
     // shadowOffset: {
     //   width: 0,
@@ -41,7 +43,7 @@ export default StyleSheet.create({
     borderWidth: 0,
     backgroundColor: '#ffffff',
     padding: 10,
-    borderColor: 'gray',
+    borderColor: Colors.themeColor,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

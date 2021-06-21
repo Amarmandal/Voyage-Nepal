@@ -1,6 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {Image, ScrollView, Modal, ActivityIndicator, SafeAreaView} from 'react-native';
-import {Container, Content, View, Text, Button} from 'native-base';
+import {
+  Image,
+  ScrollView,
+  Modal,
+  ActivityIndicator,
+  SafeAreaView,
+} from 'react-native';
+import {Container, Content, View, Text, Button, Icon} from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {
@@ -94,16 +100,15 @@ const Signin = ({navigation}) => {
     password: data.password,
   };
 
-  const showErrors = (err) => {
-    if(err.message === 'Network Error'){
-      alert('Please Check your Internet Connection and Try again')
-    } else if(err.message === 'Request failed with status code 401'){
-      setError(err.response.data.error)
+  const showErrors = err => {
+    if (err.message === 'Network Error') {
+      alert('Please Check your Internet Connection and Try again');
+    } else if (err.message === 'Request failed with status code 401') {
+      setError(err.response.data.error);
     } else {
-      setError('Something Went Wrong')
+      setError('Something Went Wrong');
     }
-    
-  }
+  };
 
   const submitValues = async () => {
     if (data.email !== '' && data.password !== '') {
@@ -178,24 +183,44 @@ const Signin = ({navigation}) => {
   // };
 
   return (
-    <SafeAreaView style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
-      <GoBack goBack={() => navigation.goBack()} />
-      <Image source = {require('../../assets/pictures/Logo.png')} style = {{width: 150, height: 150, alignSelf: 'center', marginBottom: 40}} />
-      <Container style={{
-          borderWidth: 3,
-          borderTopWidth: 3,
-          borderBottomWidth: 0,
-          borderColor: Colors.themeColor,
-          borderTopRightRadius: 30,
-          borderTopLeftRadius: 30,
-        }}>
-      <Content
-        padder
-        keyboardShouldPersistTaps={'handled'}
-        >
-        <ScrollView>
-          <View style={{alignItems: 'center', margin: 12}}>
-          <Text style = {{ fontSize: 25, fontWeight: 'bold', marginBottom: 30, marginTop: 10}}>Login</Text>
+    <Container style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
+      <Content keyboardShouldPersistTaps={'handled'}>
+        <Image
+          source={require('../../assets/images/display.png')}
+          style={{marginBottom: 50, opacity: 0.8}}
+        />
+        <Image
+          source={require('../../assets/pictures/logoEdit.png')}
+          style={{
+            width: 160,
+            height: 160,
+            position: 'absolute',
+            top: 170,
+            alignSelf: 'center',
+            marginBottom: 30,
+          }}></Image>
+        <Button
+          transparent
+          onPress={() => navigation.goBack()}
+          large
+          style={{position: 'absolute', top: 8}}>
+          <Icon
+            name="arrow-back-circle-sharp"
+            style={{color: '#ffffff', fontSize: 38}}
+          />
+        </Button>
+
+        
+          <View style={{alignItems: 'center', margin: 30}}>
+            {/* <Text
+              style={{
+                fontSize: 25,
+                fontWeight: 'bold',
+                marginBottom: 30,
+                marginTop: 10,
+              }}>
+              Login
+            </Text> */}
             {/* <View style={{flexDirection: 'row'}}>
               <SocialMediaLogin iconName="google" bgcolor={Colors.google} />
               <SocialMediaLogin
@@ -258,7 +283,7 @@ const Signin = ({navigation}) => {
             <ForgotPassword forgotPassword={() => handleForgotPAssword()} />
 
             <ActionButton
-              mt={80}
+              mt={20}
               buttonName="Continue"
               // home={() => submitValues()}
               home={() => submitValues()}
@@ -269,10 +294,9 @@ const Signin = ({navigation}) => {
               signup={() => navigation.navigate('Signup')}
             />
           </View>
-        </ScrollView>
+      
       </Content>
-      </Container>
-    </SafeAreaView>
+    </Container>
   );
 };
 
