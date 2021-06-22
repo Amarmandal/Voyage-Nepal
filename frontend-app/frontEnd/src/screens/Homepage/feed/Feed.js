@@ -1,9 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {SafeAreaView,Text, ScrollView} from 'react-native';
-import {HelloUser} from '../../../Components/Home/feed/Feed';
 import Header from '../../../Components/Home/feed/header'
 import Popular from '../../../Components/Home/feed/Popular';
-import SearchContainer from '../../../Components/Home/feed/searchContainer';
 
 import Geolocation from 'react-native-geolocation-service';
 import {Button} from 'native-base';
@@ -27,6 +25,9 @@ const Feed = () => {
     var config = {
       method: 'get',
       url: '/categories',
+      headers: {
+        Authorization: `Bearer ${state.user.token}`,
+      },
     };
   
     await api(config)

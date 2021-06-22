@@ -56,7 +56,7 @@ const Loading = ({navigation}) => {
     const userDOB = moment(detail.userDetail.DOB, 'YYYY/M/D');
     const userAge = moment().diff(userDOB, 'years')
     setAge(userAge)
-    console.log(age)
+    // console.log(age)
     var data = JSON.stringify({
       "placename": "Bhimsen Tower (Dharhara)",
       "age": age,

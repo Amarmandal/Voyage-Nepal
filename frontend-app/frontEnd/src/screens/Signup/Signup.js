@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {ScrollView, SafeAreaView, Image} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {ScrollView, SafeAreaView, Image, Alert} from 'react-native';
 import api from '../../services/ApiServices';
 import axios from 'axios';
 import {
@@ -29,9 +29,32 @@ import Colors from '../../constants/Color';
 import GoBack from '../../Components/Signin/GoBack';
 
 import {registerUser} from '../../redux/action/register/registerUser'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 
 const Signup = ({navigation}, props) => {
+
+  const state = useSelector(state => state.authReducer)
+
+  // useEffect(() => {
+  //   if(state.errors){
+  //     alert('error')
+  //     console.log(state);
+  //   }
+  // }, [state.errors])
+
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    if(state.success){
+      setError('')
+      Alert.alert(state.success.message)
+    }else if(state.errors){
+      // alert('error')
+      // console.log(state);
+      setError(state.errors)
+      console.log(state.errors);
+    }
+  }, [state.success,state.errors])
 
   const dispatch = useDispatch()
 
@@ -59,19 +82,19 @@ const Signup = ({navigation}, props) => {
   });
 
   const onChangeDate = (event, selectedDate) => {
-    console.log(gender);
+    // console.log(gender);
     const currentDate = selectedDate || date;
 
     setShowCalendar(Platform.OS === 'ios');
     setDate(currentDate);
-    console.log(currentDate);
+    // console.log(currentDate);
 
     var dateSelected = currentDate
       .toISOString()
       .replace('-', '/')
       .split('T')[0]
       .replace('-', '/');
-    console.log(dateSelected);
+    // console.log(dateSelected);
     getDOB(dateSelected);
     // setDob(dateSelected);
     yearRange: '-99:-18';
@@ -183,11 +206,13 @@ const Signup = ({navigation}, props) => {
   const submitValues = () => {
     if(data.name !== '' && data.email !== '' && data.password !== '' && data.confirmPassword !== '' && dob !== '' && gender !== '' && city !== ''){
       dispatch(registerUser(newUser))
-        .then(() => {
-          alert('Please Check your Email for verification')
-          navigation.navigate('Signin')
-        })
-        .catch(err => console.log(err))
+        // .then(() => {
+        //   // alert('Please Check your Email for verification')
+        //   // navigation.navigate('Signin')
+        //   console.log('registeration');
+        //   console.log(state);
+        // })
+        // .catch(err => console.log(err))
     } else {
       alert('All fields are mandatory; Please fill up the form correctly')
     }
@@ -221,9 +246,12 @@ const Signup = ({navigation}, props) => {
           />
         </Button>
           <View style={{alignItems: 'center', margin: 30}}>
-            
-              {/* <Text style = {{alignSelf: 'flex-start', fontSize: 25, fontWeight: 'bold', marginBottom: 50, marginTop: 20}}>Create an Account</Text> */}
-            
+          {error == '' ? null : <Text style={{
+                  color: Colors.error,
+                  fontSize: 14,
+                  marginBottom: 10,
+                  fontWeight: 'bold',
+                }}>{error}</Text>}
               <FormInput
                 icon="pencil"
                 placeholder="Full Name"

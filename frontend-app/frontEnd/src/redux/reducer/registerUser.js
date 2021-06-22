@@ -1,16 +1,16 @@
 import {REGISTER_USER_SUCCESS, REGISTER_USER_FAIL} from '../action/action.types'
 
 const initialState = {
-    user: {},
+    success: {},
     errors: {}
 }
 
-const authReducer = (state = initialState, action) => {
+const authReducer = (state = {}, action) => {
     switch (action.type) {
         case REGISTER_USER_SUCCESS:
-            return{...state, user: action.payload}
-        // case REGISTER_USER_FAIL:
-        //     return{...state, errors: action.payload}
+            return{success: action.payload}
+        case REGISTER_USER_FAIL:
+            return{errors: action.payload}
         default:
              return state;
     }

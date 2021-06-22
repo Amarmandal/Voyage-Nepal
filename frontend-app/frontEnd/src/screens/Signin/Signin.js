@@ -61,6 +61,25 @@ const Signin = ({navigation}) => {
     }
   }, []);
 
+  useEffect(() => {
+    if(state.user){
+      // console.log(state);
+      setData({
+        ...data,
+        password: '',
+        isValidEmail: true,
+        isValidPassword: true,
+      });
+      navigation.navigate('LoadingScreen1', {
+        id: state.user.userData.id,
+        token: state.user.token,
+      });
+      setError('')
+    }else if(state.errors){
+      setError(state.errors)
+    }
+  }, [state.user, state.errors])
+
   const getEmail = _email => {
     setData({...data, email: _email});
   };
@@ -85,15 +104,15 @@ const Signin = ({navigation}) => {
     }
   };
 
-  const storeData = async result => {
-    try {
-      await AsyncStorage.setItem('token', result.token);
-      await AsyncStorage.setItem('email', result.userData.email);
-    } catch (e) {
-      // saving error
-      console.log(e);
-    }
-  };
+  // const storeData = async result => {
+  //   try {
+  //     await AsyncStorage.setItem('token', result.token);
+  //     await AsyncStorage.setItem('email', result.userData.email);
+  //   } catch (e) {
+  //     // saving error
+  //     console.log(e);
+  //   }
+  // };
 
   var signinUser = {
     email: data.email,
@@ -112,75 +131,16 @@ const Signin = ({navigation}) => {
 
   const submitValues = async () => {
     if (data.email !== '' && data.password !== '') {
-      dispatch(loginUser(signinUser)).then(result => {
-        // console.log(state.errors);
-        // fetchDetails()
-        if (result.token) {
-          setData({
-            ...data,
-            password: '',
-            isValidEmail: true,
-            isValidPassword: true,
-          });
-          setError('');
-          storeData(result);
-          navigation.navigate('LoadingScreen1', {
-            id: result.userData.id,
-            token: result.token,
-          });
-        }
-        state.errors ? showErrors(state.errors) : console.log('no Error');
-      });
+      dispatch(loginUser(signinUser))
     } else {
       setError('All the fields are required');
     }
   };
 
+
   const handleForgotPAssword = () => {
     navigation.navigate('Email');
   };
-
-  // const getInfoFromToken = token => {
-  //   const PROFILE_REQUEST_PARAMS = {
-  //     fields: {
-  //       string: 'id,name,first_name,last_name,picture,email',
-  //     },
-  //   };
-  //   const profileRequest = new GraphRequest(
-  //     '/me',
-  //     {token, parameters: PROFILE_REQUEST_PARAMS},
-  //     (error, user) => {
-  //       if (error) {
-  //         console.log('login info has error: ' + error);
-  //       } else {
-  //         setUserData({user});
-  //         // this.setState({userInfo: user});
-  //         console.log('result:', user);
-
-  //       }
-  //     },
-  //   );
-  //   new GraphRequestManager().addRequest(profileRequest).start();
-  // };
-
-  // const loginWithFb = async() => {
-  //   LoginManager.logInWithPermissions(['public_profile']).then(
-  //     login => {
-  //       if (login.isCancelled) {
-  //         console.log('Login cancelled');
-  //       } else {
-  //         AccessToken.getCurrentAccessToken().then(data => {
-  //           const accessToken = data.accessToken.toString();
-  //           console.log(accessToken);
-  //           getInfoFromToken(accessToken);
-  //         });
-  //       }
-  //     },
-  //     error => {
-  //       console.log('Login fail with error: ' + error);
-  //     },
-  //   );
-  // };
 
   return (
     <Container style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
@@ -212,28 +172,10 @@ const Signin = ({navigation}) => {
 
         
           <View style={{alignItems: 'center', margin: 30}}>
-            {/* <Text
-              style={{
-                fontSize: 25,
-                fontWeight: 'bold',
-                marginBottom: 30,
-                marginTop: 10,
-              }}>
-              Login
-            </Text> */}
-            {/* <View style={{flexDirection: 'row'}}>
-              <SocialMediaLogin iconName="google" bgcolor={Colors.google} />
-              <SocialMediaLogin
-                iconName="facebook"
-                bgcolor={Colors.facebook}
-                login={() => loginWithFb()}
-              />
-            </View> */}
-            {/* <LineWithText /> */}
             {error === '' ? null : (
               <Text
                 style={{
-                  color: '#ffffff',
+                  color: Colors.error,
                   fontSize: 14,
                   marginBottom: 10,
                   fontWeight: 'bold',

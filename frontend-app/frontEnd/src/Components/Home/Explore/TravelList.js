@@ -28,6 +28,8 @@ const TravelList = props => {
   const category = useSelector(state => state.category);
   const state = useSelector(state => state.loginUser)
   const places = useSelector(state => state.place)
+
+  // console.log(places);
   
   const Card = ({place}) => {
     return (
@@ -96,7 +98,6 @@ const TravelList = props => {
                       })
                     }>
                       {item.category.includes(category._id) ? <Card key = {index.toString()} place={item} /> : null}
-                    
                   </Pressable>
                 )}
               />
