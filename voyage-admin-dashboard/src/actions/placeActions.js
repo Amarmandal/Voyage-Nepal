@@ -31,9 +31,9 @@ export const createPlace = (placeData) => async (dispatch, getState) => {
     var config = {
       headers: {
         Authorization: `Bearer ${token}`,
-      },
-      withCredentials: true
+      }
     };
+    axios.defaults.withCredentials = true;
 
     const { data } = await axios.post(URL, placeData, config);
 

@@ -10,25 +10,29 @@ const {
     deleteCategory,
     getCategory
  } = require('../controllers/categoryController');
-
+ const {
+   getUserById
+ } = require("../controllers/userController");
  const {
     isSignedIn,
-    isAuthenticated,
+    isAuthorized,
     isAdmin
  } = require('../middleware/authMiddleware');
 
 router.param('categoryId', getCategoryById);
+router.param('userId', getUserById);
 
 //Read Category by Id
-router.get('/category/:categoryId', getCategory);
-router.get('/categories', isSignedIn, isAuthenticated, getAllCategories);
+router.get('/category/:categoryId/:userId', isSignedIn, isAuthorized, getCategory);
+//get all categories
+router.get('/categories/:userId', isSignedIn, isAuthorized, getAllCategories);
 //delete category
-router.delete('/category/:categoryId', isSignedIn, isAuthenticated, isAdmin, deleteCategory);
+router.delete('/category/:categoryId/:userId', isSignedIn, isAuthorized, isAdmin, deleteCategory);
 
 //update category
-router.put('/category/:categoryId', isSignedIn, isAuthenticated, isAdmin, updateCategory);
+router.put('/category/update/:categoryId/:userId', isSignedIn, isAuthorized, isAdmin, updateCategory);
 
 //create Category
-router.post('/category/create', isSignedIn, isAuthenticated, isAdmin, createCategory);
+router.post('/category/create/:userId', isSignedIn, isAuthorized, isAdmin, createCategory);
 
 module.exports = router;

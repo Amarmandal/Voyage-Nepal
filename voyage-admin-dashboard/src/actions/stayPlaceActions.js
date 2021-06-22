@@ -20,8 +20,8 @@ export const getAllStayPlace = () => async (dispatch, getState) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      withCredentials: true
     };
+    axios.defaults.withCredentials = true;
 
     const { data } = await axios(config);
 

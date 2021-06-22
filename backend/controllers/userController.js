@@ -32,27 +32,40 @@ exports.getUserDetails = async (req, res) => {
 
 //only admin
 exports.removeUserById = async (req, res) => {
+  const { userDeleteId } = req.params; 
+
   try {
-    await User.findOneAndRemove({ _id: req.userProfile._id });
+    const doc = await User.findOneAndDelete({ _id: userDeleteId, isAdmin: false });
+    
+    if(!doc) {
+      throw new Error('Handled by catch');
+    }
+
     res.status(200).json("User Has been successfully deleted");
     return;
+
   } catch (error) {
-    console.log(error);
-    res.status(200).json({ error: "User cannot be deleted" });
+    res.status(401).json({ error: "Invalid User Id or User is an Admin" });
     return;
   }
 };
 
+//Admin can decide to change the non-admin user role
 exports.updateUserRole = async (req, res) => {
-  const user = req.userProfile;
-  user.isAdmin = req.body.role;
-
+  const { userRoleUpdateId } = req.params; 
   try {
-    await user.save();
+    const user = await User.findOne({ _id: userRoleUpdateId, isAdmin: false });
+
+    if(!user) {
+      throw new Error('Targeted User not found');
+    }
+
+    user.isAdmin = req.body.isAdmin;
+    user.save()
+
     res.status(200).json({message: 'User Role has been successfully changed'})
     return;
   } catch (error) {
-    console.log(error);
     res.status(400).json({error: 'Unable to change the user role'})
     return;
   }

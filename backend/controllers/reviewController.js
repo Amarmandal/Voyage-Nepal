@@ -2,17 +2,18 @@ const Review = require("../models/reviewModel");
 const { getAvgRatings } = require("../utils/getAvgRating");
 
 exports.createPlaceReview = async (req, res) => {
-  const userReview = req.body;
-  userReview.user = req.user.id;
-
   try {
+    const userReview = req.body;
+    userReview.user = req.userProfile._id;
+
     const newReview = new Review(userReview);
     const place = req.place;
 
     const foundValue = place.reviews.findIndex((item) => {
-      return item.user._id.toString() === req.user.id;
+      return userReview.user.toString() == item.user._id;
     });
 
+    
     if (foundValue !== -1) {
       res.status(400).json({ error: "You have already reviewed this place " });
       return;

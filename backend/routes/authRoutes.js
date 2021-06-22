@@ -12,9 +12,11 @@ const {
 } = require("../controllers/authController");
 const {
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   getUserByOtp
 } = require("../middleware/authMiddleware");
+
+router.param('userId', getUserById);
 
 //Activate User
 router.post("/user/verify-email", userEmailVerification);
@@ -31,12 +33,11 @@ router.post('/user/forget-password', forgetPassword);
 //reset user otp
 router.post('/user/verify-reset-otp', getUserByOtp);
 
-router.param('userId', getUserById);
 //reset password
 router.post('/user/:userId/reset-password', resetPassword);
 
-router.put('/user/:userId/change-password', isSignedIn, isAuthenticated, changeCurrentPassword);
+router.put('/user/:userId/change-password', isSignedIn, isAuthorized, changeCurrentPassword);
 
-router.get('/user/:userId/signout', isSignedIn, isAuthenticated, handleSignout);
+router.get('/user/:userId/signout', isSignedIn, isAuthorized, handleSignout);
 
 module.exports = router;

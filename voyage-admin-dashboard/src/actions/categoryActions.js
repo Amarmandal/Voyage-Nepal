@@ -63,9 +63,10 @@ export const getAllCategory = () => async (dispatch, getState) => {
       url: URL,
       headers: {
         Authorization: `Bearer ${token}`,
-      },
-      withCredentials: true
+      }
     };
+    axios.defaults.withCredentials = true;
+    document.cookie = `token=${token}`
 
     const { data } = await axios(config);
 

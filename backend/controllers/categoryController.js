@@ -23,13 +23,16 @@ exports.createCategory = async (req, res) => {
 }
 
 exports.deleteCategory = async (req, res) => {
-    const targetCategoryId = req.category._id;
     try {
+        const targetCategoryId = req.category._id;
+        if(!targetCategoryId) {
+            throw new Error('Handled by Catch block');
+        }
+
         await Category.findByIdAndRemove({ _id: targetCategoryId });
         return res.status(200).json('Category Successfully deleted');
     } catch(err) {
-        console.log(err);
-        return res.status(401).json("Couldn't delete the category");
+        return res.status(401).json({ error: 'Category might already be deleted'});
     }
 
 }

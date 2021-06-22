@@ -11,7 +11,7 @@ const {
 } = require("../controllers/userController");
 const {
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   isAdmin,
 } = require("../middleware/authMiddleware");
 const { upload } = require("../utils/uploadHelper");
@@ -21,7 +21,7 @@ router.param("userId", getUserById);
 router.post(
   "/upload/photo/:userId",
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   upload.single("photo"),
   uploadPhoto
 );
@@ -29,30 +29,30 @@ router.post(
 router.get(
   "/user/user-details/:userId",
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   getUserDetails
 );
 
 router.put(
   "/update/photo/:userId",
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   upload.single("photo"),
   updatePhoto
 );
 
 router.delete(
-  "/user/:userId",
+  "/user/:userId/:userDeleteId",
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   isAdmin,
   removeUserById
 );
 
 router.put(
-  "/user/update-role/:userId",
+  "/user/update-role/:userId/:userRoleUpdateId",
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   isAdmin,
   updateUserRole
 );
