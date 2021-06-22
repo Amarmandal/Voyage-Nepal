@@ -43,7 +43,7 @@ router.post(
 );
 
 //recommendation routes
-router.post('/place/recommends', isSignedIn, recommendsPlace);
+router.post('/place/recommends/:userId', isSignedIn, isAuthorized, recommendsPlace);
 
 //update place
 router.put(
