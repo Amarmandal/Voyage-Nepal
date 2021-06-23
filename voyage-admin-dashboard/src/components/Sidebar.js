@@ -2,7 +2,6 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { FaTachometerAlt, FaLaughWink } from "react-icons/fa";
-import { useCookies } from "react-cookie";
 import { Button } from "reactstrap";
 import { logout } from "../actions/userActions";
 
@@ -12,11 +11,9 @@ const Sidebar = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector(state => state.userLogin);
   const { userData } = userInfo;
-  const [cookie, setCookie, removeCookie] = useCookies('cookie');
 
   const handleLogout = () => {
     dispatch(logout());
-    removeCookie('token');
   };
 
   return (
