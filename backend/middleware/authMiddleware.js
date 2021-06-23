@@ -22,6 +22,8 @@ exports.isSignedIn = (req, res, next) => {
 };
 
 exports.isAuthorized = (req, res, next) => {
+  //req.userProfile is populated by getUserById method
+  //req,auth is populated when isSigned verify jwt token successfully
   const checker = req.userProfile && req.auth && req.auth.id == req.userProfile._id;
   if(!checker) {
     return res.status(401).json({ error: 'Unauthorized Access'});

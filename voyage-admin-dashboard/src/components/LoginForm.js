@@ -14,6 +14,8 @@ import {
   Label,
 } from "reactstrap";
 
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 import Logo from "../assets/images/logo.png";
 import "./LoginForm.css";
 import { login } from "../actions/userActions";
@@ -22,10 +24,15 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isToggle, setIsToggle] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
     dispatch(login(email, password));
+  };
+
+  const handlePasswordToggle = () => {
+    return setIsToggle(!isToggle);
   };
 
   return (
@@ -52,12 +59,19 @@ const LoginForm = () => {
                   Password
                 </Label>
                 <Input
-                  type="password"
+                  type={isToggle ? "text" : "password"}
                   id="user-password"
                   placeholder="Password"
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
                 />
+                <span class="password-toggler">
+                  {isToggle ? (
+                    <FaEyeSlash size="20" onClick={handlePasswordToggle} />
+                  ) : (
+                    <FaEye size="20" onClick={handlePasswordToggle} />
+                  )}
+                </span>
                 <span className="forget-password-text float-end my-1 display-block">
                   Forgot your password?
                 </span>

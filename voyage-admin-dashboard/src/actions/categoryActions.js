@@ -18,11 +18,11 @@ import { API } from "../backend";
 
 export const createCategory = (categoryData) => async (dispatch, getState) => {
   try {
-    const URL = `${API}/category/create`;
-    dispatch({ type: CREATE_CATEGORY_REQUEST });
-
     const { userLogin } = getState();
     const { token, userData } = userLogin.userInfo;
+
+    const URL = `${API}/category/create/${userData.id}`;
+    dispatch({ type: CREATE_CATEGORY_REQUEST });
     
     if (!token || !userData.isAdmin) {
       throw new Error("User is not an Admin");
@@ -32,8 +32,8 @@ export const createCategory = (categoryData) => async (dispatch, getState) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      withCredentials: true
     };
+
     const { data } = await axios.post(URL, categoryData, config);
 
     dispatch({ type: CREATE_CATEGORY_SUCCESS, payload: data });
@@ -52,11 +52,11 @@ export const createCategory = (categoryData) => async (dispatch, getState) => {
 
 export const getAllCategory = () => async (dispatch, getState) => {
   try {
-    const URL = `${API}/categories`;
-    dispatch({ type: GET_CATEGORY_REQUEST });
-
     const { userLogin } = getState();
-    const { token } = userLogin.userInfo;
+    const { token, userData } = userLogin.userInfo;
+
+    const URL = `${API}/categories/${userData.id}`;
+    dispatch({ type: GET_CATEGORY_REQUEST });
 
     var config = {
       method: "get",
@@ -65,8 +65,6 @@ export const getAllCategory = () => async (dispatch, getState) => {
         Authorization: `Bearer ${token}`,
       }
     };
-    axios.defaults.withCredentials = true;
-    document.cookie = `token=${token}`
 
     const { data } = await axios(config);
 

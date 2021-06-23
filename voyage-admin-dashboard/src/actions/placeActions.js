@@ -18,11 +18,11 @@ import { API } from "../backend";
 
 export const createPlace = (placeData) => async (dispatch, getState) => {
   try {
-    const URL = `${API}/place/create`;
-    dispatch({ type: CREATE_PLACE_REQUEST });
-
     const { userLogin } = getState();
     const { token, userData } = userLogin.userInfo;
+
+    const URL = `${API}/place/create/${userData.id}`;
+    dispatch({ type: CREATE_PLACE_REQUEST });
 
     if (!token || !userData.isAdmin) {
       throw new Error("User is not an Admin");
@@ -33,7 +33,6 @@ export const createPlace = (placeData) => async (dispatch, getState) => {
         Authorization: `Bearer ${token}`,
       }
     };
-    axios.defaults.withCredentials = true;
 
     const { data } = await axios.post(URL, placeData, config);
 

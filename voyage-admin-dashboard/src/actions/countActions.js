@@ -7,21 +7,20 @@ import {
 import { API } from "../backend";
 
 
-export const getDocsCount = () => async (dispatch, getState) => {
+export const getDocsCount = (userId) => async (dispatch, getState) => {
   try {
-    const URL = `${API}/docs/count`;
-    dispatch({ type: GET_COUNT_REQUEST });
-
     const { userLogin } = getState();
-    const { token } = userLogin.userInfo;
+    const { token, userData } = userLogin.userInfo;
+    const URL = `${API}/docs/count/${userData.id}`;
+
+    dispatch({ type: GET_COUNT_REQUEST });
 
     var config = {
       method: "get",
       url: URL,
       headers: {
         Authorization: `Bearer ${token}`,
-      },
-      withCredentials: true,
+      }
     };
 
     const { data } = await axios(config);
