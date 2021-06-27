@@ -7,7 +7,9 @@ const {
   deletePlace,
   createPlace,
   updatePlace,
-  recommendsPlace
+  recommendsPlace,
+  getNextPlacePage,
+  getPreviousPlacePage
 } = require("../controllers/placeController");
 const {
   isSignedIn,
@@ -30,6 +32,22 @@ router.get("/place/:placeId/:userId", isSignedIn, isAuthorized, (req, res) => {
 
 //get All the places
 router.get("/places/:userId", isSignedIn, isAuthorized, getAllPlace);
+
+router.get(
+  "/places/next-page/:userId/:lastObjectId?",
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+  getNextPlacePage
+);
+
+router.get(
+  "/places/previous-page/:userId/:firstObjectId",
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+  getPreviousPlacePage
+);
 
 //create place only by admin
 router.post(

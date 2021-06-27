@@ -1,13 +1,41 @@
 import React from "react";
 import OverviewCard from "./OverviewCard";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { Button } from "reactstrap";
 import Loader from "./Loader";
-// import PlaceForm from "./PlaceForm";
+import PlaceTable from "../components/PlaceTable";
+import CategoryTable from "../components/CategoryTable";
+import HotelTable from "../components/HotelTable";
+import ItemTable from "./ItemTable";
+import "./Dashboard.css";
+
+//actions
 
 const Dashboard = () => {
   const { loading, countData, success } = useSelector(
     (state) => state.docsCount
   );
+
+  const {
+    showUser,
+    showCategory,
+    showPlace,
+    showHotel
+  } = useSelector(state => state.overviewToggle);
+
+  const getTableOverview = () => {
+    if(showUser) {
+      return <ItemTable />
+    } else if (showPlace) {
+      return <PlaceTable />
+    } else if (showCategory) {
+      return <CategoryTable />
+    } else if (showHotel) {
+      return <HotelTable />
+    } else {
+      return <Loader padding="50px"  loaderText="" />;
+    }
+  }
 
   return (
     <>
@@ -20,9 +48,11 @@ const Dashboard = () => {
           <OverviewCard
             title="registered users"
             info={
-              !loading && success && countData.data
-                ? countData.data.userCount
-                : <Loader padding="5px" loaderText={null} />
+              !loading && success && countData.data ? (
+                countData.data.userCount
+              ) : (
+                <Loader padding="5px" loaderText={null} />
+              )
             }
             borderStyle="primary"
           />
@@ -32,9 +62,11 @@ const Dashboard = () => {
           <OverviewCard
             title="total places"
             info={
-              !loading && success && countData.data
-                ? countData.data.placeCount
-                : <Loader padding="5px" loaderText={null} />
+              !loading && success && countData.data ? (
+                countData.data.placeCount
+              ) : (
+                <Loader padding="5px" loaderText={null} />
+              )
             }
             borderStyle="success"
           />
@@ -44,9 +76,11 @@ const Dashboard = () => {
           <OverviewCard
             title="total categories"
             info={
-              !loading && success && countData.data
-                ? countData.data.categoryCount
-                : <Loader padding="5px" loaderText={null} />
+              !loading && success && countData.data ? (
+                countData.data.categoryCount
+              ) : (
+                <Loader padding="5px" loaderText={null} />
+              )
             }
             borderStyle="info"
           />
@@ -56,9 +90,11 @@ const Dashboard = () => {
           <OverviewCard
             title="Hotel and Restaurants"
             info={
-              !loading && success && countData.data
-                ? countData.data.hotelCount
-                : <Loader padding="5px" loaderText={null} />
+              !loading && success && countData.data ? (
+                countData.data.hotelCount
+              ) : (
+                <Loader padding="5px" loaderText={null} />
+              )
             }
             borderStyle="warning"
           />
@@ -66,7 +102,7 @@ const Dashboard = () => {
       </div>
 
       <div className="row mt-4">
-        <div className="col-xl-7 col-lg-7"></div>
+        {getTableOverview()}
       </div>
     </>
   );

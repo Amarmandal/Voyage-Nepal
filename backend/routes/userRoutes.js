@@ -8,6 +8,8 @@ const {
   removeUserById,
   updateUserRole,
   getUserDetails,
+  getNextUserPage,
+  getPreviousUserPage
 } = require("../controllers/userController");
 const {
   isSignedIn,
@@ -31,6 +33,24 @@ router.get(
   isSignedIn,
   isAuthorized,
   getUserDetails
+);
+
+//to make the parameter option we use ? sign after the parameter
+//here lastObjectId is the optional parameter
+router.get(
+  "/users/next-page/:userId/:lastObjectId?",
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+  getNextUserPage
+);
+
+router.get(
+  "/users/previous-page/:userId/:firstObjectId",
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+  getPreviousUserPage
 );
 
 router.put(

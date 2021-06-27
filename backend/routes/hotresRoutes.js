@@ -7,6 +7,8 @@ const {
   deleteHotel,
   updateHotel,
   getAllStayPlaces,
+  getNextHotelPage,
+  getPreviousHotelPage
 } = require("../controllers/hotresController");
 const { getUserById } = require("../controllers/userController");
 const {
@@ -27,6 +29,23 @@ router.get(
   isAdmin,
   getAllStayPlaces
 );
+
+router.get(
+  "/hotels/next-page/:userId/:lastObjectId?",
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+  getNextHotelPage
+);
+
+router.get(
+  "/hotels/previous-page/:userId/:firstObjectId",
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+  getPreviousHotelPage
+);
+
 
 //create hotel
 router.post(

@@ -8,6 +8,11 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_RESET,
   USER_REGISTER_SUCCESS,
+  GET_USERS_REQUEST,
+  GET_USERS_SUCCESS,
+  GET_USERS_FAIL,
+  END_OF_USER_PAGE,
+  MARK_FIRST_USER_PAGE
 } from "./action.types";
 import { API } from "../backend";
 
@@ -83,5 +88,112 @@ export const register = (token) => async(dispatch) => {
     dispatch({
       type: USER_REGISTER_RESET
     })
+  }
+}
+
+export const getNextUsers = (lastObjId = null) => async (dispatch, getState) => {
+  try {
+    const { userLogin } = getState();
+    const { token, userData } = userLogin.userInfo;
+
+    let URL;
+    if(!lastObjId) {
+      URL = `${API}/users/next-page/${userData.id}`;
+    } else {
+      URL = `${API}/users/next-page/${userData.id}/${lastObjId}`;
+    }
+
+    dispatch({ type: GET_USERS_REQUEST });
+
+    var config = {
+      method: "get",
+      url: URL,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    };
+
+    const { data: userDataList } = await axios(config);
+
+    dispatch({ type: GET_USERS_SUCCESS, payload: {
+      data: userDataList.data,
+      firstId: userDataList.data[0]._id.toString(),
+      lastId: userDataList.data[userDataList.data.length-1]._id.toString()
+    } });
+
+    if(!lastObjId) {
+      dispatch({
+        type: MARK_FIRST_USER_PAGE,
+        payload: 'true'
+      })
+    }
+
+    if(userDataList.data.length !== 5) {
+      dispatch({
+        type: END_OF_USER_PAGE,
+        payload: 'true'
+      })
+    }
+  } catch (err) {
+    dispatch({
+      type: GET_USERS_FAIL,
+      payload:
+        err.response && err.response.data.error
+          ? err.response.data.error
+          : err.message,
+    });
+  }
+}
+
+export const getPreviousUsers = (firstObjId) => async (dispatch, getState) => {
+  try {
+    const { userLogin, userList } = getState();
+    const { token, userData } = userLogin.userInfo;
+
+    const  URL = `${API}/users/previous-page/${userData.id}/${firstObjId}`;
+
+    dispatch({ type: GET_USERS_REQUEST });
+
+    var config = {
+      method: "get",
+      url: URL,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    };
+
+    const { data: userDataList } = await axios(config);
+
+    const reverseUserDataList = userDataList.data.reverse();
+
+    if(reverseUserDataList.length === 5) {
+      dispatch({ type: GET_USERS_SUCCESS, payload: {
+        data: reverseUserDataList,
+        firstId: reverseUserDataList[0]._id.toString(),
+        lastId: reverseUserDataList[reverseUserDataList.length-1]._id.toString()
+      } });
+    } else  {
+      dispatch({
+        type: GET_USERS_SUCCESS,
+        payload: {
+          data: userList.users,
+          firstId: userList.firstObjectId,
+          lastId: userList.lastObjectId
+        }
+      })
+
+      dispatch({
+        type: MARK_FIRST_USER_PAGE,
+        payload: 'true'
+      })
+    }
+  } catch (err) {
+    dispatch({
+      type: GET_USERS_FAIL,
+      payload:
+        err.response && err.response.data.error
+          ? err.response.data.error
+          : err.message,
+    });
   }
 }

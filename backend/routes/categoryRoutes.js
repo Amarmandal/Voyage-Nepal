@@ -1,38 +1,79 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 //controllers
-const { 
-    createCategory,
-    updateCategory,
-    getAllCategories,
-    getCategoryById,
-    deleteCategory,
-    getCategory
- } = require('../controllers/categoryController');
- const {
-   getUserById
- } = require("../controllers/userController");
- const {
-    isSignedIn,
-    isAuthorized,
-    isAdmin
- } = require('../middleware/authMiddleware');
+const {
+  createCategory,
+  updateCategory,
+  getAllCategories,
+  getCategoryById,
+  deleteCategory,
+  getCategory,
+  getNextCategoryPage,
+  getPreviousCategoryPage
+} = require("../controllers/categoryController");
+const { getUserById } = require("../controllers/userController");
+const {
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+} = require("../middleware/authMiddleware");
 
-router.param('categoryId', getCategoryById);
-router.param('userId', getUserById);
+router.param("categoryId", getCategoryById);
+router.param("userId", getUserById);
 
 //Read Category by Id
-router.get('/category/:categoryId/:userId', isSignedIn, isAuthorized, getCategory);
+router.get(
+  "/category/:categoryId/:userId",
+  isSignedIn,
+  isAuthorized,
+  getCategory
+);
 //get all categories
-router.get('/categories/:userId', isSignedIn, isAuthorized, getAllCategories);
+router.get("/categories/:userId", isSignedIn, isAuthorized, getAllCategories);
+
+router.get(
+  "/categories/next-page/:userId/:lastObjectId?",
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+  getNextCategoryPage
+);
+
+router.get(
+  "/categories/previous-page/:userId/:firstObjectId",
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+  getPreviousCategoryPage
+);
+
+
 //delete category
-router.delete('/category/:categoryId/:userId', isSignedIn, isAuthorized, isAdmin, deleteCategory);
+router.delete(
+  "/category/:categoryId/:userId",
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+  deleteCategory
+);
 
 //update category
-router.put('/category/update/:categoryId/:userId', isSignedIn, isAuthorized, isAdmin, updateCategory);
+router.put(
+  "/category/update/:categoryId/:userId",
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+  updateCategory
+);
 
 //create Category
-router.post('/category/create/:userId', isSignedIn, isAuthorized, isAdmin, createCategory);
+router.post(
+  "/category/create/:userId",
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+  createCategory
+);
 
 module.exports = router;

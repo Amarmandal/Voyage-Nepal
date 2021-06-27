@@ -6,7 +6,12 @@ import {
   USER_REGISTER_FAIL,
   USER_REGISTER_REQUEST,
   USER_REGISTER_RESET,
-  USER_REGISTER_SUCCESS
+  USER_REGISTER_SUCCESS,
+  GET_USERS_REQUEST,
+  GET_USERS_SUCCESS,
+  GET_USERS_FAIL,
+  END_OF_USER_PAGE,
+  MARK_FIRST_USER_PAGE
 } from "../actions/action.types";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -16,9 +21,9 @@ export const userLoginReducer = (state = {}, action) => {
     case USER_LOGIN_SUCCESS:
       return { userInfo: action.payload, loading: false };
     case USER_LOGIN_FAIL:
-      return {loading: false, error: action.payload};
-    case USER_LOGOUT: 
-      return { }
+      return { loading: false, error: action.payload };
+    case USER_LOGOUT:
+      return {};
     default:
       return state;
   }
@@ -31,11 +36,38 @@ export const userRegisterReducer = (state = {}, action) => {
     case USER_REGISTER_SUCCESS:
       return { registerInfo: action.payload, loading: false, success: true };
     case USER_REGISTER_FAIL:
-      return {loading: false, error: action.payload};
-    case USER_REGISTER_RESET: 
-      return {}
+      return { loading: false, error: action.payload };
+    case USER_REGISTER_RESET:
+      return {};
     default:
       return state;
   }
 };
 
+export const userListReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_USERS_REQUEST:
+      return { loading: true, users: [], lastObjectId: null };
+    case GET_USERS_SUCCESS:
+      return {
+        loading: false,
+        users: action.payload.data,
+        lastObjectId: action.payload.lastId,
+        firstObjectId: action.payload.firstId
+      };
+    case GET_USERS_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    case END_OF_USER_PAGE:
+      return {...state, isEndOfUserPage: action.payload}
+    case MARK_FIRST_USER_PAGE:
+      return {
+        ...state,
+        isFirstPage: action.payload
+      }
+    default:
+      return state;
+  }
+};
