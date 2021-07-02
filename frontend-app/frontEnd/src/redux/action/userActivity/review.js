@@ -17,7 +17,7 @@ export const userReviews = (data) => {
           });
           var config = {
             method: 'post',
-            url: `/review/create/${place._id}`,
+            url: `/review/create/${place._id}/${user.userData.id}`,
             headers: {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${user.token}`,

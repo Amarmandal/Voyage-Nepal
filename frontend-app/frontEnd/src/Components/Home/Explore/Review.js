@@ -38,9 +38,9 @@ const Review = ({reviews, placeId}) => {
   // const [userReviews, setUserReviews] = useState(reviews)
   // console.log(userReviews);
 
-  // useEffect(() => {
-  //   setUserReviews(reviews)
-  // }, [dispatch])
+  useEffect(() => {
+    setUserReviews(reviews)
+  }, [dispatch])
 
 
   const onStarRatingPress = rating => {

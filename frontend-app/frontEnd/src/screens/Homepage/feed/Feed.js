@@ -24,7 +24,7 @@ const Feed = () => {
   const fetchCategory = async() => {
     var config = {
       method: 'get',
-      url: '/categories',
+      url: `/categories/${state.user.userData.id}`,
       headers: {
         Authorization: `Bearer ${state.user.token}`,
       },
@@ -65,7 +65,7 @@ const Feed = () => {
   const fetchPlaces = async() => {
     var config = {
       method: 'get',
-      url: '/places',
+      url: `/places/${state.user.userData.id}`,
       headers: { 
         'Authorization': `Bearer ${state.user.token}`, 
         'Cookie': `token=${state.user.token}`
