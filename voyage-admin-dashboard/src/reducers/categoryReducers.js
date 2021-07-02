@@ -44,7 +44,7 @@ export const getCategoryReducer = (state = {}, action) => {
 export const categoryListReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_CATEGORY_CHUNK_REQUEST:
-      return { loading: true, categoryInfo: {} };
+      return { loading: true };
     case GET_CATEGORY_CHUNK_SUCCESS:
       return {
         loading: false,

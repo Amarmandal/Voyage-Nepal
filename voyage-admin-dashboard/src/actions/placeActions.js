@@ -187,33 +187,36 @@ export const getPreviousPlaces = (firstObjId) => async (dispatch, getState) => {
 //     }
 //   };
 
-// export const deletePlace = (placeId) => async (dispatch, getState) => {
-//   try {
-//     const URL = `${API}/place/${placeId}/delete`;
-//     dispatch({ type: DELETE_PLACE_REQUEST });
+export const deletePlace = (placeId) => async (dispatch, getState) => {
+  try {
+    const { userLogin } = getState();
+    const { token, userData } = userLogin.userInfo;
 
-//     const { userLogin } = getState();
-//     const { token } = userLogin.userInfo;
+    dispatch({ type: DELETE_PLACE_REQUEST });
 
-//     if (!token) {
-//       window.location.href = "/login";
-//     }
+    const URL = `${API}/place/delete/${placeId}/${userData.id}`;
 
-//     const config = {
-//       headers: {
-//         Authorization: `Bearer ${token}`,
-//       },
-//     };
-//     const { data } = await axios.delete(URL, placeData, config);
+    if (!token || !userData.isAdmin) {
+      throw new Error("User is not an Admin");
+    }
 
-//     dispatch({ type: DELETE_PLACE_SUCCESS, payload: data });
-//   } catch (err) {
-//     dispatch({
-//       type: DELETE_PLACE_FAIL,
-//       payload:
-//         err.response && err.response.data.error
-//           ? err.response.data.error
-//           : err.message,
-//     });
-//   }
-// };
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await axios.delete(URL, config);
+
+    dispatch({ type: DELETE_PLACE_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({
+      type: DELETE_PLACE_FAIL,
+      payload:
+        err.response && err.response.data.error
+          ? err.response.data.error
+          : err.message,
+    });
+  }
+};
+

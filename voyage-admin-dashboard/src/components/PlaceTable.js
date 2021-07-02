@@ -1,12 +1,19 @@
 import React from "react";
+import { FaPen, FaTrashAlt } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { Table, Button, Container } from "reactstrap";
-import { getNextPlaces, getPreviousPlaces } from "../actions/placeActions";
+import { getNextPlaces, getPreviousPlaces, deletePlace } from "../actions/placeActions";
 import Loader from "../components/Loader";
 
 
 const PlaceTable = () => {
   const dispatch = useDispatch();
+  const {
+    error,
+    success, 
+    loading : deleteLoading
+  } = useSelector(state => state.placeDelete);
 
   const {
     lastObjectId,
@@ -27,10 +34,18 @@ const PlaceTable = () => {
     dispatch(getPreviousPlaces(firstObjectId));
   };
 
+  const handleDelete = (placeId) => {
+    let isConfirmed = window.confirm('Are you sure to Delete it?');
+    if(!isConfirmed) {
+      return;
+    }
+    dispatch(deletePlace(placeId));
+  }
+
   return (
     <Container className="col-xl-10 col-lg-10 offset-1">
       <h2 className="h2 text-center mb-4">Places Detail</h2>
-      <Table bordered hover>
+      <Table bordered>
         <thead>
           <tr className="table-dark">
             <th>ID.</th>
@@ -38,9 +53,11 @@ const PlaceTable = () => {
             <th>Nearby Hotels</th>
             <th>Location</th>
             <th>Ratings</th>
+            <th>Edit</th>
           </tr>
         </thead>
         <tbody>
+          {deleteLoading && <Loader padding="0" loaderText="Deleting..." />}
           {!loading && lastObjectId ? (
             places.map((item) => (
               <tr key={item._id}>
@@ -49,6 +66,17 @@ const PlaceTable = () => {
                 <td>{item.stayPlace.length}</td>
                 <td>{item.location}</td>
                 <td>{item.ratings}</td>
+                <td>
+                  <span className="mx-2">
+                    <FaTrashAlt
+                      onClick={() => handleDelete(item._id)}
+                      className="text-danger"
+                    ></FaTrashAlt>
+                  </span>
+                  <span className="float-end me-2">
+                    <FaPen></FaPen>
+                  </span>
+                </td>
               </tr>
             ))
           ) : (
@@ -79,6 +107,12 @@ const PlaceTable = () => {
           </Button>
         </div>
       </div>
+      {!deleteLoading && success && toast('Deleted Successfully', {
+        type: 'success'
+      })}
+      {error && toast('Unable to Delete an item', {
+        type: 'error'
+      })}
     </Container>
   );
 };

@@ -1,9 +1,9 @@
 import React from "react";
+import { FaPen, FaTrashAlt } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { Table, Button, Container } from "reactstrap";
 import { getNextCategory, getPreviousCategory } from "../actions/categoryActions";
 import Loader from "../components/Loader";
-
 
 const CategoryTable = () => {
   const dispatch = useDispatch();
@@ -30,12 +30,13 @@ const CategoryTable = () => {
   return (
     <Container className="col-xl-10 col-lg-10 offset-1">
       <h2 className="h2 text-center mb-4">Categories Details</h2>
-      <Table bordered hover>
+      <Table bordered>
         <thead>
           <tr className="table-dark">
             <th>ID.</th>
             <th>Name</th>
             <th>Difficulty</th>
+            <th>Edit</th>
           </tr>
         </thead>
         <tbody>
@@ -45,6 +46,17 @@ const CategoryTable = () => {
                 <td>{item._id}</td>
                 <td>{item.name}</td>
                 <td>{item.difficulty}</td>
+                <td>
+                  <span className="mx-2">
+                    <FaTrashAlt
+                      onClick={() => alert(item._id)}
+                      className="text-danger"
+                    ></FaTrashAlt>
+                  </span>
+                  <span className="float-end me-2">
+                    <FaPen></FaPen>
+                  </span>
+                </td>
               </tr>
             ))
           ) : (

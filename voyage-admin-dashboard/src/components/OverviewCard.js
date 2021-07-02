@@ -7,6 +7,7 @@ import {
 } from "../actions/action.types";
 import { getNextPlaces } from "../actions/placeActions";
 import { getNextCategory } from "../actions/categoryActions";
+import { getNextStayPlace } from "../actions/stayPlaceActions";
 import { useDispatch } from "react-redux";
 
 const OverviewCard = ({ title, info, borderStyle = "primary" }) => {
@@ -27,6 +28,7 @@ const OverviewCard = ({ title, info, borderStyle = "primary" }) => {
         break;
       case 'warning':
         dispatch({ type: TOGGLE_OVERVIEW_HOTEL });
+        dispatch(getNextStayPlace())
         break;
       default:
         break;
