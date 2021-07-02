@@ -6,6 +6,11 @@ import {
   GET_CATEGORY_REQUEST,
   GET_CATEGORY_SUCCESS,
   GET_CATEGORY_FAIL,
+  GET_CATEGORY_CHUNK_REQUEST,
+  GET_CATEGORY_CHUNK_SUCCESS,
+  GET_CATEGORY_CHUNK_FAIL,
+  END_OF_CATEGORY_PAGE,
+  MARK_FIRST_CATEGORY_PAGE
 } from "../actions/action.types";
 
 export const createCategoryReducer = (state = {}, action) => {
@@ -35,3 +40,29 @@ export const getCategoryReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const categoryListReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_CATEGORY_CHUNK_REQUEST:
+      return { loading: true, categoryInfo: {} };
+    case GET_CATEGORY_CHUNK_SUCCESS:
+      return {
+        loading: false,
+        categories: action.payload.data,
+        lastObjectId: action.payload.lastId,
+        firstObjectId: action.payload.firstId
+      };
+    case GET_CATEGORY_CHUNK_FAIL:
+      return { loading: false, error: action.payload };
+    case END_OF_CATEGORY_PAGE:
+      return { ...state, isEndOfCategoryPage: action.payload };
+    case MARK_FIRST_CATEGORY_PAGE:
+      return {
+        ...state,
+        isFirstPage: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+

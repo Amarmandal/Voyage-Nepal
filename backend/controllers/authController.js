@@ -76,6 +76,11 @@ exports.userEmailVerification = (req, res) => {
 
 exports.userSingin = (req, res) => {
   const { email, password } = req.body;
+
+  if(email.length < 1 || password.length < 3) {
+    return res.status(411).json({ error: 'Check if password length is > 1 and email field is not empty'});
+  }
+
   User.findOne({ email })
     .then((doc) => {
       if (!doc) {
@@ -95,9 +100,6 @@ exports.userSingin = (req, res) => {
         { name, isAdmin, id: _id },
         process.env.JWT_SECRETS
       );
-
-      //putting token into cookie
-      res.cookie("token", accessToken);
 
       return res.status(200).json({
         token: accessToken,

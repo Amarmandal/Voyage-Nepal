@@ -28,6 +28,44 @@ exports.getPlaceById = async (req, res, next, id) => {
   }
 };
 
+exports.getNextPlacePage = async (req, res) => {
+  try {
+    const { lastObjectId } = req.params;
+    let places;
+    if(!lastObjectId) {
+      places = await Place.find({}).limit(5);
+    } else {
+      places = await Place.find({_id: {$gt: lastObjectId.toString()}}).limit(5);
+    }
+    return res.status(200).json({ data: places});
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ error: "Cannot fetch the next place page"})
+  }
+}
+
+exports.getPreviousPlacePage = async (req, res) => {
+  try {
+    const { firstObjectId } = req.params;
+    let places;
+    if (!firstObjectId) {
+      places = await Place.find({})
+      	.sort({_id: -1})
+        .select("name location ratings stayPlace")
+        .limit(5);
+    } else {
+      places = await Place.find({ _id: { $lt: firstObjectId.toString() } })
+         .sort({_id: -1})
+        .select("name location ratings stayPlace")
+        .limit(5);
+    }
+    return res.status(200).json({ data: places });
+  } catch (err) {
+    console.log(err);
+    return res.json({ error: "Cannot fetch Previous page" });
+  }
+};
+
 
 exports.recommendsPlace = async (req, res) => {
   const givenData = req.body;

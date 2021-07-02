@@ -19,8 +19,8 @@ import { toast } from "react-toastify";
 
 const PlaceForm = () => {
   const dispatch = useDispatch();
-  const categoryList = useSelector(state => state.categoryList);
-  const stayPlaceList = useSelector(state => state.hotelList);
+  const categoryList = useSelector(state => state.placeCategory);
+  const stayPlaceList = useSelector(state => state.placeHotel);
 
   const [name, setName] = useState("");
   const [photo, setPhoto] = useState(null);
@@ -34,7 +34,7 @@ const PlaceForm = () => {
 
   useEffect(() => {
     if(!categoryList || categoryList.error || categoryList.loading) {
-      setCategoryOption([]);
+      return setCategoryOption([]);
     }
 
     if(!stayPlaceList || stayPlaceList.error || stayPlaceList.loading) {
@@ -42,8 +42,7 @@ const PlaceForm = () => {
     }
 
     let options;
-    const { categories } = categoryList;
-    options = categories.data.map(item => {
+    options = categoryList.categories.data.map(item => {
       return { value: item._id, label: item.name }
     })
 

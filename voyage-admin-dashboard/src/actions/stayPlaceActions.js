@@ -8,11 +8,11 @@ import { API } from "../backend";
 
 export const getAllStayPlace = () => async (dispatch, getState) => {
   try {
-    const URL = `${API}/hotels`;
-    dispatch({ type: GET_HOTEL_REQUEST });
-
     const { userLogin } = getState();
-    const { token } = userLogin.userInfo;
+    const { token, userData } = userLogin.userInfo;
+
+    const URL = `${API}/hotels/${userData.id}`;
+    dispatch({ type: GET_HOTEL_REQUEST });
 
     var config = {
       method: "get",
@@ -20,7 +20,6 @@ export const getAllStayPlace = () => async (dispatch, getState) => {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      withCredentials: true
     };
 
     const { data } = await axios(config);
@@ -39,11 +38,11 @@ export const getAllStayPlace = () => async (dispatch, getState) => {
 
 export const createStayPlace = (hotelData) => async (dispatch, getState) => {
   // try {
-  //   const URL = `${API}/category/create`;
-  //   dispatch({ type: CREATE_CATEGORY_REQUEST });
-
   //   const { userLogin } = getState();
   //   const { token, userData } = userLogin.userInfo;
+
+  //   const URL = `${API}/category/create/${userData.id}`;
+  //   dispatch({ type: CREATE_CATEGORY_REQUEST });
     
   //   if (!token || !userData.isAdmin) {
   //     throw new Error("User is not an Admin");
@@ -53,7 +52,6 @@ export const createStayPlace = (hotelData) => async (dispatch, getState) => {
   //     headers: {
   //       Authorization: `Bearer ${token}`,
   //     },
-  //     withCredentials: true
   //   };
   //   const { data } = await axios.post(URL, categoryData, config);
 

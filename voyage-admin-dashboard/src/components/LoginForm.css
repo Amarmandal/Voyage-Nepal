@@ -28,6 +28,13 @@
     padding-left: 20px;
 }
 
+.password-toggler {
+    position: absolute;
+    bottom: 200px;
+    right: 90px;
+    color: #7578D3;
+}
+
 .forget-password-text {
     color: #7578D3;
     cursor: pointer;

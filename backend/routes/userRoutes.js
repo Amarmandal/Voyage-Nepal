@@ -8,10 +8,12 @@ const {
   removeUserById,
   updateUserRole,
   getUserDetails,
+  getNextUserPage,
+  getPreviousUserPage
 } = require("../controllers/userController");
 const {
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   isAdmin,
 } = require("../middleware/authMiddleware");
 const { upload } = require("../utils/uploadHelper");
@@ -21,7 +23,7 @@ router.param("userId", getUserById);
 router.post(
   "/upload/photo/:userId",
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   upload.single("photo"),
   uploadPhoto
 );
@@ -29,30 +31,48 @@ router.post(
 router.get(
   "/user/user-details/:userId",
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   getUserDetails
+);
+
+//to make the parameter option we use ? sign after the parameter
+//here lastObjectId is the optional parameter
+router.get(
+  "/users/next-page/:userId/:lastObjectId?",
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+  getNextUserPage
+);
+
+router.get(
+  "/users/previous-page/:userId/:firstObjectId",
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+  getPreviousUserPage
 );
 
 router.put(
   "/update/photo/:userId",
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   upload.single("photo"),
   updatePhoto
 );
 
 router.delete(
-  "/user/:userId",
+  "/user/:userId/:userDeleteId",
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   isAdmin,
   removeUserById
 );
 
 router.put(
-  "/user/update-role/:userId",
+  "/user/update-role/:userId/:userRoleUpdateId",
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   isAdmin,
   updateUserRole
 );

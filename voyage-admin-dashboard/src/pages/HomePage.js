@@ -1,29 +1,23 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
-import { useCookies } from "react-cookie";
 import Loader from "../components/Loader";
 import AdminPage from "./AdminPage";
 import { getDocsCount } from "../actions/countActions";
+import { getNextUsers } from "../actions/userActions";
 
 const HomePage = () => {
   const userLogin = useSelector(state => state.userLogin);
+  // const userList = useSelector(state => state.userList);
   const dispatch = useDispatch();
-  const [cookies, setCookie] = useCookies(['token']);
   const { userInfo, loading } = userLogin;
-
-  useEffect(() => {
-    if(!userInfo) {
-      return setCookie('token', null, { path: '/' });
-    }
-    setCookie('token', userInfo.token , { path: '/' })
-  }, [userInfo, setCookie]);
 
   useEffect(() => {
     if(userInfo) {
       dispatch(getDocsCount());
+      dispatch(getNextUsers());
     }
-  }, [userInfo, setCookie, dispatch]);
+  }, [userInfo, dispatch]);
 
   const history = useHistory();
   if(!userInfo) {

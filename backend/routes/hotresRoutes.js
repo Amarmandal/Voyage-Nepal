@@ -6,12 +6,14 @@ const {
   createHotelForPlace,
   deleteHotel,
   updateHotel,
-  getAllStayPlaces
+  getAllStayPlaces,
+  getNextHotelPage,
+  getPreviousHotelPage
 } = require("../controllers/hotresController");
 const { getUserById } = require("../controllers/userController");
 const {
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   isAdmin,
 } = require("../middleware/authMiddleware");
 const { uploadHotelPhoto } = require("../middleware/hotelMiddleware");
@@ -20,33 +22,56 @@ const { upload } = require("../utils/uploadHelper");
 router.param("hotelId", getHotelById);
 router.param("userId", getUserById);
 
-router.get('/hotels', isSignedIn, isAuthenticated, getAllStayPlaces);
+router.get(
+  "/hotels/:userId",
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+  getAllStayPlaces
+);
+
+router.get(
+  "/hotels/next-page/:userId/:lastObjectId?",
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+  getNextHotelPage
+);
+
+router.get(
+  "/hotels/previous-page/:userId/:firstObjectId",
+  isSignedIn,
+  isAuthorized,
+  isAdmin,
+  getPreviousHotelPage
+);
+
 
 //create hotel
 router.post(
-  "/hotel/:userId/create",
+  "/hotel/create/:userId",
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   isAdmin,
-  upload.single('photo'),
+  upload.single("photo"),
   uploadHotelPhoto,
   createHotelForPlace
 );
 
 //update the hotel
 router.put(
-  "/hotel/:userId/:hotelId/update",
+  "/hotel/update/:hotelId/:userId",
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   isAdmin,
   updateHotel
 );
 
 //delete the hotel
 router.delete(
-  "/hotel/:userId/:hotelId/delete",
+  "/hotel/delete/:hotelId/:userId",
   isSignedIn,
-  isAuthenticated,
+  isAuthorized,
   isAdmin,
   deleteHotel
 );

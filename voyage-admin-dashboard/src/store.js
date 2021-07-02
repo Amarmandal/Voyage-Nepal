@@ -1,11 +1,12 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { userLoginReducer, userRegisterReducer } from "./reducers/userReducers";
+import { userLoginReducer, userRegisterReducer, userListReducer } from "./reducers/userReducers";
 import { sidebarReducers } from "./reducers/sidebarReducers";
 
-import { createPlaceReducer } from "./reducers/placeReducers";
-import { createCategoryReducer } from "./reducers/categoryReducers";
+import { createPlaceReducer, placeListReducer } from "./reducers/placeReducers";
+import { createCategoryReducer, categoryListReducer } from "./reducers/categoryReducers";
+import { overviewReducers } from "./reducers/overviewReducers.js";
 // import { createStayPlaceReducer } from "./reducers/stayPlaceReducers";
 
 import { getCategoryReducer } from "./reducers/categoryReducers";
@@ -16,12 +17,16 @@ import { countReducers } from "./reducers/countReducers";
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
+  userList: userListReducer,
+  placeList: placeListReducer,
+  categoryList: categoryListReducer,
   createPlace: createPlaceReducer,
   createCategory: createCategoryReducer,
   // createStayPlace: createStayPlaceReducer,
   sidebarToggle: sidebarReducers,
-  categoryList: getCategoryReducer,
-  hotelList: getHotelReducer,
+  overviewToggle: overviewReducers,
+  placeCategory: getCategoryReducer,
+  placeHotel: getHotelReducer,
   docsCount: countReducers,
 });
 
@@ -31,11 +36,13 @@ const userInfoFromStorage = userInfo ? JSON.parse(userInfo) : null;
 const initialState = {
   userLogin: { 'userInfo': userInfoFromStorage },
   userRegister: {},
+  userList: {},
+  placeList: {},
+  categoryList: {},
   createPlace: {},
   createCategory: {},
-  // createStayPlace: {},
-  categoryList: null,
-  hotelList: null,
+  placeCategory: null,
+  placeHotel: null,
   docsCount: {},
   sidebarToggle: {
     placeToggle: false,
@@ -43,6 +50,9 @@ const initialState = {
     hotelToggle: false,
     userToggle: false,
   },
+  overviewToggle: {
+    showUser: true,
+  }
 }
 
 const middleware = [thunk];

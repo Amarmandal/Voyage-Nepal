@@ -9,6 +9,45 @@ exports.getAllStayPlaces = async (req, res) => {
     }
 }
 
+exports.getNextHotelPage = async (req, res) => {
+  try {
+    const { lastObjectId } = req.params;
+    let hotels;
+    if (!lastObjectId) {
+      hotels = await HotRes.find({}).limit(5);
+    } else {
+      hotels = await HotRes.find({
+        _id: { $gt: lastObjectId.toString() },
+      }).limit(5);
+    }
+    return res.status(200).json({ data: hotels });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ error: "Cannot fetch the next page" });
+  }
+};
+
+exports.getPreviousHotelPage = async (req, res) => {
+  try {
+    const { firstObjectId } = req.params;
+    let hotels;
+    if (!firstObjectId) {
+      hotels = await HotRes.find({})
+      	.sort({_id: -1})
+        .select("name rating stayType")
+        .limit(5);
+    } else {
+      hotels = await HotRes.find({ _id: { $lt: firstObjectId.toString() } })
+         .sort({_id: -1})
+        .select("name rating stayType")
+        .limit(5);
+    }
+    return res.status(200).json({ data: hotels });
+  } catch (err) {
+    console.log(err);
+    return res.json({ error: "Cannot fetch Previous page" });
+  }
+};
 
 exports.getHotelById = async (req, res, next, id) => {
   try {
