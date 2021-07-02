@@ -6,10 +6,10 @@ exports.getPlaceById = async (req, res, next, id) => {
     const place = await Place.findById(id)
       .populate({
         path: "reviews",
-        select: "user -_id",
+        select: "user reviewText rating -_id",
         populate: {
           path: "user",
-          select: "_id",
+          select: "name profileImgURL",
         },
       })
       .populate({
