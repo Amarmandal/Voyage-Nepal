@@ -1,5 +1,7 @@
 import React from "react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import {
   FormGroup,
   Input,
@@ -11,13 +13,35 @@ import {
 } from "reactstrap";
 import "./HotelForm.css";
 
+import { createStayPlace } from "../actions/stayPlaceActions";
+
 const HotelForm = () => {
+  const dispatch = useDispatch();
+
   const [name, setName] = useState("");
-  const [photoUrl, setPhotoUrl] = useState("");
-  const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
-  const [category, setCategory] = useState([]);
-  const [stayPlace, setStayPlace] = useState([]);
+  const [photo, setPhoto] = useState("");
+  const [rating, setRating] = useState("");
+  const [stayPlace, setStayPlace] = useState("");
+
+  const onCreateHotel = (e) => {
+    e.preventDefault();
+
+    if(!name || !photo) {
+      return toast('Required Fields cannot be empty', {
+        type: 'info',
+        autoClose: 2000,
+        hideProgressBar: true,
+      })
+    }
+
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('photo', photo);
+    formData.append('rating', rating);
+    formData.append('stayPlace', stayPlace);
+
+    dispatch(createStayPlace(formData));
+  }
 
   return (
     <Card className="align-items-center">
@@ -26,10 +50,10 @@ const HotelForm = () => {
           <FormGroup>
             <Label htmlFor="hotel-photo">
               <div className="custom-hotel-photo">
-                <h3 className="text-light">Upload Hotel Photo</h3>
+                <h3 className="text-light">{!photo ? 'Upload Hotel Photo' : 'Upload Done!'}</h3>
                 <img
-                  src="http://wallpaperose.com/wp-content/uploads/2013/07/Peaceful-Nature-Places2.jpg"
-                  alt="nature"
+                  src="https://storage.googleapis.com/voyage-nepal-files/hotels/hotel-min.webp"
+                  alt="hotels"
                 />
               </div>
             </Label>
@@ -38,6 +62,7 @@ const HotelForm = () => {
               id="hotel-photo"
               name="photo"
               type="file"
+              onChange={e => setPhoto(e.target.files[0])}
             />
           </FormGroup>
           <FormGroup>
@@ -46,18 +71,8 @@ const HotelForm = () => {
               id="hotel-name"
               name="name"
               placeholder="Hotel Name"
-              onChange=""
-              value=""
-            />
-          </FormGroup>
-          <FormGroup>
-            <Input
-              type="text"
-              id="hotel-location"
-              name="location"
-              placeholder="City"
-              onChange=""
-              value=""
+              onChange={e => setName(e.target.value)}
+              value={name}
             />
           </FormGroup>
           <FormGroup>
@@ -66,14 +81,22 @@ const HotelForm = () => {
               id="hotel-rating"
               name="hotel"
               placeholder="Hotel Rating"
-              onChange=""
-              value=""
+              onChange={e => setRating(e.target.value)}
+              value={rating}
             />
           </FormGroup>
-          <FormGroup className="my-4">
-            
+          <FormGroup>
+            <Input 
+            type="select" 
+            name="hotel-type"
+            id="hotel-select"
+            onChange={e => setStayPlace(e.target.value)}
+            >
+              <option value='Hotel' selected>Hotel</option>
+              <option value="Restaurant">Restaurant</option>
+            </Input>
           </FormGroup>
-          <Button>Create Hotel</Button>
+          <Button onClick={onCreateHotel}>Create Hotel</Button>
         </Form>
       </CardBody>
     </Card>

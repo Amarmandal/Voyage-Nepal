@@ -1,23 +1,31 @@
 import {
-  CREATE_CATEGORY_REQUEST,
-  CREATE_CATEGORY_SUCCESS,
-  CREATE_CATEGORY_FAIL,
   GET_HOTEL_REQUEST,
   GET_HOTEL_SUCCESS,
   GET_HOTEL_FAIL,
+  CREATE_HOTEL_REQUEST,
+  CREATE_HOTEL_SUCCESS,
+  CREATE_HOTEL_FAIL,
+  CREATE_HOTEL_RESET,
+  GET_HOTELS_CHUNK_REQUEST,
+  GET_HOTELS_CHUNK_SUCCESS,
+  GET_HOTELS_CHUNK_FAIL,
+  END_OF_HOTELS_CHUNK_PAGE,
+  MARK_FIRST_HOTELS_CHUNK_PAGE
 } from "../actions/action.types";
 
 export const createStayPlaceReducer = (state = {}, action) => {
-  // switch (action.type) {
-  //   case CREATE_CATEGORY_REQUEST:
-  //     return { loading: true, categoryInfo: {} };
-  //   case CREATE_CATEGORY_SUCCESS:
-  //     return { loading: false, categoryInfo: action.payload };
-  //   case CREATE_CATEGORY_FAIL:
-  //     return { loading: false, error: action.payload };
-  //   default:
-  //     return state;
-  // }
+  switch (action.type) {
+    case CREATE_HOTEL_REQUEST:
+      return { loading: true, hotelInfo: {} };
+    case CREATE_HOTEL_SUCCESS:
+      return { loading: false, hotelInfo: action.payload, success: true };
+    case CREATE_HOTEL_FAIL:
+      return { loading: false, error: action.payload };
+    case CREATE_HOTEL_RESET:
+      return {};
+    default:
+      return state;
+  }
 };
 
 export const getHotelReducer = (state = {}, action) => {
@@ -28,6 +36,31 @@ export const getHotelReducer = (state = {}, action) => {
       return { loading: false, hotels: action.payload };
     case GET_HOTEL_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const hotelListReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GET_HOTELS_CHUNK_REQUEST:
+      return { loading: true };
+    case GET_HOTELS_CHUNK_SUCCESS:
+      return {
+        loading: false,
+        hotels: action.payload.data,
+        lastObjectId: action.payload.lastId,
+        firstObjectId: action.payload.firstId
+      };
+    case GET_HOTELS_CHUNK_FAIL:
+      return { loading: false, error: action.payload };
+    case END_OF_HOTELS_CHUNK_PAGE:
+      return { ...state, isEndOfHotelPage: action.payload };
+    case MARK_FIRST_HOTELS_CHUNK_PAGE:
+      return {
+        ...state,
+        isFirstPage: action.payload,
+      };
     default:
       return state;
   }

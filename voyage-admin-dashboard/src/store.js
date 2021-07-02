@@ -4,10 +4,10 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import { userLoginReducer, userRegisterReducer, userListReducer } from "./reducers/userReducers";
 import { sidebarReducers } from "./reducers/sidebarReducers";
 
-import { createPlaceReducer, placeListReducer } from "./reducers/placeReducers";
+import { createPlaceReducer, placeListReducer, placeDeleteReducer } from "./reducers/placeReducers";
 import { createCategoryReducer, categoryListReducer } from "./reducers/categoryReducers";
 import { overviewReducers } from "./reducers/overviewReducers.js";
-// import { createStayPlaceReducer } from "./reducers/stayPlaceReducers";
+import { createStayPlaceReducer, hotelListReducer } from "./reducers/stayPlaceReducers";
 
 import { getCategoryReducer } from "./reducers/categoryReducers";
 import { getHotelReducer} from "./reducers/stayPlaceReducers";
@@ -20,9 +20,11 @@ const reducer = combineReducers({
   userList: userListReducer,
   placeList: placeListReducer,
   categoryList: categoryListReducer,
+  hotelList: hotelListReducer,
   createPlace: createPlaceReducer,
+  placeDelete: placeDeleteReducer,
   createCategory: createCategoryReducer,
-  // createStayPlace: createStayPlaceReducer,
+  createStayPlace: createStayPlaceReducer,
   sidebarToggle: sidebarReducers,
   overviewToggle: overviewReducers,
   placeCategory: getCategoryReducer,
@@ -39,7 +41,9 @@ const initialState = {
   userList: {},
   placeList: {},
   categoryList: {},
+  hotelList: {},
   createPlace: {},
+  createStayPlace: {},
   createCategory: {},
   placeCategory: null,
   placeHotel: null,

@@ -34,7 +34,7 @@ export const createPlaceReducer = (state = {}, action) => {
 export const placeListReducer = (state = {}, action) => {
   switch (action.type) {
     case GET_PLACES_REQUEST:
-      return { loading: true, placeInfo: {} };
+      return { loading: true };
     case GET_PLACES_SUCCESS:
       return {
         loading: false,
@@ -55,3 +55,16 @@ export const placeListReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const placeDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_PLACE_REQUEST:
+      return { loading: true };
+    case DELETE_PLACE_SUCCESS:
+      return { loading: false, success: true, deletedPlace: action.payload };
+    case DELETE_PLACE_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}

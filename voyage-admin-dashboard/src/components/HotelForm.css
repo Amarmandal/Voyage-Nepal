@@ -8,14 +8,14 @@ div.card {
     padding-bottom: 50px;
   }
   
-  #hotel-form input {
+  #hotel-form input, #hotel-select {
     border: 1px solid #7578d3;
     width: 550px;
     margin-bottom: 20px;
     padding-left: 20px;
   }
   
-  #hotel-name, #hotel-rating, #hotel-location {
+  #hotel-name, #hotel-rating, #hotel-location, #hotel-select {
     height: 50px;
   }
   
@@ -34,7 +34,7 @@ div.card {
     z-index: 1;
     top: 50px;
     left: 150px;
-    opacity: 80%;
+    opacity: 95%;
   }
   
   .custom-hotel-photo img {
