@@ -7,6 +7,7 @@ import Colors from '../../../constants/Color'
 import Geocoder from 'react-native-geocoding';
 import MapViewDirections from 'react-native-maps-directions';
 import { useIsFocused } from '@react-navigation/native';
+import { GEOCODING_API } from '@env'
 
 const FeedMap = ({navigation, route}) => {
   const {name} = route.params;
@@ -27,7 +28,7 @@ const FeedMap = ({navigation, route}) => {
   const isFocused = useIsFocused();
 
   const geoLocation = async () => {
-    Geocoder.init("AIzaSyDziZCJwC1dqy7vRGhVEyhWbnuSc0pTeAI");
+    Geocoder.init(GEOCODING_API);
     await Geocoder.from(name)
     .then(json => {
 			var location = json.results[0].geometry.location;

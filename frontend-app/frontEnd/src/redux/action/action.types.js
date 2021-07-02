@@ -16,3 +16,11 @@ export const FETCH_CATEGORY = 'FETCH_CATEGORY'
 export const FETCH_PLACE = 'FETCH_PLACE'
 
 export const RECOMMENDED_PLACE = 'RECOMMENDED_PLACE'
+
+export const GET_PLACE = 'GET_PLACE'
+export const GET_PLACE_SUCCESS = 'GET_PLACE_SUCCESS'
+export const GET_PLACE_FAIL = 'GET_PLACE_FAIL'
+
+export const REVIEW = 'REVIEW'
+export const REVIEW_SUCCESS = 'REVIEW_SUCCESS'
+export const REVIEW_FAIL = 'REVIEW_FAIL'
