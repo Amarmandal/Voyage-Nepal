@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   FlatList,
   ScrollView,
@@ -18,10 +18,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import StarRating from 'react-native-star-rating';
 import {useNavigation} from '@react-navigation/native';
 import api from '../../../services/ApiServices';
+import {GetPlaceByID} from '../../../redux/action/Data/getPlaceById';
 
 const Popular = () => {
   const places = useSelector(state => state.place);
   const {user} = useSelector(state => state.loginUser);
+
+  const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
 
@@ -32,38 +35,25 @@ const Popular = () => {
   );
   const recommendedPlace = useSelector(state => state.recommendedPlace);
 
-  // console.log(nearByPlaceDetails);
-
-  const getPlaceById = id => {
-    var config = {
-      method: 'get',
-      url: `/place/${id}`,
-      headers: {
-        Authorization: `Bearer ${user.token}`,
-        Cookie: `token=${user.token}`,
-      },
-    };
-
-    api(config)
-      .then(function (response) {
-        // console.log(response.data.data)
-        var data = response.data.data
-        navigation.navigate('RecommendationDetail', {
-          image: data.placePhoto,
-          location: data.location,
-          name: data.name,
-          details: data.description,
-          reviews: data.reviews,
-          hotel: data.stayPlace,
-          id: data._id,
-          ratings: data.ratings,
-        });
-      })
-      .catch(function (error) {
-        console.log(error);
-        alert(error)
-      });
+  const getPlacesById = async id => {
+    dispatch(GetPlaceByID(id));
+    navigation.navigate('RecommendationDetail');
   };
+
+  const placeName = (name) => {
+    
+      const _place = name;
+      const words = _place.split(' ');
+
+      for (let i = 0; i < words.length; i++) {
+        words[i] = words[i].charAt(0).toUpperCase() + words[i].substr(1);
+      }
+
+    
+      return words.join(' ');
+    
+  };
+
 
   const Card = ({place}) => {
     return (
@@ -72,7 +62,7 @@ const Popular = () => {
           style={styles.cardImage}
           source={{uri: place.placePhoto}}></ImageBackground>
         <View style={styles.cardDetails}>
-          <Text style={styles.cardText}>{place.name}</Text>
+          <Text style={styles.cardText}>{placeName(place.name)}</Text>
           <Text style={styles.location}>
             <Icon name="location-on" size={12} />
             {place.location}
@@ -118,22 +108,7 @@ const Popular = () => {
               data={recommendedPlace.nearByPlaceDetails}
               keyExtractor={item => item._id}
               renderItem={({item}) => (
-                <Pressable
-                  onPress={() =>
-                    // navigation.navigate('RecommendationDetail', {
-                    //   image: item.placePhoto,
-                    //   location: 'Kathmandu',
-                    //   name: item.name,
-                    //   details: 'Details',
-                    //   reviews: item.reviews,
-                    //   hotel: item.stayPlace,
-                    //   id: item._id,
-                    //   ratings: item.ratings,
-                    // })
-                    {
-                      getPlaceById(item._id);
-                    }
-                  }>
+                <Pressable onPress={() => getPlacesById(item._id)}>
                   <Card place={item} />
                 </Pressable>
               )}
@@ -157,22 +132,7 @@ const Popular = () => {
                 data={recommendedPlace.recommendedPlaceDetails}
                 keyExtractor={item => item._id}
                 renderItem={({item}) => (
-                  <Pressable
-                    onPress={() =>
-                      // navigation.navigate('RecommendationDetail', {
-                      //   image: item.placePhoto,
-                      //   location: 'Kathmandu',
-                      //   name: item.name,
-                      //   details: 'Details',
-                      //   reviews: item.reviews,
-                      //   hotel: item.stayPlace,
-                      //   id: item._id,
-                      //   ratings: item.ratings,
-                      // })
-                      {
-                        getPlaceById(item._id);
-                      }
-                    }>
+                  <Pressable onPress={() => getPlacesById(item._id)}>
                     <Card place={item} key={item._id} />
                   </Pressable>
                 )}

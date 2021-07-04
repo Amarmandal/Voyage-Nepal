@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Alert} from 'react-native';
+import {View, Text} from 'react-native';
 import {FormInput} from '../../../Components/FormComponents/FormCompponents';
 import {Button} from 'native-base'
 import styles from './OTP.styles'
 import GoBack from '../../../Components/Signin/GoBack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import api from '../../../services/ApiServices'
 
 const ResetPassword = ({navigation}) => {
   const state = useSelector(state => state.resetOtp.resetID.userResetId)
@@ -65,7 +66,7 @@ const ResetPassword = ({navigation}) => {
   
   var config = {
     method: 'post',
-    url: `http://10.0.2.2:8080/api/user/${state}/reset-password`,
+    url: `/user/${state}/reset-password`,
     headers: { 
       'Content-Type': 'application/json', 
       'Accept': 'application/json'
@@ -75,7 +76,7 @@ const ResetPassword = ({navigation}) => {
 
   const handleSubmit = () => {
     if(data.password !== '' && data.confirmPassword !== ''){
-      axios(config)
+      api(config)
       .then(res => {
         alert('Password Changed Successfully. Please login!')
         navigation.navigate('Signin')

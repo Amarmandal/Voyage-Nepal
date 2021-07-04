@@ -23,20 +23,10 @@ export default StyleSheet.create({
     borderColor: Colors.themeColor,
     borderWidth: 0.75,
     padding: 4,
+    paddingLeft: 10,
     borderRadius: 27,
-    flexDirection: 'row',
     alignItems: 'center',
     alignSelf:'flex-start',
-    width: '100%',
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 5,
-    // },
-    // shadowOpacity: 0.4,
-    // shadowRadius: 3.84,
-
-    // elevation: 10,
     marginBottom: 30
   },
   dropdownItem: {

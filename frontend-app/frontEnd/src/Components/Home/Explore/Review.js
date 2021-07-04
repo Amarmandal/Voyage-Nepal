@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Container,
   Header,
@@ -22,142 +22,47 @@ import Colors from '../../../constants/Color';
 import StarRating from 'react-native-star-rating';
 import LinearGradient from 'react-native-linear-gradient';
 import api from '../../../services/ApiServices';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {userReviews} from '../../../redux/action/userActivity/review'
 
-const Review = props => {
+const Review = ({reviews, placeId}) => {
   const navigation = useNavigation();
+
+  const dispatch = useDispatch()
 
   const state = useSelector(state => state.loginUser);
 
   const [starCount, setStarCount] = useState(0);
   const [review, setReview] = useState('');
 
+  // const [userReviews, setUserReviews] = useState(reviews)
+  // console.log(userReviews);
+
+  // useEffect(() => {
+  //   setUserReviews(reviews)
+  // }, [dispatch])
+
+
   const onStarRatingPress = rating => {
     // console.log(rating);
     setStarCount(rating);
   };
-
+// console.log(reviews);
   const handleChange = text => {
     // console.log(text);
     setReview(text);
     // console.log(review);
   };
 
+  const data = {
+    review: review, 
+    starCount: starCount,
+    placeId: placeId
+  }
+
   const handleSubmit = () => {
-    if (review !== '' && starCount !== 0) {
-      var data = JSON.stringify({
-        reviewText: review,
-        rating: starCount,
-      });
-      var config = {
-        method: 'post',
-        url: `/review/create/${props.placeId}`,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${state.user.token}`,
-          Cookie: `token=${state.user.token}`,
-        },
-        data: data,
-      };
-      api(config)
-        .then(function (response) {
-          setReview('');
-          setStarCount(0);
-          console.log(JSON.stringify(response.data));
-          Toast.show({
-            text: JSON.stringify(response.data.message),
-            buttonText: 'Okay',
-            duration: 4000,
-            type: 'success',
-          });
-        })
-        .catch(function (error) {
-          setReview('');
-          setStarCount(0);
-          console.log(error);
-          Toast.show({
-            text: 'You have already reviewed this place',
-            buttonText: 'Okay',
-            duration: 4000,
-            type: 'danger',
-          });
-        });
-    } else if (review == '') {
-      var data = JSON.stringify({
-        rating: starCount,
-      });
-      var config = {
-        method: 'post',
-        url: `/review/create/${props.placeId}`,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${state.user.token}`,
-          Cookie: `token=${state.user.token}`,
-        },
-        data: data,
-      };
-      api(config)
-        .then(function (response) {
-          setReview('');
-          setStarCount(0);
-          console.log(JSON.stringify(response.data));
-          Toast.show({
-            text: JSON.stringify(response.data.message),
-            buttonText: 'Okay',
-            duration: 4000,
-            type: 'success',
-          });
-        })
-        .catch(function (error) {
-          setReview('');
-          setStarCount(0);
-          console.log(error);
-          Toast.show({
-            text: 'You have already reviewed this place',
-            buttonText: 'Okay',
-            duration: 4000,
-            type: 'danger',
-          });
-        });
-    } else if (starCount == 0) {
-      var data = JSON.stringify({
-        reviewText: review,
-      });
-      var config = {
-        method: 'post',
-        url: `/review/create/${props.placeId}`,
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${state.user.token}`,
-          Cookie: `token=${state.user.token}`,
-        },
-        data: data,
-      };
-      api(config)
-        .then(function (response) {
-          setReview('');
-          setStarCount(0);
-          console.log(JSON.stringify(response.data));
-          Toast.show({
-            text: JSON.stringify(response.data.message),
-            buttonText: 'Okay',
-            duration: 4000,
-            type: 'success',
-          });
-        })
-        .catch(function (error) {
-          setReview('');
-          setStarCount(0);
-          console.log(error);
-          Toast.show({
-            text: 'You have already reviewed this place',
-            buttonText: 'Okay',
-            duration: 4000,
-            type: 'danger',
-          });
-        });
-    }
-  };
+    dispatch(userReviews(data))
+  }
 
   return (
     <Container>
@@ -257,7 +162,7 @@ const Review = props => {
           See Other's Reviews
         </Text>
         <Card>
-          {props.reviews.map(review => (
+          {reviews.map(review => (
             <CardItem bordered key={review.user._id}>
               <Body
                 style={{

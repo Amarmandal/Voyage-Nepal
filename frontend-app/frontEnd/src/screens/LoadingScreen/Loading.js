@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, ActivityIndicator, Image} from 'react-native';
+import {View, Text, ActivityIndicator, Image, PermissionsAndroid} from 'react-native';
 import Colors from '../../constants/Color'
 import api from '../../services/ApiServices'
 import { useIsFocused } from '@react-navigation/native';
@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import Geolocation from 'react-native-geolocation-service';
 import { Recommended } from '../../redux/action/Data/recommended';
 import {userDetails} from '../../redux/action/Login/userDetails';
+import {CurrentLocation} from '../../redux/action/Data/currentLocation'
 import moment from 'moment'
 const Loading = ({navigation}) => {
 
@@ -31,20 +32,36 @@ const Loading = ({navigation}) => {
   var today = new Date()
 
   const geoLocation = async () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        // console.log(position);
-        const longitude = position.coords.longitude;
-        const latitude = position.coords.latitude;
-        setPosition({...position, longitude: longitude, latitude: latitude});
-      },
-      error => Alert.alert(error.message),
-      {
-        enableHighAccuracy: true,
-        timeout: 30000,
-        maximumAge: 1000,
-      },
-    );
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          'title': 'Voyage Nepal',
+        'message': 'Voyage Nepal wants to access to your location '
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        // do something if granted...
+        Geolocation.getCurrentPosition(
+          position => {
+            // console.log(position);
+            const longitude = position.coords.longitude;
+            const latitude = position.coords.latitude;
+            setPosition({...position, longitude: longitude, latitude: latitude});
+            dispatch(CurrentLocation(longitude, latitude))
+          },
+          error => alert(error.message),
+          {
+            enableHighAccuracy: true,
+            timeout: 30000,
+            maximumAge: 1000,
+          },
+        );
+      }
+      
+    } catch (error) {
+      console.warn(error)
+    }
   }
 
   useEffect(async () => {
@@ -66,7 +83,7 @@ const Loading = ({navigation}) => {
     
     var config = {
       method: 'post',
-      url: '/place/recommends',
+      url: `/place/recommends/${state.user.userData.id}`,
       headers: { 
         'Content-Type': 'application/json', 
         'Authorization': `Bearer ${state.user.token}`, 

@@ -54,16 +54,7 @@ const Profile = ({navigation}) => {
 
   const handleLogOut = async () => {
     await AsyncStorage.removeItem('token');
-    api(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        navigation.navigate('Signin')
-        AsyncStorage.clear()
-      })
-      .catch(function (error) {
-        console.log(error);
-        alert(error)
-      });
+    navigation.navigate('Signin')
   };
 
   const source = {

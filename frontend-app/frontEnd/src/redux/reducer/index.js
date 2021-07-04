@@ -7,6 +7,9 @@ import userDetails from './userDetails'
 import category from './category'
 import place from './place'
 import recommendedPlace from './recommendedPlace'
+import getPlaceById from './destinations/getPlaceById'
+import review from './userActivity/review'
+import currentLocation from './currentLocation'
 export default combineReducers({
     loginUser,
     authReducer,
@@ -15,5 +18,8 @@ export default combineReducers({
     userDetails,
     category,
     place,
-    recommendedPlace
+    recommendedPlace,
+    getPlaceById,
+    review,
+    currentLocation
 })

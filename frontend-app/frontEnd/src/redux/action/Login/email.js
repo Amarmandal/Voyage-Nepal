@@ -1,4 +1,4 @@
-import {USER_EMAIL} from '../action.types';
+import {USER_EMAIL, USER_EMAIL_ERROR} from '../action.types';
 import axios from 'axios';
 import api from '../../../services/ApiServices'
 const BASE_URL = 'http://10.0.2.2:8080/api';
@@ -30,14 +30,15 @@ export const getUserEmail = userData => {
      Data = res.data
      dispatch({
       type: USER_EMAIL,
-      payload: userData
+      payload: res.data
     });
    })
    .catch(err => {
      const error = err
-     Data = error
+     dispatch({
+       type: USER_EMAIL_ERROR,
+       payload: err.response && err.response.data.error ? err.response.data.error : err.message
+     })
    })
-    
-    return Data
   };
 };

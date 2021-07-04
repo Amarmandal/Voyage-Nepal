@@ -37,6 +37,20 @@ const SearchContainer = (props) => {
   const [filteredData, setFilteredData] = useState(places);
   const [showList, setShowList] = useState(false);
 
+  const placeName = (name) => {
+    
+    const _place = name;
+    const words = _place.split(' ');
+
+    for (let i = 0; i < words.length; i++) {
+      words[i] = words[i].charAt(0).toUpperCase() + words[i].substr(1);
+    }
+
+  
+    return words.join(' ');
+  
+};
+
   const Card = ({place}) => {
     return (
       <View style={styles.card} key = {place._id}>
@@ -44,7 +58,7 @@ const SearchContainer = (props) => {
           style={styles.cardImage}
           source={{uri: place.placePhoto}}></ImageBackground>
         <View style={styles.cardDetails}>
-          <Text style={styles.cardText}>{place.name}</Text>
+          <Text style={styles.cardText}>{placeName(place.name)}</Text>
           <Text style={styles.location}>
             <Icon name="location-on" size={12} />
             {place.location}
