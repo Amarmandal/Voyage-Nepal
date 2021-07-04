@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {ScrollView, SafeAreaView, Image, Alert} from 'react-native';
+import {ScrollView, SafeAreaView, Image, useWindowDimensions} from 'react-native';
 import api from '../../services/ApiServices';
 import axios from 'axios';
 import {
@@ -33,21 +33,16 @@ import {useDispatch, useSelector} from 'react-redux'
 
 const Signup = ({navigation}, props) => {
 
-  const state = useSelector(state => state.authReducer)
+  const width = useWindowDimensions().width;
 
-  // useEffect(() => {
-  //   if(state.errors){
-  //     alert('error')
-  //     console.log(state);
-  //   }
-  // }, [state.errors])
+  const state = useSelector(state => state.authReducer)
 
   const [error, setError] = useState('')
 
   useEffect(() => {
     if(state.success){
       setError('')
-      Alert.alert(state.success.message)
+      alert(state.success.message)
     }else if(state.errors){
       // alert('error')
       // console.log(state);
@@ -317,6 +312,7 @@ const Signup = ({navigation}, props) => {
                 onChangeText={getDOB}
                 onFocus={() => dobOnFocus()}
                 onBlur={() => handleValidDOB()}
+                showCalendar = {() => dobOnFocus()}
               />
 
               {showCalendar ? (
@@ -357,11 +353,11 @@ const Signup = ({navigation}, props) => {
                 }}>
                 Select your City
               </Text>
-              <View style={signupStyles.dropdown}>
+              
                 <Select
                   onSelect={val => getCity(val)}
                   defaultText="Select City"
-                  style={{borderWidth: 0, width: '100%'}}
+                  style={{borderWidth: 0.75, borderRadius: 27,padding: 13, paddingLeft: 20, borderColor: Colors.themeColor, width: (width-60), marginLeft: 30, marginRight: 30}}
                   textStyle={{fontSize: 17}}
                   backdropStyle={{backgroundColor: 'transparent'}}
                   optionListStyle={[
@@ -384,7 +380,7 @@ const Signup = ({navigation}, props) => {
                   <Option value="lalitpur">Lalitpur</Option>
                   <Option value="Birgunj">Birgunj</Option>
                 </Select>
-              </View>
+             
 
             <ActionButton mt = {30} buttonName="Sign up" home={() => submitValues()} />
             <Account

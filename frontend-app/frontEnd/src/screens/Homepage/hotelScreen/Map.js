@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import {View, Platform, PermissionsAndroid} from 'react-native';
 import {Icon, Button, CardItem, Body, Left, Thumbnail, Text, H3} from 'native-base';
 import Geolocation from 'react-native-geolocation-service';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
@@ -8,13 +8,16 @@ import Geocoder from 'react-native-geocoding';
 import MapViewDirections from 'react-native-maps-directions';
 import { useIsFocused } from '@react-navigation/native';
 import { GEOCODING_API } from '@env'
+import {useDispatch, useSelector} from 'react-redux'
 
 const Category = ({navigation, route}) => {
   const {name} = route.params;
+
+  const state = useSelector(state => state.currentLocation)
   
   const [position, setPosition] = useState({
-    latitude: 27.7172,
-    longitude: 85.3240,
+    latitude: state.currentLocation.latitude,
+    longitude: state.currentLocation.longitude,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
@@ -37,20 +40,6 @@ const Category = ({navigation, route}) => {
 		})
 		.catch(error => console.warn(error));
 
-    Geolocation.getCurrentPosition(
-      position => {
-        // console.log(position);
-        const longitude = position.coords.longitude;
-        const latitude = position.coords.latitude;
-        setPosition({...position, longitude: longitude, latitude: latitude});
-      },
-      error => Alert.alert(error.message),
-      {
-        enableHighAccuracy: true,
-        timeout: 30000,
-        maximumAge: 1000,
-      },
-    );
   }
 
   useEffect(async () => {

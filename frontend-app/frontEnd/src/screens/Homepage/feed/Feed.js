@@ -19,9 +19,11 @@ const Feed = () => {
     fetchPlaces()
   }, [])
   const state = useSelector(state => state.loginUser);
+  const location = useSelector(state => state.currentLocation)
   const dispatch = useDispatch();
 
   const fetchCategory = async() => {
+
     var config = {
       method: 'get',
       url: `/categories/${state.user.userData.id}`,
@@ -29,7 +31,7 @@ const Feed = () => {
         Authorization: `Bearer ${state.user.token}`,
       },
     };
-  
+  // console.log(location);
     await api(config)
       .then(res => {
         const cat = res.data.data;

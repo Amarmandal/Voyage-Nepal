@@ -38,9 +38,9 @@ const Review = ({reviews, placeId}) => {
   // const [userReviews, setUserReviews] = useState(reviews)
   // console.log(userReviews);
 
-  useEffect(() => {
-    setUserReviews(reviews)
-  }, [dispatch])
+  // useEffect(() => {
+  //   setUserReviews(reviews)
+  // }, [dispatch])
 
 
   const onStarRatingPress = rating => {
@@ -56,7 +56,8 @@ const Review = ({reviews, placeId}) => {
 
   const data = {
     review: review, 
-    starCount: starCount
+    starCount: starCount,
+    placeId: placeId
   }
 
   const handleSubmit = () => {

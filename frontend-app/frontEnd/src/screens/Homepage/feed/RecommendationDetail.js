@@ -48,7 +48,7 @@ const RecommendationDetail = ({navigation}) => {
   };
 
   return (
-    <Container>
+    <Container style = {{marginBottom: 30}}>
       <Header
         style={{
           height: 250,
@@ -95,13 +95,7 @@ const RecommendationDetail = ({navigation}) => {
           activeTextStyle={{color: '#fff', fontSize: 22}}>
           <Review
             reviews={
-              loading ? (
-                <ActivityIndicator color={Colors.themeColor} size="small" />
-              ) : !loading && !success ? (
-                console.log(error)
-              ) : (
-                place.reviews
-              )
+              place.reviews
             }
             placeId={
               loading ? (
@@ -122,13 +116,7 @@ const RecommendationDetail = ({navigation}) => {
           activeTextStyle={{color: '#fff', fontSize: 22}}>
           <Hotel
             hotels={
-              loading ? (
-                <ActivityIndicator color={Colors.themeColor} size="small" />
-              ) : !loading && !success ? (
-                console.log(error)
-              ) : (
-                place.stayPlace
-              )
+              place.stayPlace
             }
             id={
               loading ? (

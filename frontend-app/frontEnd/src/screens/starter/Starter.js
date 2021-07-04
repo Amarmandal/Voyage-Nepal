@@ -49,6 +49,7 @@ const Starter = ({navigation}) => {
               source={require('../../assets/images/start.png')}
               style={{position: 'absolute', top: -100}}></Image>
             <Button
+              onPress={() => navigation.navigate('Signin')}
               rounded
               block
               style={{
@@ -59,12 +60,12 @@ const Starter = ({navigation}) => {
                 marginRight: 30
               }}>
               <Text
-                onPress={() => navigation.navigate('Signin')}
                 style={{fontSize: 20}}>
                 Login
               </Text>
             </Button>
             <Button
+              onPress={() => navigation.navigate('Signup')}
               rounded
               block
               style={{
@@ -75,7 +76,6 @@ const Starter = ({navigation}) => {
                 marginRight: 30
               }}>
               <Text
-                onPress={() => navigation.navigate('Signup')}
                 style={{fontSize: 20}}>
                 Sign up
               </Text>

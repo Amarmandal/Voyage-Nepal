@@ -21,7 +21,6 @@ import { useNavigation } from '@react-navigation/native';
               }}></Thumbnail>
             <Body>
               <Text style = {{fontSize: 19, fontWeight: 'bold'}}>{hotel.name}</Text>
-              <Text note style = {{fontSize: 16}}>Kathmandu, Durbar Marg</Text>
               
                 <View style = {{flexDirection: 'row'}}>
                   <Icon type="FontAwesome" name="star" style = {{color: Colors.warning, marginRight: 3, fontSize: 22}}/>

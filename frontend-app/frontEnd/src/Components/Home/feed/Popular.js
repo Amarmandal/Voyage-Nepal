@@ -37,9 +37,23 @@ const Popular = () => {
 
   const getPlacesById = async id => {
     dispatch(GetPlaceByID(id));
-    navigation.navigate('RecommendationDetail')
+    navigation.navigate('RecommendationDetail');
+  };
+
+  const placeName = (name) => {
     
-    }
+      const _place = name;
+      const words = _place.split(' ');
+
+      for (let i = 0; i < words.length; i++) {
+        words[i] = words[i].charAt(0).toUpperCase() + words[i].substr(1);
+      }
+
+    
+      return words.join(' ');
+    
+  };
+
 
   const Card = ({place}) => {
     return (
@@ -48,7 +62,7 @@ const Popular = () => {
           style={styles.cardImage}
           source={{uri: place.placePhoto}}></ImageBackground>
         <View style={styles.cardDetails}>
-          <Text style={styles.cardText}>{place.name}</Text>
+          <Text style={styles.cardText}>{placeName(place.name)}</Text>
           <Text style={styles.location}>
             <Icon name="location-on" size={12} />
             {place.location}
@@ -94,10 +108,7 @@ const Popular = () => {
               data={recommendedPlace.nearByPlaceDetails}
               keyExtractor={item => item._id}
               renderItem={({item}) => (
-                <Pressable
-                  onPress={() => 
-                    getPlacesById(item._id)
-                  }>
+                <Pressable onPress={() => getPlacesById(item._id)}>
                   <Card place={item} />
                 </Pressable>
               )}
@@ -121,10 +132,7 @@ const Popular = () => {
                 data={recommendedPlace.recommendedPlaceDetails}
                 keyExtractor={item => item._id}
                 renderItem={({item}) => (
-                  <Pressable
-                    onPress={() =>
-                      getPlacesById(item._id)
-                    }>
+                  <Pressable onPress={() => getPlacesById(item._id)}>
                     <Card place={item} key={item._id} />
                   </Pressable>
                 )}

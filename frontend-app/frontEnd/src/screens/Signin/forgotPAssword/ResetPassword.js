@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Alert} from 'react-native';
+import {View, Text} from 'react-native';
 import {FormInput} from '../../../Components/FormComponents/FormCompponents';
 import {Button} from 'native-base'
 import styles from './OTP.styles'

@@ -1,10 +1,12 @@
 import {REVIEW, REVIEW_SUCCESS, REVIEW_FAIL} from '../action.types'
+import {Toast} from 'native-base'
 import api from '../../../services/ApiServices'
 
 export const userReviews = (data) => {
-    const {review, starCount} = data
+    const {review, starCount, placeId} = data
     return async (dispatch, getState) => {
         const {getPlaceById, loginUser} = getState()
+        console.log(starCount);
         const {place} = getPlaceById
         console.log(place);
         const {user} = loginUser
@@ -17,7 +19,7 @@ export const userReviews = (data) => {
           });
           var config = {
             method: 'post',
-            url: `/review/create/${place._id}/${user.userData.id}`,
+            url: `/review/create/${placeId}/${user.userData.id}`,
             headers: {
               'Content-Type': 'application/json',
               Authorization: `Bearer ${user.token}`,
@@ -32,12 +34,22 @@ export const userReviews = (data) => {
                   type: REVIEW_SUCCESS,
                   payload: JSON.stringify(response.data.message)
               })
+              Toast.show({
+                text: response.data.message,
+                type: 'success',
+                buttonText: 'Okay'
+              })
             })
             .catch(function (err) {
               console.log(err);
               dispatch({
                 type: REVIEW_FAIL,
                 payload: err.response && err.response.data.error ? err.response.data.error : err.message
+            })
+            Toast.show({
+              text: err.response && err.response.data.error ? err.response.data.error : err.message,
+              type: 'danger',
+              buttonText: 'Okay'
             })
             });
         }    
