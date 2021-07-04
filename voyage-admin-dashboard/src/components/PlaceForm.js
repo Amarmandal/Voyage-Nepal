@@ -17,11 +17,10 @@ import customStyles from "./MultiSelectStyle";
 import { toast } from "react-toastify";
 import placeBg from "../assets/images/bhaktapurDurbarSquare.webp";
 
-
 const PlaceForm = () => {
   const dispatch = useDispatch();
-  const categoryList = useSelector(state => state.placeCategory);
-  const stayPlaceList = useSelector(state => state.placeHotel);
+  const categoryList = useSelector((state) => state.placeCategory);
+  const stayPlaceList = useSelector((state) => state.placeHotel);
 
   const [name, setName] = useState("");
   const [photo, setPhoto] = useState(null);
@@ -32,55 +31,53 @@ const PlaceForm = () => {
   const [categoryOption, setCategoryOption] = useState([]);
   const [stayPlaceOption, setStayPlaceOption] = useState([]);
 
-
   useEffect(() => {
-    if(!categoryList || categoryList.error || categoryList.loading) {
+    if (!categoryList || categoryList.error || categoryList.loading) {
       return setCategoryOption([]);
     }
 
-    if(!stayPlaceList || stayPlaceList.error || stayPlaceList.loading) {
+    if (!stayPlaceList || stayPlaceList.error || stayPlaceList.loading) {
       return setStayPlaceOption([]);
     }
 
     let options;
-    options = categoryList.categories.data.map(item => {
-      return { value: item._id, label: item.name }
-    })
+    options = categoryList.categories.data.map((item) => {
+      return { value: item._id, label: item.name };
+    });
 
     setCategoryOption(options);
 
     const { hotels } = stayPlaceList;
-    options = hotels.data.map(item => {
-      return { value: item._id, label: item.name }
-    })
+    options = hotels.data.map((item) => {
+      return { value: item._id, label: item.name };
+    });
     setStayPlaceOption(options);
-  }, [categoryList, stayPlaceList])
-
+  }, [categoryList, stayPlaceList]);
 
   const onCreatePlace = (e) => {
     e.preventDefault();
     const formData = new FormData();
 
-    if(!name || !description || !location) {
-      return toast('Required fields cannot be empty', {
-        type: 'info',
+    if (!name || !description || !location) {
+      return toast("Required fields cannot be empty", {
+        type: "info",
         autoClose: 2000,
         hideProgressBar: true,
-      })
+      });
     }
 
-    let categories = category.map(item => item.value);
-    let hotels = stayPlace.map(item => item.value);
-    formData.append('name', name);
-    formData.append('category', JSON.stringify(categories));
-    formData.append('location', location);
-    formData.append('description', description);
-    formData.append('stayPlace', JSON.stringify(hotels));
-    formData.append('photo', photo);
-    formData.append('ratings', 0);
+    let categories = category.map((item) => item.value);
+    let hotels = stayPlace.map((item) => item.value);
+    formData.append("name", name);
+    formData.append("category", JSON.stringify(categories));
+    formData.append("location", location);
+    formData.append("description", description);
+    formData.append("stayPlace", JSON.stringify(hotels));
+    formData.append("photo", photo);
+    formData.append("ratings", 0);
 
     dispatch(createPlace(formData));
-  }
+  };
 
   return (
     <Card className="align-items-center">
@@ -89,12 +86,10 @@ const PlaceForm = () => {
           <FormGroup>
             <Label htmlFor="place-photo">
               <div className="custom-place-photo">
-                <h3 className="text-light">{!photo ? 'Upload Place Photo' : 'Upload Done!'}</h3>
-                <img
-                  src={placeBg}
-                  alt="religious"
-                  style={{ opacity: 0.4 }}
-                />
+                <h3 className="text-light" style={{ opacity: 0.85 }}>
+                  {!photo ? "Upload Place Photo" : "Upload Done!"}
+                </h3>
+                <img src={placeBg} alt="religious" style={{ opacity: 0.4 }} />
               </div>
             </Label>
             <Input
@@ -103,7 +98,7 @@ const PlaceForm = () => {
               name="photo"
               type="file"
               placeholder="Place Name"
-              onChange={e => setPhoto(e.target.files[0])}
+              onChange={(e) => setPhoto(e.target.files[0])}
             />
           </FormGroup>
           <FormGroup>
@@ -137,28 +132,28 @@ const PlaceForm = () => {
             />
           </FormGroup>
           <FormGroup className="my-4">
-          <Select
-            isMulti
-            name="category"
-            options={categoryOption}
-            className="basic-multi-select"
-            classNamePrefix="select"
-            placeholder="Select Categories"
-            styles={customStyles}
-            onChange={val => setCategory(val)}
-          />
+            <Select
+              isMulti
+              name="category"
+              options={categoryOption}
+              className="basic-multi-select"
+              classNamePrefix="select"
+              placeholder="Select Categories"
+              styles={customStyles}
+              onChange={(val) => setCategory(val)}
+            />
           </FormGroup>
           <FormGroup className="my-4">
-          <Select
-            isMulti
-            name="stayPlace"
-            options={stayPlaceOption}
-            className="basic-multi-select"
-            classNamePrefix="select"
-            placeholder="Select Stay Place"
-            styles={customStyles}
-            onChange={val => setStayPlace(val)}
-          />
+            <Select
+              isMulti
+              name="stayPlace"
+              options={stayPlaceOption}
+              className="basic-multi-select"
+              classNamePrefix="select"
+              placeholder="Select Stay Place"
+              styles={customStyles}
+              onChange={(val) => setStayPlace(val)}
+            />
           </FormGroup>
           <Button onClick={onCreatePlace}>Create Place</Button>
         </Form>
