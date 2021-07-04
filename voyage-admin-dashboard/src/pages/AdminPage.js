@@ -6,13 +6,12 @@ import {
   Row,
   Col
 } from "reactstrap";
-import "../Admin.css";
 
 const AdminPage = () => {
   return (
     <Container fluid="true">
       <Row className="me-0">
-        <Col md={{ size: 2 }} className="bg-gradient-primary">
+        <Col md={{ size: 2 }} className="bg-primary" style={{minHeight: "100vh"}}>
           <Sidebar />
         </Col>
         <Col md={{ size: 10 }} className="px-4 py-4">

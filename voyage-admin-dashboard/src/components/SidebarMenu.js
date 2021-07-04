@@ -18,6 +18,7 @@ import {
   TOGGLE_USER,
 } from "../actions/action.types";
 import CollapseUtility from "./CollapseUtility";
+import "./Sidebar.css"
 
 const SidebarMenu = ({
   menuTitle = "Place",
@@ -49,13 +50,13 @@ const SidebarMenu = ({
   const getConditionalIcon = () => {
     switch (menuTitle) {
         case "Place":
-          return <MdLocationOn size="20" />
+          return <MdLocationOn size="20" className="menu-icon" />
         case "Categories":
-          return <FaList />
+          return <FaList className="menu-icon" />
         case "Hotel":
-          return <FaHotel />
+          return <FaHotel className="menu-icon" />
         case "User":
-          return  <FaUserAlt />
+          return  <FaUserAlt className="menu-icon" />
         default:
           break;
     }
@@ -63,16 +64,16 @@ const SidebarMenu = ({
 
   return (
     <li
-      className="nav-item nav-link collapsed"
+      className="nav-item nav-link ms-3"
       onClick={() => handleToggle(menuTitle)}
     >
       <Link className="nav-link collapsed" to="#">
         {getConditionalIcon()}
-        <span className="ms-2">{menuTitle}</span>
+        <span className="ms-2 text-light">{menuTitle}</span>
         {!sidebarToggle[toggleKey] ? (
-          <MdKeyboardArrowRight size="18" className="float-end" />
+          <MdKeyboardArrowRight size="18" className="float-end text-light" />
         ) : (
-          <MdKeyboardArrowDown size="18" className="float-end" />
+          <MdKeyboardArrowDown size="18" className="float-end text-light" />
         )}
 
         {sidebarToggle[toggleKey] && <CollapseUtility menu={utilityMenu} />}

@@ -29,19 +29,16 @@ div.card {
   margin-bottom: 20px;
 }
 
-.custom-place-photo > h3 {
-  position: absolute;
-  z-index: 1;
-  top: 50px;
-  left: 150px;
-  opacity: 85%;
-}
-
 .custom-place-photo img {
   height: 150px;
   width: 100%;
-  opacity: 40%;
   object-fit: cover;
+}
+
+.custom-place-photo > h3 {
+  position: absolute;
+  top: 50px;
+  left: 150px;
 }
 
 #place-form textarea {

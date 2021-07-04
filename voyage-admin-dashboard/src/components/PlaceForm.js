@@ -15,6 +15,7 @@ import { createPlace } from "../actions/placeActions";
 import "./PlaceForm.css";
 import customStyles from "./MultiSelectStyle";
 import { toast } from "react-toastify";
+import placeBg from "../assets/images/bhaktapurDurbarSquare.webp";
 
 
 const PlaceForm = () => {
@@ -90,8 +91,9 @@ const PlaceForm = () => {
               <div className="custom-place-photo">
                 <h3 className="text-light">{!photo ? 'Upload Place Photo' : 'Upload Done!'}</h3>
                 <img
-                  src="https://storage.googleapis.com/voyage-nepal-files/places/bhaktapurDurbarSquare.webp"
+                  src={placeBg}
                   alt="religious"
+                  style={{ opacity: 0.4 }}
                 />
               </div>
             </Label>
