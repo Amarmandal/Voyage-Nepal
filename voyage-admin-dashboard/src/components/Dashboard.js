@@ -1,7 +1,6 @@
 import React from "react";
 import OverviewCard from "./OverviewCard";
-import { useSelector, useDispatch } from "react-redux";
-import { Button } from "reactstrap";
+import { useSelector, } from "react-redux";
 import Loader from "./Loader";
 import PlaceTable from "../components/PlaceTable";
 import CategoryTable from "../components/CategoryTable";

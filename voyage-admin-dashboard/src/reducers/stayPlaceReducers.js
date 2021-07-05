@@ -6,6 +6,10 @@ import {
   CREATE_HOTEL_SUCCESS,
   CREATE_HOTEL_FAIL,
   CREATE_HOTEL_RESET,
+  DELETE_HOTEL_REQUEST,
+  DELETE_HOTEL_SUCCESS,
+  DELETE_HOTEL_FAIL,
+  RESET_DELETE_HOTEL,
   GET_HOTELS_CHUNK_REQUEST,
   GET_HOTELS_CHUNK_SUCCESS,
   GET_HOTELS_CHUNK_FAIL,
@@ -65,3 +69,18 @@ export const hotelListReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const hotelDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_HOTEL_REQUEST:
+      return { loading: true };
+    case DELETE_HOTEL_SUCCESS:
+      return { loading: false, success: true, deletedHotel: action.payload.deletedDoc };
+    case RESET_DELETE_HOTEL:
+      return {}
+    case DELETE_HOTEL_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}

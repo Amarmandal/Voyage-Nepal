@@ -1,12 +1,23 @@
 import React from "react";
+import { useEffect } from "react";
 import { FaPen, FaTrashAlt } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { Table, Button, Container } from "reactstrap";
-import { getNextCategory, getPreviousCategory } from "../actions/categoryActions";
+import { deleteCategory, getNextCategory, getPreviousCategory } from "../actions/categoryActions";
+import { getDocsCount } from "../actions/countActions";
 import Loader from "../components/Loader";
+
 
 const CategoryTable = () => {
   const dispatch = useDispatch();
+
+  const {
+    deleteMsg,
+    loading: deleteLoading,
+    success: successDelete,
+    error
+  } = useSelector((state) => state.categoryDelete);
 
   const {
     lastObjectId,
@@ -17,6 +28,11 @@ const CategoryTable = () => {
     loading,
   } = useSelector((state) => state.categoryList);
 
+  useEffect(() => {
+    dispatch(getNextCategory());
+    dispatch(getDocsCount());
+  }, [deleteMsg, dispatch]);
+
   const handleNextPage = () => {
     if (!isEndOfCategoryPage) {
       dispatch(getNextCategory(lastObjectId));
@@ -26,6 +42,15 @@ const CategoryTable = () => {
   const handlePreviousPage = () => {
     dispatch(getPreviousCategory(firstObjectId));
   };
+
+  const handleDelete = (catId) => {
+    let isConfirmed = window.confirm("Are you sure to Delete it?");
+    if (!isConfirmed) {
+      return;
+    }
+    dispatch(deleteCategory(catId));
+  };
+
 
   return (
     <Container className="col-xl-10 col-lg-10 offset-1">
@@ -40,6 +65,7 @@ const CategoryTable = () => {
           </tr>
         </thead>
         <tbody>
+        {deleteLoading && <Loader padding="0" loaderText="Deleting..." />}
         {!loading && lastObjectId ? (
             categories.map((item) => (
               <tr key={item._id}>
@@ -49,7 +75,7 @@ const CategoryTable = () => {
                 <td>
                   <span className="mx-2">
                     <FaTrashAlt
-                      onClick={() => alert(item._id)}
+                      onClick={() => handleDelete(item._id)}
                       className="text-danger"
                     ></FaTrashAlt>
                   </span>
@@ -87,6 +113,16 @@ const CategoryTable = () => {
           </Button>
         </div>
       </div>
+      {!deleteLoading &&
+        successDelete &&
+        deleteMsg &&
+        toast("Category delete Success!", {
+          type: "success",
+        })}
+      {error &&
+        toast("Oops! Unable to delete Category!", {
+          type: "error",
+        })}
     </Container>
   );
 };

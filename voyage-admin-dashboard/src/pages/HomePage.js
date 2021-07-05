@@ -8,7 +8,6 @@ import { getNextUsers } from "../actions/userActions";
 
 const HomePage = () => {
   const userLogin = useSelector(state => state.userLogin);
-  // const userList = useSelector(state => state.userList);
   const dispatch = useDispatch();
   const { userInfo, loading } = userLogin;
 

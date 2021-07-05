@@ -8,7 +8,7 @@ const port = process.env.PORT || 8000;
 
 
 //connecting database mongoose
-mongoose.connect(process.env.DATABASE, {
+mongoose.connect(process.env.DATABASE_LOCAL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

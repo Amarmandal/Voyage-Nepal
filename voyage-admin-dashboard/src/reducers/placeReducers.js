@@ -9,6 +9,7 @@ import {
   DELETE_PLACE_REQUEST,
   DELETE_PLACE_SUCCESS,
   DELETE_PLACE_FAIL,
+  RESET_DELETE_PLACE,
   GET_PLACES_REQUEST,
   GET_PLACES_SUCCESS,
   GET_PLACES_FAIL,
@@ -61,7 +62,9 @@ export const placeDeleteReducer = (state = {}, action) => {
     case DELETE_PLACE_REQUEST:
       return { loading: true };
     case DELETE_PLACE_SUCCESS:
-      return { loading: false, success: true, deletedPlace: action.payload };
+      return { loading: false, success: true, deletedPlace: action.payload.deletedPlace };
+    case RESET_DELETE_PLACE:
+      return {}
     case DELETE_PLACE_FAIL:
       return { loading: false, error: action.payload };
     default:

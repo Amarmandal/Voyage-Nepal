@@ -1,15 +1,15 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { userLoginReducer, userRegisterReducer, userListReducer } from "./reducers/userReducers";
+import { userLoginReducer, userRegisterReducer, userListReducer, userDeleteReducer } from "./reducers/userReducers";
 import { sidebarReducers } from "./reducers/sidebarReducers";
 
 import { createPlaceReducer, placeListReducer, placeDeleteReducer } from "./reducers/placeReducers";
 import { createCategoryReducer, categoryListReducer } from "./reducers/categoryReducers";
 import { overviewReducers } from "./reducers/overviewReducers.js";
-import { createStayPlaceReducer, hotelListReducer } from "./reducers/stayPlaceReducers";
+import { createStayPlaceReducer, hotelListReducer, hotelDeleteReducer } from "./reducers/stayPlaceReducers";
 
-import { getCategoryReducer } from "./reducers/categoryReducers";
+import { getCategoryReducer, categoryDeleteReducer } from "./reducers/categoryReducers";
 import { getHotelReducer} from "./reducers/stayPlaceReducers";
 import { countReducers } from "./reducers/countReducers";
 
@@ -17,6 +17,7 @@ import { countReducers } from "./reducers/countReducers";
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
+  userDelete: userDeleteReducer,
   userList: userListReducer,
   placeList: placeListReducer,
   categoryList: categoryListReducer,
@@ -24,11 +25,13 @@ const reducer = combineReducers({
   createPlace: createPlaceReducer,
   placeDelete: placeDeleteReducer,
   createCategory: createCategoryReducer,
+  categoryDelete: categoryDeleteReducer,
   createStayPlace: createStayPlaceReducer,
   sidebarToggle: sidebarReducers,
   overviewToggle: overviewReducers,
   placeCategory: getCategoryReducer,
   placeHotel: getHotelReducer,
+  hotelDelete: hotelDeleteReducer,
   docsCount: countReducers,
 });
 

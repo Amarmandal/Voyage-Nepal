@@ -10,6 +10,7 @@ import {
   DELETE_CATEGORY_REQUEST,
   DELETE_CATEGORY_SUCCESS,
   DELETE_CATEGORY_FAIL,
+  RESET_DELETE_CATEGORY,
   GET_CATEGORY_REQUEST,
   GET_CATEGORY_SUCCESS,
   GET_CATEGORY_FAIL,
@@ -219,33 +220,39 @@ export const getPreviousCategory = (firstObjId) => async (dispatch, getState) =>
 //     }
 // }
 
-// export const deleteCategory = (categoryId) => async(dispatch, getState) => {
-//     try {
-//         const URL = `${API}/CATEGORY/${CATEGORYId}/delete`;
-//         dispatch({ type: DELETE_CATEGORY_REQUEST });
+export const deleteCategory = (categoryId) => async (dispatch, getState) => {
+  try {
+    const { userLogin } = getState();
+    const { token, userData } = userLogin.userInfo;
 
-//         const { userLogin } = getState();
-//         const { token } = userLogin.userInfo;
+    dispatch({ type: DELETE_CATEGORY_REQUEST });
 
-//         if(!token) {
-//             window.location.href = "/login";
-//         }
+    const URL = `${API}/category/${categoryId}/${userData.id}`;
 
-//         const config = {
-//             headers: {
-//                 'Authorization': `Bearer ${token}`
-//             }
-//         }
-//         const { data }  = await axios.delete(URL, CATEGORYData, config)
+    if (!token || !userData.isAdmin) {
+      throw new Error("User is not an Admin");
+    }
 
-//         dispatch({ type: DELETE_CATEGORY_SUCCESS, payload: data});
-//     } catch (err) {
-//         dispatch({
-//             type: DELETE_CATEGORY_FAIL,
-//             payload:
-//               err.response && err.response.data.error
-//                 ? err.response.data.error
-//                 : err.message,
-//           });
-//     }
-// }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await axios.delete(URL, config);
+
+    dispatch({ type: DELETE_CATEGORY_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({
+      type: DELETE_CATEGORY_FAIL,
+      payload:
+        err.response && err.response.data.error
+          ? err.response.data.error
+          : err.message,
+    });
+  } finally {
+    dispatch({ type: RESET_DELETE_CATEGORY })
+  }
+};
+
+
