@@ -73,7 +73,7 @@ export const categoryListReducer = (state = {}, action) => {
 export const categoryDeleteReducer = (state = {}, action) => {
   switch (action.type) {
     case DELETE_CATEGORY_REQUEST:
-      return { loading: true };
+      return { loading: true, deleteMsg: null };
     case DELETE_CATEGORY_SUCCESS:
       return { loading: false, success: true, deleteMsg: action.payload };
     case RESET_DELETE_CATEGORY:

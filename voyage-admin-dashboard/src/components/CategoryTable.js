@@ -29,6 +29,10 @@ const CategoryTable = () => {
   } = useSelector((state) => state.categoryList);
 
   useEffect(() => {
+    if(!deleteMsg) {
+      return;
+    }
+    
     dispatch(getNextCategory());
     dispatch(getDocsCount());
   }, [deleteMsg, dispatch]);

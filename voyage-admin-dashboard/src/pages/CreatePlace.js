@@ -22,7 +22,7 @@ const CreatePlace = () => {
   useEffect(() => {
     dispatch(getAllCategory());
     dispatch(getAllStayPlace());
-  }, [])
+  }, [dispatch])
 
   return (
     <Container fluid="true">

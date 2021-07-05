@@ -32,6 +32,9 @@ const HotelTable = () => {
   } = useSelector((state) => state.hotelList);
 
   useEffect(() => {
+    if(!deletedHotel) {
+      return;
+    }
     dispatch(getNextStayPlace());
     dispatch(getDocsCount());
   }, [deletedHotel, dispatch]);

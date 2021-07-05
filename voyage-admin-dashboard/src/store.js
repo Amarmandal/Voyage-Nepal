@@ -42,14 +42,26 @@ const initialState = {
   userLogin: { 'userInfo': userInfoFromStorage },
   userRegister: {},
   userList: {},
-  placeList: {},
-  categoryList: {},
-  hotelList: {},
+  userDelete: {
+    deleteMsg: null
+  },
   createPlace: {},
-  createStayPlace: {},
-  createCategory: {},
+  placeList: {},
+  placeDelete: {
+    deletedPlace: null
+  },
   placeCategory: null,
   placeHotel: null,
+  categoryList: {},
+  hotelList: {},
+  hotelDelete: {
+    deletedHotel: null,
+  },
+  createStayPlace: {},
+  createCategory: {},
+  categoryDelete: {
+    deleteMsg: null
+  },
   docsCount: {},
   sidebarToggle: {
     placeToggle: false,

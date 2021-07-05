@@ -32,6 +32,10 @@ const ItemTable = () => {
   } = useSelector((state) => state.userList);
 
   useEffect(() => {
+    if(!deleteMsg) {
+      return;
+    }
+    
     dispatch(getNextUsers());
     dispatch(getDocsCount());
   }, [deleteMsg, dispatch]);

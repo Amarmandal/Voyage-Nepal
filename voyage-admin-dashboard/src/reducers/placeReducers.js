@@ -60,7 +60,7 @@ export const placeListReducer = (state = {}, action) => {
 export const placeDeleteReducer = (state = {}, action) => {
   switch (action.type) {
     case DELETE_PLACE_REQUEST:
-      return { loading: true };
+      return { loading: true, deletedPlace: null };
     case DELETE_PLACE_SUCCESS:
       return { loading: false, success: true, deletedPlace: action.payload.deletedPlace };
     case RESET_DELETE_PLACE:

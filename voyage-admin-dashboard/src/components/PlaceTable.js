@@ -30,6 +30,9 @@ const PlaceTable = () => {
   } = useSelector((state) => state.placeList);
 
   useEffect(() => {
+    if(!deletedPlace) {
+      return;
+    }
     dispatch(getNextPlaces());
     dispatch(getDocsCount());
   }, [deletedPlace, dispatch]);
