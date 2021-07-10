@@ -6,7 +6,9 @@ exports.getPlaceById = async (req, res, next, id) => {
     const place = await Place.findById(id)
       .populate({
         path: "reviews",
-        select: "user reviewText rating -_id",
+        match: { isApproved: true },
+        select: "user reviewText rating -_id isApproved",
+        //nested population. It populate the user property 
         populate: {
           path: "user",
           select: "name profileImgURL",
