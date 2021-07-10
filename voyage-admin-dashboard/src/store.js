@@ -68,6 +68,7 @@ const initialState = {
     categoryToggle: false,
     hotelToggle: false,
     userToggle: false,
+    reviewToggle: false,
   },
   overviewToggle: {
     showUser: true,
