@@ -8,11 +8,15 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_RESET,
   USER_REGISTER_SUCCESS,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAIL,
+  RESET_DELETE_USER,
   GET_USERS_REQUEST,
   GET_USERS_SUCCESS,
   GET_USERS_FAIL,
   END_OF_USER_PAGE,
-  MARK_FIRST_USER_PAGE
+  MARK_FIRST_USER_PAGE,
 } from "./action.types";
 import { API } from "../backend";
 
@@ -197,3 +201,39 @@ export const getPreviousUsers = (firstObjId) => async (dispatch, getState) => {
     });
   }
 }
+
+export const deleteUser = (userId) => async (dispatch, getState) => {
+  try {
+    const { userLogin } = getState();
+    const { token, userData } = userLogin.userInfo;
+
+    dispatch({ type: DELETE_USER_REQUEST });
+
+    const URL = `${API}/user/${userData.id}/${userId}`;
+
+    if (!token || !userData.isAdmin) {
+      throw new Error("User is not an Admin");
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await axios.delete(URL, config);
+
+    dispatch({ type: DELETE_USER_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({
+      type: DELETE_USER_FAIL,
+      payload:
+        err.response && err.response.data.error
+          ? err.response.data.error
+          : err.message,
+    });
+  } finally {
+    dispatch({ type: RESET_DELETE_USER })
+  }
+};
+

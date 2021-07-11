@@ -1,13 +1,26 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Button, Container } from "reactstrap";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../components/Loader";
 import { FaTrashAlt, FaPen } from "react-icons/fa";
 import { Table } from "reactstrap";
-import { getNextUsers, getPreviousUsers } from "../actions/userActions";
+import {
+  getNextUsers,
+  getPreviousUsers,
+  deleteUser,
+} from "../actions/userActions";
+import { getDocsCount } from "../actions/countActions";
+import { toast } from "react-toastify";
 
 const ItemTable = () => {
   const dispatch = useDispatch();
+
+  const {
+    deleteMsg,
+    loading: deleteLoading,
+    success: successDelete,
+    error
+  } = useSelector((state) => state.userDelete);
 
   const {
     lastObjectId,
@@ -18,6 +31,15 @@ const ItemTable = () => {
     loading,
   } = useSelector((state) => state.userList);
 
+  useEffect(() => {
+    if(!deleteMsg) {
+      return;
+    }
+    
+    dispatch(getNextUsers());
+    dispatch(getDocsCount());
+  }, [deleteMsg, dispatch]);
+
   const handleNextPage = () => {
     if (!isEndOfUserPage) {
       dispatch(getNextUsers(lastObjectId));
@@ -26,6 +48,14 @@ const ItemTable = () => {
 
   const handlePreviousPage = () => {
     dispatch(getPreviousUsers(firstObjectId));
+  };
+
+  const handleDelete = (userId) => {
+    let isConfirmed = window.confirm("Are you sure to Delete it?");
+    if (!isConfirmed) {
+      return;
+    }
+    dispatch(deleteUser(userId));
   };
 
   return (
@@ -43,8 +73,9 @@ const ItemTable = () => {
           </tr>
         </thead>
         <tbody>
+        {deleteLoading && <Loader padding="0" loaderText="Deleting..." />}
           {!loading && lastObjectId ? (
-            users.map((item, index) => (
+            users.map((item) => (
               <tr key={item._id}>
                 <td>{item._id}</td>
                 <td>{item.name}</td>
@@ -54,7 +85,7 @@ const ItemTable = () => {
                 <td>
                   <span className="mx-2">
                     <FaTrashAlt
-                      onClick={() => alert(item._id)}
+                      onClick={() => handleDelete(item._id)}
                       className="text-danger"
                     ></FaTrashAlt>
                   </span>
@@ -92,6 +123,16 @@ const ItemTable = () => {
           </Button>
         </div>
       </div>
+      {!deleteLoading &&
+        successDelete &&
+        deleteMsg &&
+        toast("Deleted Successfully", {
+          type: "success",
+        })}
+      {error &&
+        toast("Oops! Admin user cannot be deleted", {
+          type: "error",
+        })}
     </Container>
   );
 };

@@ -1,16 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../components/Loader";
 import { Table, Button, Container } from "reactstrap";
 import {
   getNextStayPlace,
   getPreviousStayPlace,
+  deleteStayPlace
 } from "../actions/stayPlaceActions";
 import { FaPen, FaTrashAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { getDocsCount } from "../actions/countActions";
 
 
 const HotelTable = () => {
   const dispatch = useDispatch();
+
+  const {
+    error,
+    success: successDelete,
+    loading: deleteLoading,
+    deletedHotel,
+  } = useSelector((state) => state.hotelDelete);
 
   const {
     lastObjectId,
@@ -21,6 +31,14 @@ const HotelTable = () => {
     loading,
   } = useSelector((state) => state.hotelList);
 
+  useEffect(() => {
+    if(!deletedHotel) {
+      return;
+    }
+    dispatch(getNextStayPlace());
+    dispatch(getDocsCount());
+  }, [deletedHotel, dispatch]);
+
   const handleNextPage = () => {
     if (!isEndOfHotelPage) {
       dispatch(getNextStayPlace(lastObjectId));
@@ -30,6 +48,15 @@ const HotelTable = () => {
   const handlePreviousPage = () => {
     dispatch(getPreviousStayPlace(firstObjectId));
   };
+
+  const handleDelete = (hotelId) => {
+    let isConfirmed = window.confirm("Are you sure to Delete it?");
+    if (!isConfirmed) {
+      return;
+    }
+    dispatch(deleteStayPlace(hotelId));
+  };
+
 
   return (
     <Container className="col-xl-10 col-lg-10 offset-1">
@@ -45,6 +72,7 @@ const HotelTable = () => {
           </tr>
         </thead>
         <tbody>
+        {deleteLoading && <Loader padding="0" loaderText="Deleting..." />}
         {!loading && lastObjectId ? (
             hotels.map((item) => (
               <tr key={item._id}>
@@ -55,7 +83,7 @@ const HotelTable = () => {
                 <td>
                   <span className="mx-2">
                     <FaTrashAlt
-                      onClick={() => alert(item._id)}
+                      onClick={() => handleDelete(item._id)}
                       className="text-danger"
                     ></FaTrashAlt>
                   </span>
@@ -93,6 +121,16 @@ const HotelTable = () => {
           </Button>
         </div>
       </div>
+      {!deleteLoading &&
+        successDelete &&
+        deletedHotel._id &&
+        toast("Deleted Successfully", {
+          type: "success",
+        })}
+      {error &&
+        toast("Oops! Failed to deleted!", {
+          type: "error",
+        })}
     </Container>
   );
 };

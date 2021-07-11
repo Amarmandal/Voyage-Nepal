@@ -14,6 +14,7 @@ import {
 import "./HotelForm.css";
 
 import { createStayPlace } from "../actions/stayPlaceActions";
+import hotelBg from "../assets/images/hotel-min.webp";
 
 const HotelForm = () => {
   const dispatch = useDispatch();
@@ -26,22 +27,22 @@ const HotelForm = () => {
   const onCreateHotel = (e) => {
     e.preventDefault();
 
-    if(!name || !photo) {
-      return toast('Required Fields cannot be empty', {
-        type: 'info',
+    if (!name || !photo) {
+      return toast("Required Fields cannot be empty", {
+        type: "info",
         autoClose: 2000,
         hideProgressBar: true,
-      })
+      });
     }
 
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('photo', photo);
-    formData.append('rating', rating);
-    formData.append('stayPlace', stayPlace);
+    formData.append("name", name);
+    formData.append("photo", photo);
+    formData.append("rating", rating);
+    formData.append("stayPlace", stayPlace);
 
     dispatch(createStayPlace(formData));
-  }
+  };
 
   return (
     <Card className="align-items-center">
@@ -50,11 +51,10 @@ const HotelForm = () => {
           <FormGroup>
             <Label htmlFor="hotel-photo">
               <div className="custom-hotel-photo">
-                <h3 className="text-light">{!photo ? 'Upload Hotel Photo' : 'Upload Done!'}</h3>
-                <img
-                  src="https://storage.googleapis.com/voyage-nepal-files/hotels/hotel-min.webp"
-                  alt="hotels"
-                />
+                <h3 className="text-light" style={{ opacity: 0.95 }}>
+                  {!photo ? "Upload Hotel Photo" : "Upload Done!"}
+                </h3>
+                <img src={hotelBg} alt="hotels" style={{ opacity: 0.6 }} />
               </div>
             </Label>
             <Input
@@ -62,7 +62,7 @@ const HotelForm = () => {
               id="hotel-photo"
               name="photo"
               type="file"
-              onChange={e => setPhoto(e.target.files[0])}
+              onChange={(e) => setPhoto(e.target.files[0])}
             />
           </FormGroup>
           <FormGroup>
@@ -71,7 +71,7 @@ const HotelForm = () => {
               id="hotel-name"
               name="name"
               placeholder="Hotel Name"
-              onChange={e => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value)}
               value={name}
             />
           </FormGroup>
@@ -81,18 +81,20 @@ const HotelForm = () => {
               id="hotel-rating"
               name="hotel"
               placeholder="Hotel Rating"
-              onChange={e => setRating(e.target.value)}
+              onChange={(e) => setRating(e.target.value)}
               value={rating}
             />
           </FormGroup>
           <FormGroup>
-            <Input 
-            type="select" 
-            name="hotel-type"
-            id="hotel-select"
-            onChange={e => setStayPlace(e.target.value)}
+            <Input
+              type="select"
+              name="hotel-type"
+              id="hotel-select"
+              onChange={(e) => setStayPlace(e.target.value)}
             >
-              <option value='Hotel' selected>Hotel</option>
+              <option value="Hotel" selected>
+                Hotel
+              </option>
               <option value="Restaurant">Restaurant</option>
             </Input>
           </FormGroup>

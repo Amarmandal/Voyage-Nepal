@@ -1,19 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaPen, FaTrashAlt } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Table, Button, Container } from "reactstrap";
-import { getNextPlaces, getPreviousPlaces, deletePlace } from "../actions/placeActions";
+import { getDocsCount } from "../actions/countActions";
+import {
+  getNextPlaces,
+  getPreviousPlaces,
+  deletePlace,
+} from "../actions/placeActions";
 import Loader from "../components/Loader";
-
 
 const PlaceTable = () => {
   const dispatch = useDispatch();
   const {
     error,
-    success, 
-    loading : deleteLoading
-  } = useSelector(state => state.placeDelete);
+    success: successDelete,
+    loading: deleteLoading,
+    deletedPlace,
+  } = useSelector((state) => state.placeDelete);
 
   const {
     lastObjectId,
@@ -23,6 +28,14 @@ const PlaceTable = () => {
     places,
     loading,
   } = useSelector((state) => state.placeList);
+
+  useEffect(() => {
+    if(!deletedPlace) {
+      return;
+    }
+    dispatch(getNextPlaces());
+    dispatch(getDocsCount());
+  }, [deletedPlace, dispatch]);
 
   const handleNextPage = () => {
     if (!isEndOfPlacePage) {
@@ -35,12 +48,12 @@ const PlaceTable = () => {
   };
 
   const handleDelete = (placeId) => {
-    let isConfirmed = window.confirm('Are you sure to Delete it?');
-    if(!isConfirmed) {
+    let isConfirmed = window.confirm("Are you sure to Delete it?");
+    if (!isConfirmed) {
       return;
     }
     dispatch(deletePlace(placeId));
-  }
+  };
 
   return (
     <Container className="col-xl-10 col-lg-10 offset-1">
@@ -107,12 +120,16 @@ const PlaceTable = () => {
           </Button>
         </div>
       </div>
-      {!deleteLoading && success && toast('Deleted Successfully', {
-        type: 'success'
-      })}
-      {error && toast('Unable to Delete an item', {
-        type: 'error'
-      })}
+      {!deleteLoading &&
+        successDelete &&
+        deletedPlace._id &&
+        toast("Deleted Successfully", {
+          type: "success",
+        })}
+      {error &&
+        toast("Unable to Delete an item", {
+          type: "error",
+        })}
     </Container>
   );
 };

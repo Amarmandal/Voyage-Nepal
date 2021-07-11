@@ -44,6 +44,36 @@ exports.getReviewByUserId = async (req, res) => {
   }
 };
 
+exports.getPendingReview = async(req, res) => {
+  try {
+    const reviews = await Review.find({ isApproved: false });
+
+    if(!reviews) {
+      throw new Error('No Review Found');
+    }
+
+    return res.status(200).json({
+      data: reviews
+    })
+  } catch (err) { 
+    return res.status(404).json({ error: err ? err : 'Unknow Error' });
+  }
+}
+
+exports.approvePendingReview = async(req, res) => {
+  try {
+    const { reviewId, approvedFlag } = req.body;
+    const userReview = await Review.findOne({ _id: reviewId.toString() });
+    userReview.isApproved = approvedFlag;
+    await userReview.save()
+
+    return res.status(200).json({ data: 'Review Successfully approved '});
+  } catch (err) {
+    console.log(err)
+    return res.status(400).json({ error: 'Unable to approve user review'});
+  }
+}
+
 exports.deleteReviewById = async (req, res) => {
   const reviewId = req.params.reviewId;
 

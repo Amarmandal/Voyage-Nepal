@@ -14,7 +14,8 @@ import {
   GET_PLACES_SUCCESS,
   GET_PLACES_FAIL,
   MARK_FIRST_PLACES_PAGE,
-  END_OF_PLACES_PAGE
+  END_OF_PLACES_PAGE,
+  RESET_DELETE_PLACE
 } from "./action.types";
 import { API } from "../backend";
 
@@ -217,6 +218,8 @@ export const deletePlace = (placeId) => async (dispatch, getState) => {
           ? err.response.data.error
           : err.message,
     });
+  } finally {
+    dispatch({ type: RESET_DELETE_PLACE })
   }
 };
 

@@ -12,11 +12,11 @@ const CollapseUtility = ({
   }
 
   return (
-    <div id="collapseUtilities" className="mt-2 py-2">
-      <div className="bg-white rounded d-flex flex-column align-items-center px-1">
+    <div id="collapseUtilities" className="mt-2 py-3">
+      <div className="bg-white rounded d-flex flex-column align-items-center">
         {menu.map((item, index) => (
           <p
-            className="nav-link py-1 my-1 w-100"
+            className="nav-link py-1 px-3 my-1 w-100"
             key={index}
             onClick={() => handleClick(item.linkText)}
           >

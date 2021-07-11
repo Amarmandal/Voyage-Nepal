@@ -1,7 +1,6 @@
 import React from "react";
 import OverviewCard from "./OverviewCard";
-import { useSelector, useDispatch } from "react-redux";
-import { Button } from "reactstrap";
+import { useSelector, } from "react-redux";
 import Loader from "./Loader";
 import PlaceTable from "../components/PlaceTable";
 import CategoryTable from "../components/CategoryTable";
@@ -40,7 +39,7 @@ const Dashboard = () => {
   return (
     <>
       <div className="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 className="h3 mb-0 text-gray-800">Dashboard</h1>
+        <h1 className="h3 mb-0 text-secondary">Dashboard</h1>
       </div>
 
       <div className="row">

@@ -34,13 +34,11 @@ div.card {
   z-index: 1;
   top: 50px;
   left: 150px;
-  opacity: 85%;
 }
 
 .custom-place-photo img {
   height: 150px;
   width: 100%;
-  opacity: 40%;
   object-fit: cover;
 }
 

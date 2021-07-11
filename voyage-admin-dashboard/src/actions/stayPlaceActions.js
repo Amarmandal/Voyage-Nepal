@@ -7,6 +7,10 @@ import {
   CREATE_HOTEL_SUCCESS,
   CREATE_HOTEL_FAIL,
   CREATE_HOTEL_RESET,
+  DELETE_HOTEL_REQUEST,
+  DELETE_HOTEL_SUCCESS,
+  DELETE_HOTEL_FAIL,
+  RESET_DELETE_HOTEL,
   GET_HOTELS_CHUNK_REQUEST,
   GET_HOTELS_CHUNK_SUCCESS,
   GET_HOTELS_CHUNK_FAIL,
@@ -78,6 +82,43 @@ export const createStayPlace = (hotelData) => async (dispatch, getState) => {
     dispatch({ type: CREATE_HOTEL_RESET, });
   }
 };
+
+export const deleteStayPlace = (hotelId) => async (dispatch, getState) => {
+  try {
+    const { userLogin } = getState();
+    const { token, userData } = userLogin.userInfo;
+
+    dispatch({ type: DELETE_HOTEL_REQUEST });
+
+    const URL = `${API}/hotel/delete/${hotelId}/${userData.id}`;
+
+    if (!token || !userData.isAdmin) {
+      throw new Error("User is not an Admin");
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const { data } = await axios.delete(URL, config);
+
+    dispatch({ type: DELETE_HOTEL_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({
+      type: DELETE_HOTEL_FAIL,
+      payload:
+        err.response && err.response.data.error
+          ? err.response.data.error
+          : err.message,
+    });
+  } finally {
+    dispatch({ type: RESET_DELETE_HOTEL })
+  }
+};
+
+
 
 export const getNextStayPlace = (lastObjId = null) => async (dispatch, getState) => {
   try {

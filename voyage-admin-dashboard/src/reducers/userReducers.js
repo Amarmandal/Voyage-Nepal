@@ -7,6 +7,10 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_RESET,
   USER_REGISTER_SUCCESS,
+  DELETE_USER_REQUEST, 
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAIL,
+  RESET_DELETE_USER,
   GET_USERS_REQUEST,
   GET_USERS_SUCCESS,
   GET_USERS_FAIL,
@@ -71,3 +75,18 @@ export const userListReducer = (state = {}, action) => {
       return state;
   }
 };
+
+export const userDeleteReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_USER_REQUEST:
+      return { loading: true, deleteMsg: null };
+    case DELETE_USER_SUCCESS:
+      return { loading: false, success: true, deleteMsg: action.payload };
+    case RESET_DELETE_USER:
+      return {}
+    case DELETE_USER_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
