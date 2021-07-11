@@ -1,4 +1,4 @@
-import {LOGIN_USER_SUCCESS, LOGIN_USER_FAIL} from '../action.types';
+import {LOGIN_USER_SUCCESS, LOGIN_USER_FAIL, LOGIN} from '../action.types';
 import api from '../../../services/ApiServices'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -6,6 +6,12 @@ export const loginUser = userData => {
   const {email, password} = userData;
 
   return async dispatch => {
+
+    dispatch({
+      type: LOGIN,
+      payload: 1
+    })
+
     //TODO: fetch Data
     var user = JSON.stringify({
       email: email,
