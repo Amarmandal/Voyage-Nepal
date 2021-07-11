@@ -1,18 +1,41 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { userLoginReducer, userRegisterReducer, userListReducer, userDeleteReducer } from "./reducers/userReducers";
+import {
+  userLoginReducer,
+  userRegisterReducer,
+  userListReducer,
+  userDeleteReducer,
+} from "./reducers/userReducers";
 import { sidebarReducers } from "./reducers/sidebarReducers";
 
-import { createPlaceReducer, placeListReducer, placeDeleteReducer } from "./reducers/placeReducers";
-import { createCategoryReducer, categoryListReducer } from "./reducers/categoryReducers";
+import {
+  createPlaceReducer,
+  placeListReducer,
+  placeDeleteReducer,
+} from "./reducers/placeReducers";
+import {
+  createCategoryReducer,
+  categoryListReducer,
+} from "./reducers/categoryReducers";
 import { overviewReducers } from "./reducers/overviewReducers.js";
-import { createStayPlaceReducer, hotelListReducer, hotelDeleteReducer } from "./reducers/stayPlaceReducers";
+import {
+  createStayPlaceReducer,
+  hotelListReducer,
+  hotelDeleteReducer,
+} from "./reducers/stayPlaceReducers";
 
-import { getCategoryReducer, categoryDeleteReducer } from "./reducers/categoryReducers";
-import { getHotelReducer} from "./reducers/stayPlaceReducers";
+import {
+  getCategoryReducer,
+  categoryDeleteReducer,
+} from "./reducers/categoryReducers";
+import {
+  reviewListReducer,
+  approveReviewReducer,
+  rejectReviewReducer
+} from "./reducers/reviewReducers";
+import { getHotelReducer } from "./reducers/stayPlaceReducers";
 import { countReducers } from "./reducers/countReducers";
-
 
 const reducer = combineReducers({
   userLogin: userLoginReducer,
@@ -33,22 +56,25 @@ const reducer = combineReducers({
   placeHotel: getHotelReducer,
   hotelDelete: hotelDeleteReducer,
   docsCount: countReducers,
+  reviewList: reviewListReducer,
+  approveReview: approveReviewReducer,
+  rejectReview: rejectReviewReducer,
 });
 
-const userInfo = localStorage.getItem('userInfo');
-const userInfoFromStorage = userInfo ? JSON.parse(userInfo) : null; 
+const userInfo = localStorage.getItem("userInfo");
+const userInfoFromStorage = userInfo ? JSON.parse(userInfo) : null;
 
 const initialState = {
-  userLogin: { 'userInfo': userInfoFromStorage },
+  userLogin: { userInfo: userInfoFromStorage },
   userRegister: {},
   userList: {},
   userDelete: {
-    deleteMsg: null
+    deleteMsg: null,
   },
   createPlace: {},
   placeList: {},
   placeDelete: {
-    deletedPlace: null
+    deletedPlace: null,
   },
   placeCategory: null,
   placeHotel: null,
@@ -60,7 +86,7 @@ const initialState = {
   createStayPlace: {},
   createCategory: {},
   categoryDelete: {
-    deleteMsg: null
+    deleteMsg: null,
   },
   docsCount: {},
   sidebarToggle: {
@@ -72,8 +98,8 @@ const initialState = {
   },
   overviewToggle: {
     showUser: true,
-  }
-}
+  },
+};
 
 const middleware = [thunk];
 

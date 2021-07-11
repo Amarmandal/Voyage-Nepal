@@ -1,10 +1,23 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Table, Container, Button } from "reactstrap";
 import "./ReviewTable.css";
+import { approvePendingReview, rejectPendingReview} from "../actions/reviewAction";
 
 const ReviewTable = () => {
+  const dispatch = useDispatch();
+  const { reviews, loading } = useSelector(state => state.reviewList);
+
+  const onApprove = (reviewId) => {
+    dispatch(approvePendingReview(reviewId));
+  } 
+
+  const onReject = (reviewId) => {
+    dispatch(rejectPendingReview(reviewId));
+  }
+
   return (
-    <Container fluid className="col-xl-10 col-lg-10 offset-1">
+    <Container fluid className="pt-4">
       <Table bordered>
         <thead>
           <tr className="table-dark">
@@ -15,27 +28,31 @@ const ReviewTable = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>123456</td>
-            <td>245345345</td>
-            <td id="review-text">Great Place lorem.</td>
-            <td id="review-action">
-                <Button
-                color="danger"
-                className="float-start"
-                onClick={() => alert('Review Rejected')}
-                >
-                    Reject
-                </Button>
-                <Button
-                color="success"
-                className="float-end"
-                onClick={() => alert('Review Approved')}
-                >
-                    Approve
-                </Button>
-            </td>
-          </tr>
+          {!loading && reviews && (
+            reviews.map(item => (
+              <tr key={item._id}>
+              <td>{item._id}</td>
+              <td>{item.user}</td>
+              <td id="review-text">{item.reviewText}</td>
+              <td id="review-action">
+                  <Button
+                  color="danger"
+                  className="float-start"
+                  onClick={() => onReject(item._id)}
+                  >
+                      Reject
+                  </Button>
+                  <Button
+                  color="success"
+                  className="float-end"
+                  onClick={() => onApprove(item._id)}
+                  >
+                      Approve
+                  </Button>
+              </td>
+            </tr>
+            ))
+          )}
         </tbody>
       </Table>
 
