@@ -31,12 +31,7 @@ import {loginUser} from '../../redux/action/Login/loginUser';
 
 import {useDispatch, useSelector} from 'react-redux';
 
-// import {
-//   AccessToken,
-//   GraphRequest,
-//   GraphRequestManager,
-//   LoginManager,
-// } from 'react-native-fbsdk-next';
+import LoadingModal from '../../utils/Modal';
 
 const Signin = ({navigation}) => {
   const state = useSelector(state => state.loginUser);
@@ -62,7 +57,7 @@ const Signin = ({navigation}) => {
   }, []);
 
   useEffect(() => {
-    if(state.user){
+    if (state.user && !state.loading) {
       // console.log(state);
       setData({
         ...data,
@@ -70,15 +65,18 @@ const Signin = ({navigation}) => {
         isValidEmail: true,
         isValidPassword: true,
       });
+      setError('');
       navigation.navigate('LoadingScreen1', {
         id: state.user.userData.id,
         token: state.user.token,
       });
-      setError('')
-    }else if(state.errors){
-      setError(state.errors)
+      setError('');
+      // return <LoadingModal visibility={false} />;
+    } else if (state.errors) {
+      setError(state.errors);
+      // reutrn(<LoadingModal visibility={false} />);
     }
-  }, [state.user, state.errors])
+  }, [state.user, state.errors, state]);
 
   const getEmail = _email => {
     setData({...data, email: _email});
@@ -104,16 +102,6 @@ const Signin = ({navigation}) => {
     }
   };
 
-  // const storeData = async result => {
-  //   try {
-  //     await AsyncStorage.setItem('token', result.token);
-  //     await AsyncStorage.setItem('email', result.userData.email);
-  //   } catch (e) {
-  //     // saving error
-  //     console.log(e);
-  //   }
-  // };
-
   var signinUser = {
     email: data.email,
     password: data.password,
@@ -131,12 +119,11 @@ const Signin = ({navigation}) => {
 
   const submitValues = async () => {
     if (data.email !== '' && data.password !== '') {
-      dispatch(loginUser(signinUser))
+      dispatch(loginUser(signinUser));
     } else {
       setError('All the fields are required');
     }
   };
-
 
   const handleForgotPAssword = () => {
     navigation.navigate('Email');
@@ -170,73 +157,76 @@ const Signin = ({navigation}) => {
           />
         </Button>
 
-        
-          <View style={{alignItems: 'center', margin: 30}}>
-            {error === '' ? null : (
-              <Text
-                style={{
-                  color: Colors.error,
-                  fontSize: 14,
-                  marginBottom: 10,
-                  fontWeight: 'bold',
-                }}>
-                {'Error: ' + error + '!!'}
-              </Text>
-            )}
-            <FormInput
-              icon="mail-outline"
-              placeholder="Email Address"
-              value={data.email}
-              onChangeText={getEmail}
-              onBlur={() => handleValidEmail()}
-            />
-            {data.isValidEmail ? null : (
-              <Text
-                style={{
-                  color: '#FF0000',
-                  fontSize: 14,
-                  marginBottom: 10,
-                  alignSelf: 'flex-end',
-                }}>
-                Required!
-              </Text>
-            )}
-            <FormInput
-              icon="key"
-              placeholder="Password"
-              value={data.password}
-              onChangeText={getPassword}
-              onBlur={() => handleValidPassword()}
-              rightIcon={hidePassword ? 'eye-off-outline' : 'eye-outline'}
-              showPassword={() => setHidePassword(!hidePassword)}
-              secureText={hidePassword ? true : false}
-            />
-            {data.isValidPassword ? null : (
-              <Text
-                style={{
-                  color: '#FF0000',
-                  fontSize: 14,
-                  marginBottom: 10,
-                  alignSelf: 'flex-end',
-                }}>
-                Required!
-              </Text>
-            )}
-            <ForgotPassword forgotPassword={() => handleForgotPAssword()} />
+        <View style={{alignItems: 'center', margin: 30}}>
+          {error === '' ? null : (
+            <Text
+              style={{
+                color: Colors.error,
+                fontSize: 14,
+                marginBottom: 10,
+                fontWeight: 'bold',
+              }}>
+              {'Error: ' + error + '!!'}
+            </Text>
+          )}
+          <FormInput
+            icon="mail-outline"
+            placeholder="Email Address"
+            value={data.email}
+            onChangeText={getEmail}
+            onBlur={() => handleValidEmail()}
+          />
+          {data.isValidEmail ? null : (
+            <Text
+              style={{
+                color: '#FF0000',
+                fontSize: 14,
+                marginBottom: 10,
+                alignSelf: 'flex-end',
+              }}>
+              Required!
+            </Text>
+          )}
+          <FormInput
+            icon="key"
+            placeholder="Password"
+            value={data.password}
+            onChangeText={getPassword}
+            onBlur={() => handleValidPassword()}
+            rightIcon={hidePassword ? 'eye-off-outline' : 'eye-outline'}
+            showPassword={() => setHidePassword(!hidePassword)}
+            secureText={hidePassword ? true : false}
+          />
+          {data.isValidPassword ? null : (
+            <Text
+              style={{
+                color: '#FF0000',
+                fontSize: 14,
+                marginBottom: 10,
+                alignSelf: 'flex-end',
+              }}>
+              Required!
+            </Text>
+          )}
+          <ForgotPassword forgotPassword={() => handleForgotPAssword()} />
 
-            <ActionButton
-              mt={20}
-              buttonName="Continue"
-              // home={() => submitValues()}
-              home={() => submitValues()}
-            />
-            <Account
-              text="Don't have an Account? "
-              action="Signup"
-              signup={() => navigation.navigate('Signup')}
-            />
-          </View>
-      
+          <ActionButton
+            mt={20}
+            buttonName="Continue"
+            // home={() => submitValues()}
+            home={() => submitValues()}
+          />
+          <Account
+            text="Don't have an Account? "
+            action="Signup"
+            signup={() => navigation.navigate('Signup')}
+          />
+        </View>
+        {state.loading ? (
+          <LoadingModal visibility={true} />
+        ) : (
+          <LoadingModal visibility={false} />
+        )}
       </Content>
     </Container>
   );

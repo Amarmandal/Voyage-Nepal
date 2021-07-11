@@ -4,8 +4,8 @@ import store from '../../store'
 
 export const Category = (data) => {
   return async (dispatch, getState) => {
-    const state = getState();
-    console.log(state.loginUser);
+    // const state = getState();
+    // console.log(state.loginUser);
     dispatch({
         type: FETCH_CATEGORY,
         payload: data,

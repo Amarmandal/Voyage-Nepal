@@ -30,6 +30,7 @@ import GoBack from '../../Components/Signin/GoBack';
 
 import {registerUser} from '../../redux/action/register/registerUser'
 import {useDispatch, useSelector} from 'react-redux'
+import LoadingModal from '../../utils/Modal'
 
 const Signup = ({navigation}, props) => {
 
@@ -201,13 +202,6 @@ const Signup = ({navigation}, props) => {
   const submitValues = () => {
     if(data.name !== '' && data.email !== '' && data.password !== '' && data.confirmPassword !== '' && dob !== '' && gender !== '' && city !== ''){
       dispatch(registerUser(newUser))
-        // .then(() => {
-        //   // alert('Please Check your Email for verification')
-        //   // navigation.navigate('Signin')
-        //   console.log('registeration');
-        //   console.log(state);
-        // })
-        // .catch(err => console.log(err))
     } else {
       alert('All fields are mandatory; Please fill up the form correctly')
     }
@@ -389,6 +383,11 @@ const Signup = ({navigation}, props) => {
               signup={() => navigation.navigate('Signin')}
             />
           </View>
+          {state.loading ? (
+          <LoadingModal visibility={true} />
+        ) : (
+          <LoadingModal visibility={false} />
+        )}
       </Content>
       
     </Container>

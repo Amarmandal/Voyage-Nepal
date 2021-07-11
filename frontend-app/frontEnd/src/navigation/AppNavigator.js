@@ -52,7 +52,7 @@ const Home = () => {
       inactiveTintColor: Colors.dimGray,
       showLabel: false,
       style: {
-        backgroundColor: '#ffffff',
+        backgroundColor: 'white',
         borderTopWidth: 0,
         position: 'absolute',
         elevation: 0,

@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../../services/ApiServices'
 import {useSelector} from 'react-redux'
 import { useNavigation } from '@react-navigation/native';
+import LoadingModal from '../../../utils/Modal'
 
 const ChangePassword = () => {
   const navigation = useNavigation();
@@ -18,6 +19,7 @@ const ChangePassword = () => {
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
   const [passwordError, setPasswordError] = useState('')
   const [showToast, setShowToast] = useState(false)
+  const [loading, setLoading] = useState()
   const [data, setData] = useState({
     currentPassword: '',
     newPassword: '',
@@ -93,6 +95,7 @@ const ChangePassword = () => {
   };
 
   const handleSubmit = async() => {
+    setLoading(true)
     var info = JSON.stringify({
       "currentPassword": data.currentPassword,
       "newPassword": data.newPassword
@@ -112,11 +115,13 @@ const ChangePassword = () => {
     if(data.newPassword === data.confirmNewPassword && data.newPassword !== '' && data.currentPassword !== ''){
       await api(config)
       .then(function (response) {
+        setLoading(false)
         console.log(JSON.stringify(response.data.success));
         navigation.navigate('Signin')
         AsyncStorage.clear()
       })
       .catch(function (error) {
+        setLoading(false)
         console.log(error.response.data.error);
         Toast.show({
           text: error.response.data.error,
@@ -161,7 +166,7 @@ const ChangePassword = () => {
           onChangeText={getNewPassword}
           onBlur={() => handleValidNewPassword()}
           rightIcon={hideNewPassword ? 'eye-off-outline' : 'eye-outline'}
-          showPassword={() => setHideNewPassword(!hideConfirmPassword)}
+          showPassword={() => setHideNewPassword(!hideNewPassword)}
           secureText={hideNewPassword ? true : false}
         />
         {data.isValidNewPassword ? null : (
@@ -196,6 +201,11 @@ const ChangePassword = () => {
           <Text style={styles.nextButtonText}>Submit</Text>
         </Button>
       </View>
+      <View style = {{marginTop: 80}}> 
+      {loading ? 
+      <LoadingModal visibility = {true} /> : <LoadingModal visibility = {false} />}
+      </View>
+      
     </View>
   );
 };
