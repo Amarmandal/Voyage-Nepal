@@ -1,30 +1,21 @@
-import React, {useEffect} from 'react';
-import {useWindowDimensions, View, ActivityIndicator} from 'react-native';
+import React from 'react';
+import {useWindowDimensions, ActivityIndicator} from 'react-native';
 import {
   Container,
   Header,
   Tab,
   Tabs,
-  TabHeading,
-  Icon,
-  Text,
-  ScrollableTab,
-  Content,
   DefaultTabBar,
 } from 'native-base';
 import ImageDetail from '../../../Components/Home/Explore/ImageDetail';
-import places from '../../../constants/places';
 import Detail from '../../../Components/Home/Explore/Detail';
 import Review from '../../../Components/Home/Explore/Review';
 import Hotel from '../../../Components/Home/feed/Hotel';
 import Colors from '../../../constants/Color';
 import {useSelector} from 'react-redux';
-const RecommendationDetail = ({navigation}) => {
-  // const {image, location, name, details, reviews, hotel, id, ratings} =
-  //   route.params;
+const RecommendationDetail = () => {
   const state = useSelector(state => state.getPlaceById);
   const {loading, place, success, error} = state;
-  // console.log(state);
   const imageWidth = useWindowDimensions().width;
 
   const placeName = () => {
@@ -35,9 +26,6 @@ const RecommendationDetail = ({navigation}) => {
       for (let i = 0; i < words.length; i++) {
         words[i] = words[i].charAt(0).toUpperCase() + words[i].substr(1);
       }
-
-      // words.join(' ');
-      // console.log(words);
       return words.join(' ');
     }
   };

@@ -3,6 +3,7 @@ import {
   TOGGLE_CATEGORY,
   TOGGLE_HOTEL,
   TOGGLE_USER,
+  TOGGLE_REVIEW
 } from "../actions/action.types";
 
 const sidebarReducers = (state = {}, action) => {
@@ -13,6 +14,7 @@ const sidebarReducers = (state = {}, action) => {
         categoryToggle: false,
         hotelToggle: false,
         userToggle: false,
+        reviewToggle: false,
       };
     case TOGGLE_CATEGORY:
       return {
@@ -20,6 +22,7 @@ const sidebarReducers = (state = {}, action) => {
         categoryToggle: !state.categoryToggle,
         hotelToggle: false,
         userToggle: false,
+        reviewToggle: false
       };
     case TOGGLE_HOTEL:
       return {
@@ -27,6 +30,7 @@ const sidebarReducers = (state = {}, action) => {
         categoryToggle: false,
         hotelToggle: !state.hotelToggle,
         userToggle: false,
+        reviewToggle: false
       };
     case TOGGLE_USER:
       return {
@@ -34,7 +38,16 @@ const sidebarReducers = (state = {}, action) => {
         categoryToggle: false,
         hotelToggle: false,
         userToggle: !state.userToggle,
+        reviewToggle: false
       };
+    case TOGGLE_REVIEW:
+      return {
+        placeToggle: false,
+        categoryToggle: false,
+        hotelToggle: false,
+        userToggle: false,
+        reviewToggle: !state.reviewToggle
+      }
     default: 
       return {}
   }

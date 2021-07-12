@@ -3,7 +3,7 @@ import api from '../../../services/ApiServices'
 
 export const GetPlaceByID = (data) => {
     // const {id} = data
-    console.log(data);
+    // console.log(data);
     return async (dispatch, getState) => {
         const {loginUser} = getState()
         const {user} = loginUser

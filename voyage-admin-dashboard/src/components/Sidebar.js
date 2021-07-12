@@ -83,6 +83,14 @@ const Sidebar = () => {
         toggleKey="userToggle"
       />
 
+      <SidebarMenu
+        menuTitle="Review"
+        utilityMenu={[
+          { subMenuTitle: "Manage Review", linkText: "/user/review" },
+        ]}
+        toggleKey="reviewToggle"
+      />
+
       <hr className="sidebar-divider" />
 
       <div className="text-center d-none d-md-inline">

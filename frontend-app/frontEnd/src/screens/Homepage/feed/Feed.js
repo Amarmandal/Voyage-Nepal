@@ -11,8 +11,11 @@ import {userDetails} from '../../../redux/action/Login/userDetails';
 import {Category} from '../../../redux/action/Data/Category'
 import {Places} from '../../../redux/action/Data/places'
 import { useIsFocused } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Feed = () => {
+
+  
 
   useEffect(() => {
     fetchCategory()
@@ -31,7 +34,7 @@ const Feed = () => {
         Authorization: `Bearer ${state.user.token}`,
       },
     };
-  // console.log(location);
+
     await api(config)
       .then(res => {
         const cat = res.data.data;
