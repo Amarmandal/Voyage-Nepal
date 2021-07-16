@@ -5,6 +5,7 @@ import Loader from "../components/Loader";
 import AdminPage from "./AdminPage";
 import { getDocsCount } from "../actions/countActions";
 import { getNextUsers } from "../actions/userActions";
+import UserDashboard from "./UserDashboard";
 
 const HomePage = () => {
   const userLogin = useSelector(state => state.userLogin);
@@ -25,8 +26,9 @@ const HomePage = () => {
 
   return (
     <div>
-      {loading && <Loader />}
-      {userInfo && userInfo.userData?.isAdmin && <AdminPage />}
+      {loading ? <Loader /> : (
+        userInfo && userInfo.userData?.isAdmin ? <AdminPage /> : <UserDashboard />
+      )}
     </div>
   );
 };

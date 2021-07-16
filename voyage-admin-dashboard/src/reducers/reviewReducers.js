@@ -5,9 +5,11 @@ import {
     APPROVE_REVIEW_REQUEST,
     APPROVE_REVIEW_SUCCESS,
     APPROVE_REVIEW_FAIL,
+    APPROVE_REVIEW_RESET,
     REJECT_REVIEW_REQUEST,
     REJECT_REVIEW_SUCCESS,
-    REJECT_REVIEW_FAIL
+    REJECT_REVIEW_FAIL,
+    REJECT_REVIEW_RESET
   } from "../actions/action.types";
   
   export const reviewListReducer = (state = {}, action) => {
@@ -37,6 +39,8 @@ import {
         };
       case APPROVE_REVIEW_FAIL:
         return { error: action.payload };
+      case APPROVE_REVIEW_RESET:
+        return { onApproveReset: true };
       default:
         return state;
     }
@@ -53,6 +57,8 @@ import {
         };
       case REJECT_REVIEW_FAIL:
         return { error: action.payload };
+      case REJECT_REVIEW_RESET:
+        return { onRejectReset: true };
       default:
         return state;
     }

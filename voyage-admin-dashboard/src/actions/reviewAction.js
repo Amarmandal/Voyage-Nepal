@@ -6,9 +6,11 @@ import {
   APPROVE_REVIEW_REQUEST,
   APPROVE_REVIEW_SUCCESS,
   APPROVE_REVIEW_FAIL,
+  APPROVE_REVIEW_RESET,
   REJECT_REVIEW_REQUEST,
   REJECT_REVIEW_SUCCESS,
-  REJECT_REVIEW_FAIL
+  REJECT_REVIEW_FAIL,
+  REJECT_REVIEW_RESET
 } from "./action.types";
 import { API } from "../backend";
 
@@ -73,6 +75,8 @@ export const approvePendingReview = (reviewId) => async (dispatch, getState) => 
           ? err.response.data.error
           : err.message,
     });
+  } finally {
+    dispatch({ type: APPROVE_REVIEW_RESET})
   }
 };
 
@@ -103,6 +107,8 @@ export const rejectPendingReview = (reviewId) => async (dispatch, getState) => {
           ? err.response.data.error
           : err.message,
     });
+  } finally {
+    dispatch({ type: REJECT_REVIEW_RESET })
   }
 };
 

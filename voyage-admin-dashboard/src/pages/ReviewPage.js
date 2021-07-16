@@ -11,12 +11,12 @@ import { toast } from "react-toastify";
 const ReviewPage = () => {
   const dispatch = useDispatch();
   const { error, loading, reviews } = useSelector((state) => state.reviewList);
-  const { approveMsg } = useSelector((state) => state.approveReview);
-  const { rejectMsg } = useSelector((state) => state.rejectReview);
+  const { approveMsg, onApproveReset } = useSelector((state) => state.approveReview);
+  const { rejectMsg, onRejectReset } = useSelector((state) => state.rejectReview);
 
   useEffect(() => {
     dispatch(getAllPendingReview());
-  }, [dispatch]);
+  }, [dispatch, onApproveReset, onRejectReset]);
 
   return (
     <Container fluid="true">

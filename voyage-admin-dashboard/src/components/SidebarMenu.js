@@ -45,7 +45,8 @@ const SidebarMenu = ({
         dispatch({ type: TOGGLE_USER });
         break;
       case "Review":
-        dispatch({ type: TOGGLE_REVIEW })
+        dispatch({ type: TOGGLE_REVIEW });
+        break;
       default:
         break;
     }

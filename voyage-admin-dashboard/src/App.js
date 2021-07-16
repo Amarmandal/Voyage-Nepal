@@ -11,6 +11,7 @@ import UserProfile from "./pages/UserProfile";
 import ReviewPage from "./pages/ReviewPage";
 import NotFound from './pages/NotFound';
 import ActivateAccount from "./pages/ActivateAccount";
+import UserRole from "./pages/UserRole";
 import { ToastContainer } from "react-toastify";
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,6 +30,7 @@ function App() {
         <AdminRoute path="/hotel/create" component={CreateHotel} />
         <AdminRoute path="/user-profile" component={UserProfile} />
         <AdminRoute path="/user/review" component={ReviewPage} />
+        <AdminRoute path="/user/update/role" component={UserRole} />
         <Route path="*" component={NotFound} />
       </Switch>
       <ToastContainer />
