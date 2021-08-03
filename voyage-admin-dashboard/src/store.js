@@ -6,6 +6,7 @@ import {
   userRegisterReducer,
   userListReducer,
   userDeleteReducer,
+  userUpdateRoleReducer
 } from "./reducers/userReducers";
 import { sidebarReducers } from "./reducers/sidebarReducers";
 
@@ -42,6 +43,7 @@ const reducer = combineReducers({
   userRegister: userRegisterReducer,
   userDelete: userDeleteReducer,
   userList: userListReducer,
+  userUpdateRole: userUpdateRoleReducer,
   placeList: placeListReducer,
   categoryList: categoryListReducer,
   hotelList: hotelListReducer,

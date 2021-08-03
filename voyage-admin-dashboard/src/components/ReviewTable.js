@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Table, Container, Button } from "reactstrap";
 import "./ReviewTable.css";
-import { approvePendingReview, rejectPendingReview} from "../actions/reviewAction";
+import { approvePendingReview, rejectPendingReview } from "../actions/reviewAction";
 
 const ReviewTable = () => {
   const dispatch = useDispatch();

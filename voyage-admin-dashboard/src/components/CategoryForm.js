@@ -6,12 +6,9 @@ import {
   FormGroup,
   Input,
   Button,
-  Row,
-  Col,
   Card,
   CardBody,
   Form,
-  Label,
 } from "reactstrap";
 import { createCategory } from "../actions/categoryActions";
 import "./CategoryForm.css";

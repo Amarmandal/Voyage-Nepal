@@ -15,7 +15,11 @@ import {
   GET_USERS_SUCCESS,
   GET_USERS_FAIL,
   END_OF_USER_PAGE,
-  MARK_FIRST_USER_PAGE
+  MARK_FIRST_USER_PAGE,
+  UPDATE_USER_ROLE_REQUEST,
+  UPDATE_USER_ROLE_SUCCESS,
+  UPDATE_USER_ROLE_FAIL,
+  RESET_UPDATE_ROLE
 } from "../actions/action.types";
 
 export const userLoginReducer = (state = {}, action) => {
@@ -86,6 +90,24 @@ export const userDeleteReducer = (state = {}, action) => {
       return {}
     case DELETE_USER_FAIL:
       return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
+
+export const userUpdateRoleReducer = (state = {}, action) => {
+  switch (action.type) {
+    case UPDATE_USER_ROLE_REQUEST:
+      return { loading: true };
+    case UPDATE_USER_ROLE_SUCCESS:
+      return {
+        loading: false,
+        updateMsg: action.payload
+      };
+    case UPDATE_USER_ROLE_FAIL:
+      return { error: action.payload };
+    case RESET_UPDATE_ROLE:
+      return { };
     default:
       return state;
   }
