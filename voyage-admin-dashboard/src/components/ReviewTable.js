@@ -56,7 +56,7 @@ const ReviewTable = () => {
         </tbody>
       </Table>
 
-      <div className="row mt-4">
+      {/* <div className="row mt-4">
         <div className="">
           <Button
             id="prev-btn"
@@ -73,7 +73,7 @@ const ReviewTable = () => {
             Next
           </Button>
         </div>
-      </div>
+      </div> */}
     </Container>
   );
 };

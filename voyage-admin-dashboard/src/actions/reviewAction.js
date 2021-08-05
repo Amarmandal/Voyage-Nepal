@@ -254,5 +254,3 @@ export const rejectPendingReview = (reviewId) => async (dispatch, getState) => {
 //     dispatch({ type: RESET_DELETE_CATEGORY })
 //   }
 // };
-
-
