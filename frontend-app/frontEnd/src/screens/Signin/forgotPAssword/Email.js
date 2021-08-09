@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, ALert} from 'react-native';
 import {Button} from 'native-base';
 import {FormInput} from '../../../Components/FormComponents/FormCompponents';
 import styles from './OTP.styles';
@@ -28,7 +28,9 @@ const Email = ({navigation}) => {
 
   useEffect(() => {
     if (!state.loading && state.success) {
-      alert(state.email.message);
+      Alert.alert("Voyage Nepal",state.email.message,[
+        { text: "OK", onPress: () => null }
+      ]);
       console.log(state);
       navigation.navigate('MyModal');
     } else if(!state.loading && !state.success){

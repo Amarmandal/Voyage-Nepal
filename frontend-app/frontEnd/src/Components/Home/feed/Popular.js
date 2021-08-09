@@ -11,7 +11,6 @@ import {
   Pressable,
 } from 'react-native';
 import Colors from '../../../constants/Color';
-import places from '../../../constants/places';
 const {width} = Dimensions.get('window');
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch, useSelector} from 'react-redux';

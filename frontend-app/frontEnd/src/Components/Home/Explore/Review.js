@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+import {ActivityIndicator, RefreshControl, Alert} from 'react-native'
 import {
   Container,
   Header,
@@ -16,6 +17,8 @@ import {
   Button,
   H3,
   Toast,
+  List,
+  ListItem
 } from 'native-base';
 import {useNavigation} from '@react-navigation/native';
 import Colors from '../../../constants/Color';
@@ -32,15 +35,49 @@ const Review = ({reviews, placeId}) => {
 
   const state = useSelector(state => state.loginUser);
 
+  const placeByID = useSelector(state => state.getPlaceById)
+
+  const [isLoading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+
   const [starCount, setStarCount] = useState(0);
   const [review, setReview] = useState('');
 
-  // const [userReviews, setUserReviews] = useState(reviews)
-  // console.log(userReviews);
+  const [refreshing, setRefreshing] = useState(false);
 
-  // useEffect(() => {
-  //   setUserReviews(reviews)
-  // }, [dispatch])
+  const refreshPage = useCallback(async () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false)
+    }, 3000);
+  }, [refreshing]);
+
+  useEffect(() => {
+    var config = {
+      method: 'get',
+      url: `/place/${placeId}/${state.user.userData.id}`,
+      headers: { 
+        'Authorization': `Bearer ${state.user.token}`,
+        Cookie: `token=${state.user.token}`,
+      }
+    };
+    setLoading(true)
+    api(config)
+    .then(function (response) {
+      // console.log(response.data.data.reviews);
+      setLoading(false)
+      // console.log(JSON.stringify(response.data));
+      setData(response.data.data.reviews)
+
+    })
+    .catch(function (error) {
+      setLoading(false)
+      Alert.alert("Voyage Nepal", error, [
+        { text: "OK", onPress: () => null }
+      ]);
+    });
+    
+  }, [refreshing, placeId])
 
 
   const onStarRatingPress = rating => {
@@ -54,19 +91,28 @@ const Review = ({reviews, placeId}) => {
     // console.log(review);
   };
 
-  const data = {
+  const datas = {
     review: review, 
     starCount: starCount,
     placeId: placeId
   }
 
   const handleSubmit = () => {
-    dispatch(userReviews(data))
+    dispatch(userReviews(datas))
+    setStarCount(0);
+    setReview('')
   }
 
   return (
     <Container>
-      <Content showsVerticalScrollIndicator={false}>
+      <Content showsVerticalScrollIndicator={false} refreshControl = {
+          <RefreshControl
+          refreshing={refreshing}
+          onRefresh={refreshPage}
+          tintColor={Colors.themeColor}
+        />
+        }>
+      
         <Text style={{margin: 20, fontWeight: 'bold'}}>
           Any reviews about this place?
         </Text>
@@ -99,6 +145,7 @@ const Review = ({reviews, placeId}) => {
                 backgroundColor: '#ffffff',
               }}>
               <Input
+                value={review}
                 placeholder="Your Review Here"
                 onChangeText={text => handleChange(text)}
                 // onFocus={() => setShowList(true)}
@@ -161,9 +208,9 @@ const Review = ({reviews, placeId}) => {
         <Text style={{margin: 20, fontWeight: 'bold'}}>
           See Other's Reviews
         </Text>
-        <Card>
-          {reviews.map(review => (
-            <CardItem bordered key={review.user._id}>
+        <List>
+          {!isLoading ? data.map(review => (
+            <ListItem key={review.user._id}>
               <Body
                 style={{
                   marginBottom: 20,
@@ -211,9 +258,9 @@ const Review = ({reviews, placeId}) => {
                   ) : null}
                 </View>
               </Body>
-            </CardItem>
-          ))}
-        </Card>
+            </ListItem>
+          )) : <ActivityIndicator color={Colors.themeColor} size="large" />}
+        </List>
       </Content>
     </Container>
   );

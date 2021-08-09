@@ -14,8 +14,8 @@ export const userReviews = (data) => {
             type: REVIEW
         })
         var data = JSON.stringify({
-            reviewText: review,
-            rating: starCount,
+            reviewText: review ? review : '',
+            rating: starCount ? starCount : 0,
           });
           var config = {
             method: 'post',

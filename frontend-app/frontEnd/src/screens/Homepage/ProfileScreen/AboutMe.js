@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image, ActivityIndicator} from 'react-native';
+import {View, Text, Image, ActivityIndicator, Alert} from 'react-native';
 import {
   Container,
   Content,
@@ -40,7 +40,9 @@ const AboutMe = ({navigation}) => {
           console.log('ImagePicker Error: ', response.error);
         } else if (response.customButton) {
           console.log('User tapped custom button: ', response.customButton);
-          alert(response.customButton);
+          Alert.alert("Voyage Nepal", response.customButton, [
+            { text: "OK", onPress: () => null }
+          ]);
         } else {
           let source = response;
           // You can also display the image using data:

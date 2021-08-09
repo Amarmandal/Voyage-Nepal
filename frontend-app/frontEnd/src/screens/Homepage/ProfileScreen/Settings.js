@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Pressable} from 'react-native';
 import {Container, Content, Icon, Right, Button} from 'native-base';
 
 const Settings = ({navigation}) => {
@@ -8,21 +8,23 @@ const Settings = ({navigation}) => {
       <Button transparent onPress={() => navigation.goBack()} large>
         <Icon name="arrow-back" style={{color: '#52c0b4', fontSize: 25}} />
       </Button>
-      <Content style={{ margin: 25, marginTop: 0}}>
-        <View style={styles.listContainer}>
+      <Content style={{margin: 25, marginTop: 0}}>
+        <Pressable
+          style={styles.listContainer}
+          onPress={() => {
+            navigation.navigate('FAQ');
+          }}>
           <Icon active type="Feather" name="user" style={{marginRight: 15}} />
           <Text style={{fontSize: 19}}>FAQ</Text>
           <Right>
-            <Icon
-              type="Entypo"
-              name="chevron-right"
-              onPress={() => {
-                navigation.navigate('FAQ');
-              }}
-            />
+            <Icon type="Entypo" name="chevron-right" />
           </Right>
-        </View>
-        <View style={styles.listContainer}>
+        </Pressable>
+        <Pressable
+          style={styles.listContainer}
+          onPress={() => {
+            navigation.navigate('Terms');
+          }}>
           <Icon
             active
             type="Ionicons"
@@ -31,16 +33,14 @@ const Settings = ({navigation}) => {
           />
           <Text style={{fontSize: 19}}>Terms & Condition</Text>
           <Right>
-            <Icon
-              type="Entypo"
-              name="chevron-right"
-              onPress={() => {
-                navigation.navigate('Terms');
-              }}
-            />
+            <Icon type="Entypo" name="chevron-right" />
           </Right>
-        </View>
-        <View style={styles.listContainer}>
+        </Pressable>
+        <Pressable
+          style={styles.listContainer}
+          onPress={() => {
+            navigation.navigate('Policy');
+          }}>
           <Icon
             active
             type="Ionicons"
@@ -49,15 +49,9 @@ const Settings = ({navigation}) => {
           />
           <Text style={{fontSize: 19}}>Privacy Policy</Text>
           <Right>
-            <Icon
-              type="Entypo"
-              name="chevron-right"
-              onPress={() => {
-                navigation.navigate('Policy');
-              }}
-            />
+            <Icon type="Entypo" name="chevron-right" />
           </Right>
-        </View>
+        </Pressable>
       </Content>
     </Container>
   );
@@ -84,4 +78,3 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 });
-

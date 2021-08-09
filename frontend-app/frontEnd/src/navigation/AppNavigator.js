@@ -12,7 +12,6 @@ import Signup from '../screens/Signup/Signup';
 import Feed from '../screens/Homepage/feed/Feed';
 import Explore from '../screens/Homepage/explore/Explore';
 import Details from '../screens/Homepage/explore/Details';
-import HotelScreen from '../screens/Homepage/hotelScreen/HotelScreen';
 import Map from '../screens/Homepage/hotelScreen/Map';
 import Profile from '../screens/Homepage/ProfileScreen/Profile';
 import AboutMe from '../screens/Homepage/ProfileScreen/AboutMe';
@@ -31,6 +30,7 @@ import Settings from '../screens/Homepage/ProfileScreen/Settings';
 import FAQ from '../Components/Home/profile/Settings/FAQ';
 import PrivacyPolicy from '../Components/Home/profile/Settings/PrivacyPolicy';
 import TermsAndCond from '../Components/Home/profile/Settings/TermsAndCond';
+import ChoosePlace from '../screens/starter/ChoosePlace'
 import TabComponent from './Tab'
 
 const activeColor = '#CF3838';
@@ -178,7 +178,7 @@ function MainStackScreen() {
         name="LoadingScreen1"
         component={LoadingScreen}
         options={{
-          title: 'Signin',
+          title: 'LoadingScreen',
           headerStyle: {
             backgroundColor: '#1597bb',
           },
@@ -188,7 +188,7 @@ function MainStackScreen() {
         name="LoadingScreen2"
         component={Loading}
         options={{
-          title: 'Signin',
+          title: 'Loading',
           headerStyle: {
             backgroundColor: '#1597bb',
           },
@@ -226,6 +226,7 @@ function App() {
         <RootStack.Screen name="Email" component={Email} />
         <RootStack.Screen name="MyModal" component={OTPScreen} />
         <RootStack.Screen name="Reset" component={ResetPassword} />
+        <RootStack.Screen name="ChoosePlace" component={ChoosePlace} />
       </RootStack.Navigator>
     </NavigationContainer>
   );

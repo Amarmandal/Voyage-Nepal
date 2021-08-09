@@ -25,7 +25,7 @@ const LoadingScreen = ({navigation, route}) => {
       .then(res => {
         // console.log(res.data);
         dispatch(userDetails(res.data));
-        navigation.navigate('LoadingScreen2')
+        navigation.navigate('ChoosePlace', {id: id, token: token})
       })
       .catch(err => {
         console.log(err);

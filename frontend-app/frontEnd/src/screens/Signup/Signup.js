@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {ScrollView, SafeAreaView, Image, useWindowDimensions} from 'react-native';
+import {ScrollView, SafeAreaView, Image, useWindowDimensions, Alert} from 'react-native';
 import api from '../../services/ApiServices';
 import axios from 'axios';
 import {
@@ -43,7 +43,10 @@ const Signup = ({navigation}, props) => {
   useEffect(() => {
     if(state.success){
       setError('')
-      alert(state.success.message)
+      Alert.alert("Voyage Nepal",state.success.message, [
+        { text: "YES", onPress: () => null }
+      ]);
+      // Alert.alert(state.success.message)
     }else if(state.errors){
       // alert('error')
       // console.log(state);
@@ -203,7 +206,9 @@ const Signup = ({navigation}, props) => {
     if(data.name !== '' && data.email !== '' && data.password !== '' && data.confirmPassword !== '' && dob !== '' && gender !== '' && city !== ''){
       dispatch(registerUser(newUser))
     } else {
-      alert('All fields are mandatory; Please fill up the form correctly')
+      Alert.alert("Voyage Nepal","All fields are mandatory; Please fill up the form correctly",[
+        { text: "OK", onPress: () => null }
+      ])
     }
   };
 

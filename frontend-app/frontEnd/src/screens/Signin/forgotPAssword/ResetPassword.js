@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Alert} from 'react-native';
 import {FormInput} from '../../../Components/FormComponents/FormCompponents';
 import {Button} from 'native-base'
 import styles from './OTP.styles'
@@ -78,7 +78,9 @@ const ResetPassword = ({navigation}) => {
     if(data.password !== '' && data.confirmPassword !== ''){
       api(config)
       .then(res => {
-        alert('Password Changed Successfully. Please login!')
+        Alert.alert("Voyage Nepal", 'Password Changed Successfully. Please login!', [
+          { text: "OK", onPress: () => null }
+        ])
         navigation.navigate('Signin')
       })
       .catch(err => {

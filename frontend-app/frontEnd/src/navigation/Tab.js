@@ -10,9 +10,8 @@ flex:auto;
 flex-direction: row;
 align-items: center;
 justify-content: center;
-background: ${props => (props.focused ? '#adedd0' : 'white')};
-border-radius:100px;
-margin:5px;
+border-top-width: ${props => (props.focused ? '4px' : '0px')}; 
+border-color: #52c0b4
 `;
 const Icon = Styled.Image`
 height:30px;
@@ -43,11 +42,9 @@ const Tab = ({label, accessibilityState, onPress}) => {
       }}>
       <Background
         focused={focused}
-        Label={label}
         ref={ref}
         transition={transition}>
         <Icon source={icon} />
-        {focused && <Label>{label}</Label>}
       </Background>
     </Container>
   );

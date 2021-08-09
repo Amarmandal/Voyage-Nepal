@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   Text,
   View,
+  Alert
 } from 'react-native';
 import {Button} from 'native-base';
 import {
@@ -80,7 +81,9 @@ const OTPScreen = ({navigation}) => {
     const userEmail = state.email
     console.log(state);
     dispatch(getUserEmail(userEmail))
-    .then(alert('Please Check email for otp'))
+    .then(Alert.alert("Voyage Nepal","Please Check email for otp",[
+      { text: "OK", onPress: () => null }
+    ]))
   }
 
   const renderCell = ({index, symbol, isFocused}) => {
