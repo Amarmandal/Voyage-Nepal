@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { FaTachometerAlt, FaLaughWink, FaSignOutAlt } from "react-icons/fa";
+import { FaTachometerAlt, FaLaughWink } from "react-icons/fa";
 import { logout } from "../actions/userActions";
 import { RiLogoutBoxLine } from "react-icons/ri";
 
@@ -20,7 +20,7 @@ const Sidebar = () => {
   return (
     <ul className="navbar-nav bg-primary" id="accordionSidebar">
       <Link
-        className="sidebar-brand d-flex align-items-center justify-content-center"
+        className="sidebar-brand d-flex align-items-center justify-content-center nav-link"
         to="/"
       >
         <div className="sidebar-brand-icon py-3">
@@ -77,10 +77,18 @@ const Sidebar = () => {
       <SidebarMenu
         menuTitle="User"
         utilityMenu={[
-          { subMenuTitle: "User Permission", linkText: "/user/update" },
+          { subMenuTitle: "User Role", linkText: "/user/update/role" },
           { subMenuTitle: "Delete User", linkText: "/user/delete" },
         ]}
         toggleKey="userToggle"
+      />
+
+      <SidebarMenu
+        menuTitle="Review"
+        utilityMenu={[
+          { subMenuTitle: "Manage Review", linkText: "/user/review" },
+        ]}
+        toggleKey="reviewToggle"
       />
 
       <hr className="sidebar-divider" />

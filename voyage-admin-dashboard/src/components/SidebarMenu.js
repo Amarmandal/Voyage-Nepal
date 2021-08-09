@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import {
     FaHotel,
     FaList,
+    FaStar,
     FaUserAlt,
 } from "react-icons/fa";
 import {
@@ -16,6 +17,7 @@ import {
   TOGGLE_PLACE,
   TOGGLE_HOTEL,
   TOGGLE_USER,
+  TOGGLE_REVIEW
 } from "../actions/action.types";
 import CollapseUtility from "./CollapseUtility";
 import "./Sidebar.css"
@@ -42,11 +44,15 @@ const SidebarMenu = ({
       case "User":
         dispatch({ type: TOGGLE_USER });
         break;
+      case "Review":
+        dispatch({ type: TOGGLE_REVIEW });
+        break;
       default:
         break;
     }
   };
 
+  //get review based on menu title
   const getConditionalIcon = () => {
     switch (menuTitle) {
         case "Place":
@@ -57,6 +63,8 @@ const SidebarMenu = ({
           return <FaHotel className="menu-icon" />
         case "User":
           return  <FaUserAlt className="menu-icon" />
+        case "Review":
+          return <FaStar size="20" className="menu-icon" />
         default:
           break;
     }

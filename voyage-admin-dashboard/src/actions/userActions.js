@@ -17,6 +17,10 @@ import {
   GET_USERS_FAIL,
   END_OF_USER_PAGE,
   MARK_FIRST_USER_PAGE,
+  UPDATE_USER_ROLE_FAIL,
+  UPDATE_USER_ROLE_REQUEST,
+  UPDATE_USER_ROLE_SUCCESS,
+  RESET_UPDATE_ROLE
 } from "./action.types";
 import { API } from "../backend";
 
@@ -236,4 +240,42 @@ export const deleteUser = (userId) => async (dispatch, getState) => {
     dispatch({ type: RESET_DELETE_USER })
   }
 };
+
+export const updateUserRole = (userId, role) => async (dispatch, getState) => {
+  try {
+    const { userLogin } = getState();
+    const { token, userData } = userLogin.userInfo;
+
+    dispatch({ type: UPDATE_USER_ROLE_REQUEST });
+
+    const URL = `${API}/user/update-role/${userData.id}/${userId}`;
+
+    if (!token || !userData.isAdmin) {
+      throw new Error("User is not an Admin");
+    }
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+    };
+
+    const { data } = await axios.put(URL, { "isAdmin": role }, config);
+
+    dispatch({ type: UPDATE_USER_ROLE_SUCCESS, payload: data });
+  } catch (err) {
+    dispatch({
+      type: UPDATE_USER_ROLE_FAIL,
+      payload:
+        err.response && err.response.data.error
+          ? err.response.data.error
+          : err.message,
+    });
+  } finally {
+    dispatch({ type: RESET_UPDATE_ROLE })
+  }
+
+}
 

@@ -5,8 +5,6 @@ const mongoose = require('mongoose');
 const app = express();
 const port = process.env.PORT || 8000;
 
-
-
 //connecting database mongoose
 mongoose.connect(process.env.DATABASE, {
     useNewUrlParser: true,
@@ -40,8 +38,6 @@ app.use('/api', reviewRoute);
 app.use('/api', placeRoute);
 app.use('/api', hotresRoute);
 app.use('/api', coreRoute);
-
-
 
 
 app.listen(port, (err) => {
