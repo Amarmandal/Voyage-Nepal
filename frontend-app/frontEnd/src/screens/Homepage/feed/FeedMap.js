@@ -38,29 +38,6 @@ const FeedMap = ({navigation, route}) => {
       setPos({...pos, latitude: location.lat, longitude: location.lng})
 		})
 		.catch(error => console.warn(error));
-
-    // if (Platform.OS === 'android') {
-    //   await PermissionsAndroid.request(
-    //     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    //   );
-    //   if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    //     // do something if granted...
-    //     Geolocation.getCurrentPosition(
-    //       position => {
-    //         // console.log(position);
-    //         const longitude = position.coords.longitude;
-    //         const latitude = position.coords.latitude;
-    //         setPosition({...position, longitude: longitude, latitude: latitude});
-    //       },
-    //       error => alert(error.message),
-    //       {
-    //         enableHighAccuracy: true,
-    //         timeout: 30000,
-    //         maximumAge: 1000,
-    //       },
-    //     );
-    //   }
-    // }
   }
 
   useEffect(async () => {

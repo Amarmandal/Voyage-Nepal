@@ -3,12 +3,16 @@ import { StyleSheet, Text, View,Image } from 'react-native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import Color from '../../../constants/Color'
 import {useSelector} from 'react-redux'
-
+import InitialsRound from '../../../utils/InitialRound/InitailRound'
 const header=(props) =>{
     const state = useSelector(state => state.loginUser)
     const detail = useSelector(state => state.userDetails);
     var myDate = new Date();
     var hrs = myDate.getHours();
+    const initial = () => {
+        var name = state.user.userData.name
+        return name.charAt(0).toUpperCase()
+    }
     return(
         <SafeAreaView >
         <View style={styles.container}>
@@ -16,8 +20,8 @@ const header=(props) =>{
                 <Text style={styles.userName} >Hello, {state.user.userData.name.split(' ')[0]}</Text>
                 <Text style={styles.Greetings}>{hrs < 12 ? 'Good Morning!' : (hrs >= 12 && hrs <= 17) ? 'Good Afternoon!' : 'Good Evening!'}</Text>
             </View>
-                
-               <Image source={{uri: detail.userDetail.profileImgURL}} style={styles.userImage} />
+                {detail.userDetail.profileImgURL ? <Image source={{uri: detail.userDetail.profileImgURL}} style={styles.userImage} /> : <InitialsRound initials = {initial} iHeight = {80} iWidth = {80} />}
+               
         </View>    
         </SafeAreaView>
     )

@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {SafeAreaView, Text, ScrollView, BackHandler, View, Alert} from 'react-native';
+import {
+  SafeAreaView,
+  Text,
+  ScrollView,
+  BackHandler,
+  View,
+  Alert,
+} from 'react-native';
 import Header from '../../../Components/Home/feed/header';
 import Popular from '../../../Components/Home/feed/Popular';
 
@@ -14,8 +21,6 @@ import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Carousel from '../../../Components/Home/feed/Swiper';
 import RandomPlaces from '../../../Components/Home/feed/RandomPlaces';
-// import {Paragraph, Dialog, Portal} from 'react-native-paper';
-// import Alert from '../../../utils/Alert'
 
 const Feed = () => {
   const [visibility, setVisibility] = useState(false);
@@ -23,31 +28,23 @@ const Feed = () => {
     fetchCategory();
     fetchPlaces();
   }, []);
-  const showDialog = () => setVisibility(true);
 
-  const hideDialog = () => setVisibility(false);
   useEffect(() => {
     const backAction = () => {
-      Alert.alert("Voyage Nepal","Are you sure you want to exit the app?", [
+      Alert.alert('Voyage Nepal', 'Are you sure you want to exit the app?', [
         {
-          text: "Cancel",
+          text: 'Cancel',
           onPress: () => null,
-          style: "cancel"
+          style: 'cancel',
         },
-        { text: "YES", onPress: () => BackHandler.exitApp() }
+        {text: 'YES', onPress: () => BackHandler.exitApp()},
       ]);
       return true;
-      
-
-      //   <Alert visibility = {visibility} hideDialog = {hideDialog} exitApp = {() => BackHandler.exitApp()}/>
-      // return true;
     };
 
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
-      backAction
-      // setVisibility(true),
-      // visibility ? <Alert visibility = {visibility} hideDialog = {hideDialog} exitApp = {() => BackHandler.exitApp()}/> : null
+      backAction,
     );
 
     return () => backHandler.remove();
@@ -117,8 +114,8 @@ const Feed = () => {
   };
 
   const exitApp = () => {
-    BackHandler.exitApp()
-  }
+    BackHandler.exitApp();
+  };
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
@@ -127,11 +124,13 @@ const Feed = () => {
         <Header />
         <Carousel />
         <Popular />
-        {!loading ? (
-          <RandomPlaces />
-        ) : (
-          <Text style={{marginBottom: 60}}>Loading...</Text>
-        )}
+        <ScrollView showsHorizontalScrollIndicator={false}>
+          {!loading ? (
+            <RandomPlaces />
+          ) : (
+            <Text style={{marginBottom: 60}}>Loading...</Text>
+          )}
+        </ScrollView>
       </ScrollView>
     </SafeAreaView>
   );

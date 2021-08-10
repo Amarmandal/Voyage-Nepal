@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image, Pressable} from 'react-native';
+import {View, Text, Image, Pressable, ScrollView} from 'react-native';
 import {Button, Card, CardItem, Left, Accordion, Icon} from 'native-base';
 import {useSelector} from 'react-redux';
 import {List} from 'react-native-paper';
@@ -66,7 +66,7 @@ const RandomPlaces = ({navigation}) => {
         }}>
         Browse
       </Text>
-      <View>
+      <ScrollView horizontal = {true}>
         {!loading
           ? randPlaces.map((place, index) => {
               return (
@@ -94,7 +94,7 @@ const RandomPlaces = ({navigation}) => {
               );
             })
           : null}
-      </View>
+      </ScrollView>
     </View>
   );
 };

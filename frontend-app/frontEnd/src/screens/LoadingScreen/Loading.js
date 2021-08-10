@@ -120,23 +120,11 @@ const Loading = ({navigation, route}) => {
         navigation.navigate('Home', {currentLocation: position});
       })
       .catch(function (error) {
-        console.log(error);
+        console.log(error.response.data);
       });
   };
 
   return (
-    // <View
-    //   style={{
-    //     flex: 1,
-    //     justifyContent: 'center',
-    //     alignItems: 'center',
-    //     backgroundColor: 'transparent',
-    //   }}>
-    //   {/* <Image source = {require('../../assets/pictures/Logo.png')} style = {{width: 150, height: 150}} />
-    //   <Text style = {{fontSize: 20, color: Colors.themeColor, marginTop: 20, fontWeight: 'bold'}}>Welcome to Voyage Nepal</Text>
-    //   <ActivityIndicator color={Colors.themeColor} size="large" /> */}
-
-    // </View>
     <View style={{display: 'flex', flex: 1, padding: 20}}>
       <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20, alignItems: 'center'}}>
         <View style={{flexDirection: 'column'}}>

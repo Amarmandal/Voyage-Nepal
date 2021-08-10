@@ -285,7 +285,7 @@ const Signup = ({navigation}, props) => {
               {data.isValidPassword ? null : (
                 <Text
                   style={{color: '#FF0000', fontSize: 14, marginBottom: 10}}>
-                  Password must me 6 characters long
+                  Password must be 6 characters long
                 </Text>
               )}
               <FormInput

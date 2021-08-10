@@ -79,6 +79,7 @@ const TravelList = props => {
     );
   };
 
+  
   return (
     <SafeAreaView style={{flex: 1, marginBottom: 30}}>
       <ScrollView showsVerticalScrollIndicator={false}>

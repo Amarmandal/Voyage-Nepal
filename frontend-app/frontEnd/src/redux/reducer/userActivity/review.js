@@ -1,19 +1,19 @@
 import {REVIEW, REVIEW_SUCCESS, REVIEW_FAIL} from '../../action/action.types'
  
 const initialState = {
-    loading: true,
+    loading: false,
     success: '',
     error: {}
 }
 
-export default (state = initialState, action) => {
+export default (state = {}, action) => {
     switch (action.type) {
         case REVIEW:
-            return{...state, loading: true}
+            return{loading: true}
         case REVIEW_SUCCESS:
-            return{...state, loading: false, success: action.payload, error: {}}
+            return{loading: false, success: action.payload, error: {}}
         case REVIEW_FAIL:
-            return{...state, loading: false, error: action.payload}
+            return{loading: false, error: action.payload}
     
         default:
             return state

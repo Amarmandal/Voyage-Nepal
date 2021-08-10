@@ -6,7 +6,8 @@ import {
   SafeAreaView,
   Text,
   View,
-  Alert
+  Alert,
+  ActivityIndicator
 } from 'react-native';
 import {Button} from 'native-base';
 import {
@@ -25,10 +26,12 @@ import styles, {
 import GoBack from '../../../Components/Signin/GoBack';
 // import CountDown from '../../Components/Signin/CountDown';
 import Colors from '../../../constants/Color'
+import {FormInput, ActionButton} from '../../../Components/FormComponents/FormCompponents';
 
 import {resetPassword} from '../../../redux/action/Login/resetPassword'
 import {getUserEmail} from '../../../redux/action/Login/email'
 import {useDispatch, useSelector} from 'react-redux'
+import LoadingModal from '../../../utils/Modal';
 
 const {Value, Text: AnimatedText} = Animated;
 
@@ -59,6 +62,7 @@ const OTPScreen = ({navigation}) => {
   const state = useSelector(state => state.userEmail)
   const dispatch = useDispatch()
   const [value, setValue] = useState('');
+  const [loading, setLoading] = useState(false)
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -66,9 +70,11 @@ const OTPScreen = ({navigation}) => {
   });
 
   const handleSubmit = async() => {
+    setLoading(true)
     if (value.length === 6) {
       dispatch(resetPassword(value))
       .then(result => {
+        setLoading(false)
         console.log(result);
         console.log(state);
         navigation.navigate('Reset')
@@ -148,17 +154,17 @@ const OTPScreen = ({navigation}) => {
           textContentType="oneTimeCode"
           renderCell={renderCell}
         />
-        <Button
-          rounded
-          style={[styles.nextButton, {marginBottom: 30}]}
-          onPress={() => handleSubmit()}>
-          <Text style={styles.nextButtonText}>Verify</Text>
-        </Button>
+        <ActionButton mt = {30} buttonName={loading ? <ActivityIndicator color = '#ffffff'/> :"Verify"} home={() => handleSubmit()} />
         {/* <CountDown /> */}
         <View style = {{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
         <Text style = {{fontSize: 16}}>Didn't Receive OTP?   </Text>
         <Text style = {{color: Colors.themeColor, fontSize: 16}} onPress = {() => resendOtp()}>Resend</Text>
         </View>
+        {/* {loading ? (
+          <LoadingModal visibility={true} />
+        ) : (
+          <LoadingModal visibility={false} />
+        )} */}
         
       </SafeAreaView>
     </View>
