@@ -21,6 +21,9 @@ const ActivateAccount = () => {
       <Button color="primary" onClick={handleOnActivate}>
         Activate Now
       </Button>
+      <Button style = {{backgroundColor: '#52c0b4'}}>
+        <a style = {{color: '#000000'}} href = 'app://deeplink'>Continue to App</a>
+      </Button>
       {!loading && success &&
         registerInfo?.id &&
         toast("User Successfully Activated", { type: "success" })}
