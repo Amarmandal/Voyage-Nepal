@@ -124,13 +124,13 @@ const Feed = () => {
         <Header />
         <Carousel />
         <Popular />
-        <ScrollView showsHorizontalScrollIndicator={false}>
+        {/* <ScrollView showsHorizontalScrollIndicator={false}>
           {!loading ? (
             <RandomPlaces />
           ) : (
             <Text style={{marginBottom: 60}}>Loading...</Text>
           )}
-        </ScrollView>
+        </ScrollView> */}
       </ScrollView>
     </SafeAreaView>
   );

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {ScrollView, SafeAreaView, Image, useWindowDimensions, Alert} from 'react-native';
+import {ScrollView, SafeAreaView, Image, useWindowDimensions, Alert, ActivityIndicator} from 'react-native';
 import api from '../../services/ApiServices';
 import axios from 'axios';
 import {
@@ -381,18 +381,13 @@ const Signup = ({navigation}, props) => {
                 </Select>
              
 
-            <ActionButton mt = {30} buttonName="Sign up" home={() => submitValues()} />
+            <ActionButton mt = {30} buttonName={state.loading ? <ActivityIndicator color = '#ffffff' /> : "Sign up"} home={() => submitValues()} />
             <Account
               text="Already have an Account? "
               action="Login"
               signup={() => navigation.navigate('Signin')}
             />
           </View>
-          {state.loading ? (
-          <LoadingModal visibility={true} />
-        ) : (
-          <LoadingModal visibility={false} />
-        )}
       </Content>
       
     </Container>

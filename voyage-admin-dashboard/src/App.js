@@ -12,7 +12,6 @@ import ReviewPage from "./pages/ReviewPage";
 import NotFound from './pages/NotFound';
 import ActivateAccount from "./pages/ActivateAccount";
 import UserRole from "./pages/UserRole";
-import Deeplinking from "./components/Deeplinking";
 import { ToastContainer } from "react-toastify";
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,7 +23,6 @@ function App() {
         <Route exact path="/" component={HomePage} />
         <Route path="/login" component={LoginPage} />
         <Route path="/user/verify" component={ActivateAccount} />
-        <Route path="/app" component={Deeplinking} />
         <AdminRoute path="/place/create" component={CreatePlace} />
         <AdminRoute path="/place/update" component={UpdatePlace} />
         <AdminRoute path="/category/create" component={CreateCategory} />

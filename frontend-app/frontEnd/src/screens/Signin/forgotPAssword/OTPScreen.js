@@ -7,7 +7,7 @@ import {
   Text,
   View,
   Alert,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import {Button} from 'native-base';
 import {
@@ -25,20 +25,22 @@ import styles, {
 } from './OTP.styles';
 import GoBack from '../../../Components/Signin/GoBack';
 // import CountDown from '../../Components/Signin/CountDown';
-import Colors from '../../../constants/Color'
-import {FormInput, ActionButton} from '../../../Components/FormComponents/FormCompponents';
+import Colors from '../../../constants/Color';
+import {
+  FormInput,
+  ActionButton,
+} from '../../../Components/FormComponents/FormCompponents';
 
-import {resetPassword} from '../../../redux/action/Login/resetPassword'
-import {getUserEmail} from '../../../redux/action/Login/email'
-import {useDispatch, useSelector} from 'react-redux'
+import {resetPassword} from '../../../redux/action/Login/resetPassword';
+import {getUserEmail} from '../../../redux/action/Login/email';
+import {useDispatch, useSelector} from 'react-redux';
 import LoadingModal from '../../../utils/Modal';
 
 const {Value, Text: AnimatedText} = Animated;
 
 const CELL_COUNT = 6;
 const source = {
-  uri:
-    'https://user-images.githubusercontent.com/4661784/56352614-4631a680-61d8-11e9-880d-86ecb053413d.png',
+  uri: 'https://user-images.githubusercontent.com/4661784/56352614-4631a680-61d8-11e9-880d-86ecb053413d.png',
 };
 
 const animationsColor = [...new Array(CELL_COUNT)].map(() => new Value(0));
@@ -59,38 +61,40 @@ const animateCell = ({hasValue, index, isFocused}) => {
 };
 
 const OTPScreen = ({navigation}) => {
-  const state = useSelector(state => state.userEmail)
-  const dispatch = useDispatch()
+  const state = useSelector(state => state.userEmail);
+  const otp = useSelector(state => state.resetOtp);
+  const dispatch = useDispatch();
   const [value, setValue] = useState('');
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
   });
 
-  const handleSubmit = async() => {
-    setLoading(true)
+  useEffect(() => {
+    if(!otp.loading && otp.success){
+      navigation.navigate('Reset')
+    }
+  }, [otp])
+
+  const handleSubmit = async () => {
+    setLoading(true);
     if (value.length === 6) {
-      dispatch(resetPassword(value))
-      .then(result => {
-        setLoading(false)
-        console.log(result);
-        console.log(state);
-        navigation.navigate('Reset')
-      })
+      dispatch(resetPassword(value));
       
     }
   };
 
   const resendOtp = () => {
-    const userEmail = state.email
+    const userEmail = state.email;
     console.log(state);
-    dispatch(getUserEmail(userEmail))
-    .then(Alert.alert("Voyage Nepal","Please Check email for otp",[
-      { text: "OK", onPress: () => null }
-    ]))
-  }
+    dispatch(getUserEmail(userEmail)).then(
+      Alert.alert('Voyage Nepal', 'Please Check email for otp', [
+        {text: 'OK', onPress: () => null},
+      ]),
+    );
+  };
 
   const renderCell = ({index, symbol, isFocused}) => {
     const hasValue = Boolean(symbol);
@@ -140,8 +144,21 @@ const OTPScreen = ({navigation}) => {
         <Image style={styles.icon} source={source} />
         <Text style={styles.subTitle}>
           Please enter the verification code{'\n'}
-          we send to your email address
+          we sent to your email address
         </Text>
+        {!otp.loading && otp.error && (
+          <Text
+            style={{
+              color: Colors.error,
+              fontSize: 14,
+              marginBottom: 2,
+              fontWeight: 'bold',
+              textAlign: 'center',
+              marginTop: 10
+            }}>
+            {otp.error}
+          </Text>
+        )}
 
         <CodeField
           ref={ref}
@@ -154,18 +171,32 @@ const OTPScreen = ({navigation}) => {
           textContentType="oneTimeCode"
           renderCell={renderCell}
         />
-        <ActionButton mt = {30} buttonName={loading ? <ActivityIndicator color = '#ffffff'/> :"Verify"} home={() => handleSubmit()} />
+        <ActionButton
+          mt={30}
+          buttonName={
+            otp.loading ? <ActivityIndicator color="#ffffff" /> : 'Verify'
+          }
+          home={() => handleSubmit()}
+        />
         {/* <CountDown /> */}
-        <View style = {{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-        <Text style = {{fontSize: 16}}>Didn't Receive OTP?   </Text>
-        <Text style = {{color: Colors.themeColor, fontSize: 16}} onPress = {() => resendOtp()}>Resend</Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text style={{fontSize: 16}}>Didn't Receive OTP? </Text>
+          <Text
+            style={{color: Colors.themeColor, fontSize: 16}}
+            onPress={() => resendOtp()}>
+            Resend
+          </Text>
         </View>
         {/* {loading ? (
           <LoadingModal visibility={true} />
         ) : (
           <LoadingModal visibility={false} />
         )} */}
-        
       </SafeAreaView>
     </View>
   );

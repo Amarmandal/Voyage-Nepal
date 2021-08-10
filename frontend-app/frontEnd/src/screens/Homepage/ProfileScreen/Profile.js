@@ -10,6 +10,7 @@ import api from '../../../services/ApiServices';
 import {logout} from '../../../redux/action/Login/logout';
 
 import Colors from '../../../constants/Color';
+import InitialsRound from '../../../utils/InitialRound/InitailRound';
 
 const Profile = ({navigation}) => {
   const state = useSelector(state => state.loginUser);
@@ -34,6 +35,9 @@ const Profile = ({navigation}) => {
   const source = {
     uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmBG1Bl_akIk0oU-pFMLCCH8m-q2TGIU9fKA&usqp=CAU',
   };
+
+  var user = state.user.userData.name
+
 
   return (
     <View style={{flex: 1, backgroundColor: '#ffffff', padding: 20}}>
@@ -66,9 +70,7 @@ const Profile = ({navigation}) => {
               }}
             />
           ) : (
-            <Image
-              source={require('../../../assets/pictures/user.png')}
-              style={{width: 130, height: 130, marginBottom: 10}}></Image>
+            <InitialsRound initials = {user.charAt(0).toUpperCase()} font = {60} iHeight = {140} iWidth = {140} borderRadius = {80} />
           )}
 
           <H1 style={{fontWeight: 'bold', color: '#ffffff'}}>

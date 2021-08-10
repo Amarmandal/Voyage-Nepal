@@ -9,8 +9,10 @@ const header=(props) =>{
     const detail = useSelector(state => state.userDetails);
     var myDate = new Date();
     var hrs = myDate.getHours();
+    var name = state.user.userData.name
     const initial = () => {
         var name = state.user.userData.name
+        console.log();
         return name.charAt(0).toUpperCase()
     }
     return(
@@ -20,7 +22,7 @@ const header=(props) =>{
                 <Text style={styles.userName} >Hello, {state.user.userData.name.split(' ')[0]}</Text>
                 <Text style={styles.Greetings}>{hrs < 12 ? 'Good Morning!' : (hrs >= 12 && hrs <= 17) ? 'Good Afternoon!' : 'Good Evening!'}</Text>
             </View>
-                {detail.userDetail.profileImgURL ? <Image source={{uri: detail.userDetail.profileImgURL}} style={styles.userImage} /> : <InitialsRound initials = {initial} iHeight = {80} iWidth = {80} />}
+                {detail.userDetail.profileImgURL ? <Image source={{uri: detail.userDetail.profileImgURL}} style={styles.userImage} /> : <InitialsRound font = {40} initials = {name.charAt(0).toUpperCase()} iHeight = {80} iWidth = {80} borderRadius = {50}/>}
                
         </View>    
         </SafeAreaView>
