@@ -107,16 +107,6 @@ const Signin = ({navigation}) => {
     password: data.password,
   };
 
-  const showErrors = err => {
-    if (err.message === 'Network Error') {
-      alert('Please Check your Internet Connection and Try again');
-    } else if (err.message === 'Request failed with status code 401') {
-      setError(err.response.data.error);
-    } else {
-      setError('Something Went Wrong');
-    }
-  };
-
   const submitValues = async () => {
     if (data.email !== '' && data.password !== '') {
       dispatch(loginUser(signinUser));
@@ -212,7 +202,7 @@ const Signin = ({navigation}) => {
 
           <ActionButton
             mt={20}
-            buttonName="Continue"
+            buttonName={state.loading ? <ActivityIndicator color = '#ffffff' /> :"Continue"}
             // home={() => submitValues()}
             home={() => submitValues()}
           />
@@ -222,11 +212,11 @@ const Signin = ({navigation}) => {
             signup={() => navigation.navigate('Signup')}
           />
         </View>
-        {state.loading ? (
+        {/* {state.loading ? (
           <LoadingModal visibility={true} />
         ) : (
           <LoadingModal visibility={false} />
-        )}
+        )} */}
       </Content>
     </Container>
   );

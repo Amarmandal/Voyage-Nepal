@@ -202,8 +202,8 @@ const ChangePassword = () => {
         </Button>
       </View>
       <View style = {{marginTop: 80}}> 
-      {loading ? 
-      <LoadingModal visibility = {true} /> : <LoadingModal visibility = {false} />}
+      {/* {loading ? 
+      <LoadingModal visibility = {true} /> : <LoadingModal visibility = {false} />} */}
       </View>
       
     </View>

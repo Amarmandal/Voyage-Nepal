@@ -1,65 +1,65 @@
-import React from 'react'
-import { StyleSheet, Text, View,Image } from 'react-native'
-import Swiper from 'react-native-swiper'
-import { SafeAreaView } from 'react-navigation'
+import React from 'react';
+import {StyleSheet, Text, View, Image} from 'react-native';
+import Swiper from 'react-native-swiper';
+import {SafeAreaView} from 'react-navigation';
 
-const swiper = () => {
-    return (
-        <SafeAreaView style={{flex: 1}}>
-                 <View style={styles.sliderContainer}>
-         <Swiper height={210} autoplay>
-            <View style={styles.slide}>
-            <Image 
-                source={require('../../assets/pictures/Explore_image/PhewaLake.jpg')}
-                resizeMode='cover'
-                style={styles.sliderImage}
+const Carousel = () => {
+  return (
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.sliderContainer}>
+        <Swiper height={210} autoplay>
+          <View style={styles.slide}>
+            <Image
+              source={require('../../../assets/pictures/SliderImages/cocacola.jpg')}
+              resizeMode="cover"
+              style={styles.sliderImage}
             />
-        </View>
-        <View style={styles.slide}>
-            <Image 
-                source={require('../../assets/pictures/Explore_image/Chandragiri.jpg')}
-                resizeMode='cover'
-                style={styles.sliderImage}
+          </View>
+          <View style={styles.slide}>
+            <Image
+              source={require('../../../assets/pictures/SliderImages/Hotel.jpg')}
+              resizeMode="cover"
+              style={styles.sliderImage}
             />
-        </View>
-        <View style={styles.slide}>
-            <Image 
-                source={require('../../assets/pictures/Explore_image/Swayambhunath.jpg')}
-                resizeMode='cover'
-                style={styles.sliderImage}
+          </View>
+          <View style={styles.slide}>
+            <Image
+              source={require('../../../assets/pictures/SliderImages/SliderImg1.jpg')}
+              resizeMode="cover"
+              style={styles.sliderImage}
             />
-        </View>
-         </Swiper>
-            
-    
-        </View>
-       
-        </SafeAreaView>
-       
-        
-    )
-}
+          </View>
+          <View style={styles.slide}>
+            <Image
+              source={require('../../../assets/pictures/SliderImages/TajHotel.png')}
+              resizeMode="cover"
+              style={styles.sliderImage}
+            />
+          </View>
+        </Swiper>
+      </View>
+    </SafeAreaView>
+  );
+};
 
-export default swiper
+export default Carousel;
 
 const styles = StyleSheet.create({
-    sliderContainer: {
-       height:220,
-       marginTop:20,
-       justifyContent: 'center',
-       alignSelf:'center',
-
-    },
-    slide:{
-        flex:1,
-        justifyContent: 'center',
-        backgroundColor:'transparent',
-    },
-    sliderImage:{
-        height:'100%',
-        width:'100%',
-        alignSelf:'center',
-        borderRadius:10,
-    }
-
-})
+  sliderContainer: {
+    height: 240,
+    marginTop: 20,
+    marginBottom: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
+  slide: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+  },
+  sliderImage: {
+    height: '100%',
+    width: '100%',
+    alignSelf: 'center',
+  },
+});

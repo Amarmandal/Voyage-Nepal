@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image, ActivityIndicator} from 'react-native';
+import {View, Text, Image, ActivityIndicator, Alert} from 'react-native';
 import {
   Container,
   Content,
@@ -17,6 +17,8 @@ import api from '../../../services/ApiServices';
 var FormData = require('form-data');
 import * as ImagePicker from 'react-native-image-picker';
 import moment from 'moment';
+import InitialsRound from '../../../utils/InitialRound/InitailRound';
+import { useIsFocused } from '@react-navigation/native';
 
 var data = new FormData();
 
@@ -25,6 +27,12 @@ const AboutMe = ({navigation}) => {
   const detail = useSelector(state => state.userDetails);
   const [filePath, setFilePath] = useState({});
   const [loading, setLoading] = useState();
+  const isFocused = useIsFocused()
+  const [userDetail, setUserDetail] = useState(detail)
+
+  useEffect(() => {
+    setUserDetail(detail)
+  }, [isFocused, loading, detail])
 
   const selectFile = async () => {
     ImagePicker.launchImageLibrary(
@@ -35,12 +43,17 @@ const AboutMe = ({navigation}) => {
         console.log('Response = ', response);
         setLoading(true);
         if (response.didCancel) {
+          setLoading(false)
           console.log('User cancelled image picker');
         } else if (response.error) {
+          setLoading(false)
           console.log('ImagePicker Error: ', response.error);
         } else if (response.customButton) {
+          setLoading(false)
           console.log('User tapped custom button: ', response.customButton);
-          alert(response.customButton);
+          Alert.alert("Voyage Nepal", response.customButton, [
+            { text: "OK", onPress: () => null }
+          ]);
         } else {
           let source = response;
           // You can also display the image using data:
@@ -76,7 +89,7 @@ const AboutMe = ({navigation}) => {
             data: data,
           };
 
-          if (!detail.userDetail.profileImgURL) {
+          if (!userDetail.userDetail.profileImgURL) {
             api(config)
               .then(function (response) {
                 setLoading(false);
@@ -100,7 +113,7 @@ const AboutMe = ({navigation}) => {
                   duration: 5000,
                 });
               });
-          } else if (detail.userDetail.profileImgURL) {
+          } else if (userDetail.userDetail.profileImgURL) {
             api(config1)
               .then(function (response) {
                 setLoading(false);
@@ -130,8 +143,13 @@ const AboutMe = ({navigation}) => {
     );
   };
 
-  var date = new Date(detail.userDetail.DOB);
+  var date = new Date(userDetail.userDetail.DOB);
   var dob = moment(date).utc().format('DD/MM/YYYY');
+
+  const initial = () => {
+    var name = state.user.userData.name
+    return name.charAt(0).toUpperCase();
+}
 
   return (
     <Container style={{backgroundColor: '#ffffff', marginBottom: 30}}>
@@ -158,15 +176,13 @@ const AboutMe = ({navigation}) => {
           }}>
           {loading ? (
             <ActivityIndicator color={Colors.themeColor} size="large" />
-          ) : detail.userDetail.profileImgURL ? (
+          ) : userDetail.userDetail.profileImgURL ? (
             <Image
-              source={{uri: detail.userDetail.profileImgURL}}
+              source={{uri: userDetail.userDetail.profileImgURL}}
               style={{width: 140, height: 140, borderRadius: 80}}
             />
           ) : (
-            <Image
-              source={require('../../../assets/pictures/user.png')}
-              style={{width: 130, height: 130}}></Image>
+            <InitialsRound initials = {initial} iHeight = {140} iWidth = {140} />
           )}
         </View>
 

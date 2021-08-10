@@ -14,6 +14,16 @@ import { useNavigation } from '@react-navigation/native';
 const imagesDetail =(props)=>{
     const imageWidth = useWindowDimensions().width;
     const navigation = useNavigation();
+    const placeName = (place) => {
+        const _place = place
+        const words = _place.split(' ');
+  
+        for (let i = 0; i < words.length; i++) {
+          words[i] = words[i].charAt(0).toUpperCase() + words[i].substr(1);
+        }
+        return words.join(' ');
+      
+    };
     
     return(
         
@@ -26,7 +36,7 @@ const imagesDetail =(props)=>{
             onPress={navigation.goBack}
           />
           <View style={{marginTop: 20, }}>
-          <Text style={{fontSize: 20, fontWeight: 'bold', color: COLORS.white,}}>{props.name}</Text>
+          <Text style={{fontSize: 20, fontWeight: 'bold', color: COLORS.white,}}>{placeName(props.name)}</Text>
           <View
             style={{
               flexDirection: 'row',

@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Image} from 'react-native';
-import {Button} from 'native-base';
-import {FormInput} from '../../../Components/FormComponents/FormCompponents';
+import {View, Text, Image, Alert, ActivityIndicator} from 'react-native';
+import {Container, Content} from 'native-base';
+import {FormInput, ActionButton} from '../../../Components/FormComponents/FormCompponents';
 import styles from './OTP.styles';
 import axios from 'axios';
 import Colors from '../../../constants/Color';
 import GoBack from '../../../Components/Signin/GoBack';
 import {useSelector, useDispatch} from 'react-redux';
 import {getUserEmail} from '../../../redux/action/Login/email';
+import LoadingModal from '../../../utils/Modal'
 
 const Email = ({navigation}) => {
   const state = useSelector(state => state.userEmail);
@@ -28,7 +29,9 @@ const Email = ({navigation}) => {
 
   useEffect(() => {
     if (!state.loading && state.success) {
-      alert(state.email.message);
+      Alert.alert("Voyage Nepal",state.email.message,[
+        { text: "OK", onPress: () => null }
+      ])
       console.log(state);
       navigation.navigate('MyModal');
     } else if(!state.loading && !state.success){
@@ -47,7 +50,7 @@ const Email = ({navigation}) => {
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
       <GoBack goBack={() => navigation.goBack()} />
-      <View style={{padding: 30, paddingTop: 40}}>
+      <Content style={{padding: 30, paddingTop: 40}} keyboardShouldPersistTaps = {'handled'}>
         <Image
           source={require('../../../assets/pictures/forgetpassword.png')}
           style={{alignSelf: 'center', marginBottom: 30}}
@@ -81,14 +84,13 @@ const Email = ({navigation}) => {
             {res}
           </Text>
         )}
-
-        <Button
-          rounded
-          style={styles.nextButton}
-          onPress={() => handleSubmit()}>
-          <Text style={styles.nextButtonText}>Submit</Text>
-        </Button>
-      </View>
+        <ActionButton mt = {30} buttonName={state.loading ? <ActivityIndicator color = '#ffffff' /> : "Submit"} home={() => handleSubmit()} />
+      </Content>
+      {/* {state.loading ? (
+          <LoadingModal visibility={true} />
+        ) : (
+          <LoadingModal visibility={false} />
+        )} */}
     </View>
   );
 };

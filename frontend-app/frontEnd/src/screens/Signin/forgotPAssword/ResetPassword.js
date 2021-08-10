@@ -1,15 +1,17 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text} from 'react-native';
-import {FormInput} from '../../../Components/FormComponents/FormCompponents';
-import {Button} from 'native-base'
+import {View, Text, Alert, ActivityIndicator} from 'react-native';
+import {FormInput, ActionButton} from '../../../Components/FormComponents/FormCompponents';
+import {Toast, Content} from 'native-base'
 import styles from './OTP.styles'
 import GoBack from '../../../Components/Signin/GoBack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import api from '../../../services/ApiServices'
+import { useSelector } from 'react-redux';
 
 const ResetPassword = ({navigation}) => {
   const state = useSelector(state => state.resetOtp.resetID.userResetId)
+  const [loading, setLoading] = useState(false)
   const [hidePassword, setHidePassword] = useState(true);
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
   const [data, setData] = useState({
@@ -75,14 +77,26 @@ const ResetPassword = ({navigation}) => {
   };
 
   const handleSubmit = () => {
+    setLoading(true)
     if(data.password !== '' && data.confirmPassword !== ''){
       api(config)
       .then(res => {
-        alert('Password Changed Successfully. Please login!')
+        setLoading(false)
+        Alert.alert("Voyage Nepal", 'Password Changed Successfully. Please login!', [
+          { text: "OK", onPress: () => null }
+        ])
         navigation.navigate('Signin')
       })
       .catch(err => {
+        setLoading(false)
+        console.log(err.response);
         setError(err.data)
+        Toast.show({
+          text: err.response.data.error,
+          buttonText: "Okay",
+          type: "success",
+          duration: 5000
+        })
       })
     }
   }
@@ -90,7 +104,7 @@ const ResetPassword = ({navigation}) => {
   return (
     <View style = {{backgroundColor: '#ffffff', flex: 1,}}>
         <GoBack goBack = {() => navigation.goBack()}  />
-      <View style = {{margin: 20}}>
+      <Content style = {{margin: 20}} keyboardShouldPersistTaps = {'handled'}>
         <FormInput
           icon="key"
           placeholder="Password"
@@ -127,9 +141,13 @@ const ResetPassword = ({navigation}) => {
             Password and confirm password doesn't match
           </Text>
         )}
-        <Button onPress = {() => handleSubmit()} rounded style = {styles.nextButton}><Text style = {styles.nextButtonText}>Submit</Text></Button>
-        
-      </View>
+        <ActionButton mt = {30} buttonName={loading ? <ActivityIndicator color = '#ffffff'/> :"Submit"} home={() => handleSubmit()} />
+      </Content>
+      {/* {loading ? (
+          <LoadingModal visibility={true} />
+        ) : (
+          <LoadingModal visibility={false} />
+        )} */}
     </View>
   );
 };

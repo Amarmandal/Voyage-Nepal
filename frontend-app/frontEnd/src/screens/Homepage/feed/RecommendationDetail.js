@@ -1,5 +1,5 @@
-import React from 'react';
-import {useWindowDimensions, ActivityIndicator} from 'react-native';
+import React, {useEffect} from 'react';
+import {useWindowDimensions, ActivityIndicator, BackHandler} from 'react-native';
 import {
   Container,
   Header,
@@ -13,10 +13,24 @@ import Review from '../../../Components/Home/Explore/Review';
 import Hotel from '../../../Components/Home/feed/Hotel';
 import Colors from '../../../constants/Color';
 import {useSelector} from 'react-redux';
-const RecommendationDetail = () => {
+const RecommendationDetail = ({navigation}) => {
   const state = useSelector(state => state.getPlaceById);
   const {loading, place, success, error} = state;
   const imageWidth = useWindowDimensions().width;
+
+  useEffect(() => {
+    const backAction = () => {
+      navigation.goBack();
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   const placeName = () => {
     if (!loading && success) {
