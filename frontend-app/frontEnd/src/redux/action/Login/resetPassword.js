@@ -1,4 +1,4 @@
-import {RESET_PASSWORD, RESET_PASSWORD_FAIL} from '../action.types';
+import {RESET_PASSWORD, RESET_PASSWORD_FAIL, RESET_PASSWORD_SUCCESS} from '../action.types';
 import axios from 'axios';
 import api from '../../../services/ApiServices'
 
@@ -8,6 +8,9 @@ export const resetPassword = otp => {
   const code = otp;
 
   return async dispatch => {
+    dispatch({
+      type: RESET_PASSWORD
+    })
     var data = JSON.stringify({
       otp: code,
     });
@@ -28,18 +31,17 @@ export const resetPassword = otp => {
         console.log(JSON.stringify(response.data));
         Data = response.data;
         dispatch({
-          type: RESET_PASSWORD,
+          type: RESET_PASSWORD_SUCCESS,
           payload: response.data,
         });
       })
-      .catch(error => {
-        console.log(error);
-        Data = error;
+      .catch(err => {
+        console.log(err);
+        Data = err;
         dispatch({
           type: RESET_PASSWORD_FAIL,
-          payload: error,
+          payload: err.response && err.response.data.error ? err.response.data.error : err.message,
         });
       });
-    return Data;
   };
 };

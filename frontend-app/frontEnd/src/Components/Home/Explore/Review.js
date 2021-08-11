@@ -78,7 +78,7 @@ const Review = ({reviews, placeId}) => {
       })
       .catch(function (error) {
         setLoading(false);
-        Alert.alert('Voyage Nepal', error, [{text: 'OK', onPress: () => null}]);
+        Alert.alert('Voyage Nepal', error.message, [{text: 'OK', onPress: () => null}]);
       });
   }, [refreshing, placeId, isFocused]);
 
@@ -237,15 +237,17 @@ const Review = ({reviews, placeId}) => {
                       style={{width: 60, height: 60, marginRight: 15}}
                     />
                   ) : (
-                    <Thumbnail style={{marginRight: 15}}>
+                    <View style={{marginRight: 15}}>
                       <InitialsRound
-                        initials={initial(review.user.name)}
+                        initials={review.user.name.charAt(0).toUpperCase()}
                         iHeight={60}
                         iWidth={60}
+                        font = {30}
+                        borderRadius = {50}
                       />
-                    </Thumbnail>
+                    </View>
                   )}
-                  <View>
+                  <View style = {{width: '80%'}}>
                     <Text
                       style={{
                         fontSize: 20,

@@ -14,6 +14,7 @@ import Hotel from '../../../Components/Home/feed/Hotel';
 import Colors from '../../../constants/Color';
 import {useSelector} from 'react-redux';
 const RecommendationDetail = ({navigation}) => {
+
   const state = useSelector(state => state.getPlaceById);
   const {loading, place, success, error} = state;
   const imageWidth = useWindowDimensions().width;
@@ -79,13 +80,7 @@ const RecommendationDetail = ({navigation}) => {
           activeTextStyle={{color: '#fff', fontSize: 22}}>
           <Detail
             details={
-              loading ? (
-                <ActivityIndicator color={Colors.themeColor} size="small" />
-              ) : !loading && !success ? (
-                console.log(error)
-              ) : (
-                place.description
-              )
+              place.description
             }
           />
         </Tab>
@@ -100,13 +95,7 @@ const RecommendationDetail = ({navigation}) => {
               place.reviews
             }
             placeId={
-              loading ? (
-                <ActivityIndicator color={Colors.themeColor} size="small" />
-              ) : !loading && !success ? (
-                console.log(error)
-              ) : (
-                place._id
-              )
+              place._id
             }
           />
         </Tab>
@@ -121,13 +110,7 @@ const RecommendationDetail = ({navigation}) => {
               place.stayPlace
             }
             id={
-              loading ? (
-                <ActivityIndicator color={Colors.themeColor} size="small" />
-              ) : !loading && !success ? (
-                console.log(error)
-              ) : (
-                place._id
-              )
+              place._id
             }
           />
         </Tab>

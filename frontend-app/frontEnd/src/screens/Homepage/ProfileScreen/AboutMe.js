@@ -146,10 +146,7 @@ const AboutMe = ({navigation}) => {
   var date = new Date(userDetail.userDetail.DOB);
   var dob = moment(date).utc().format('DD/MM/YYYY');
 
-  const initial = () => {
-    var name = state.user.userData.name
-    return name.charAt(0).toUpperCase();
-}
+  var user = state.user.userData.name
 
   return (
     <Container style={{backgroundColor: '#ffffff', marginBottom: 30}}>
@@ -182,7 +179,7 @@ const AboutMe = ({navigation}) => {
               style={{width: 140, height: 140, borderRadius: 80}}
             />
           ) : (
-            <InitialsRound initials = {initial} iHeight = {140} iWidth = {140} />
+            <InitialsRound initials = {user.charAt(0).toUpperCase()} font = {60} iHeight = {140} iWidth = {140} borderRadius = {80} />
           )}
         </View>
 
