@@ -24,7 +24,7 @@ import Colors from '../constants/Color';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ChangePassword from '../screens/Homepage/ProfileScreen/ChangePassword';
 import RecommendationDetail from '../screens/Homepage/feed/RecommendationDetail';
-import LoadingScreen from '../screens/Signin/LoadingScreen';
+import LoadingScreen from '../screens/LoadingScreen/LoadingScreen';
 import FeedMap from '../screens/Homepage/feed/FeedMap';
 import Settings from '../screens/Homepage/ProfileScreen/Settings';
 import FAQ from '../Components/Home/profile/Settings/FAQ';

@@ -29,7 +29,7 @@ const Starter = ({navigation}) => {
             <Text style={{fontSize: 20}}>In Digital Way..</Text>
           </View>
           <Image
-            source={require('../../assets/pictures/logoEdit.png')}
+            source={require('../../assets/pictures/newlogo.png')}
             style={{width: 130, height: 130}}
           />
         </View>

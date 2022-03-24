@@ -19,8 +19,9 @@ import {Category} from '../../../redux/action/Data/Category';
 import {Places} from '../../../redux/action/Data/places';
 import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Carousel from '../../../Components/Home/feed/Swiper';
+import Carousel from '../../../Components/Home/feed/swiper';
 import RandomPlaces from '../../../Components/Home/feed/RandomPlaces';
+import PlaceCategory from '../../../Components/Home/feed/Category';
 
 const Feed = () => {
   const [visibility, setVisibility] = useState(false);
@@ -123,6 +124,7 @@ const Feed = () => {
         {/* <Alert visibility = {visibility} hideDialog = {hideDialog} exitApp = {exitApp}/> */}
         <Header />
         <Carousel />
+        <PlaceCategory />
         <Popular />
         {/* <ScrollView showsHorizontalScrollIndicator={false}>
           {!loading ? (

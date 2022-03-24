@@ -1,9 +1,9 @@
 const Colors = {
-    google: '#dd4b39',
+    google: '#4285F4',
     gray: '#D3D3D3',
     dimGray: '#696969',
     actionText: '#CF3838',
-    facebook: '#3b5998', 
+    facebook: '#4267B2', 
     // primary: '#001370',
     success: '#6FCF38',
     error: '#CF3838',

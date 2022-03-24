@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 import {Container, Content, View, Text, Button, Icon} from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import {
   FormInput,
   ActionButton,
@@ -26,11 +25,8 @@ import {
 import Colors from '../../constants/Color';
 import Loading from '../LoadingScreen/Loading';
 import GoBack from '../../Components/Signin/GoBack';
-
 import {loginUser} from '../../redux/action/Login/loginUser';
-
 import {useDispatch, useSelector} from 'react-redux';
-
 import LoadingModal from '../../utils/Modal';
 
 const Signin = ({navigation}) => {
@@ -121,32 +117,34 @@ const Signin = ({navigation}) => {
 
   return (
     <Container style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
+      <Button transparent onPress={() => navigation.goBack()} large>
+        <Icon
+          name="arrow-back-circle-sharp"
+          style={{color: Colors.themeColor, fontSize: 38}}
+        />
+      </Button>
       <Content keyboardShouldPersistTaps={'handled'}>
-        <Image
+        {/* <Image
           source={require('../../assets/images/display.png')}
           style={{marginBottom: 50, opacity: 0.8}}
-        />
+        /> */}
         <Image
-          source={require('../../assets/pictures/logoEdit.png')}
+          source={require('../../assets/pictures/newlogo.png')}
           style={{
             width: 160,
             height: 160,
-            position: 'absolute',
-            top: 170,
             alignSelf: 'center',
             marginBottom: 30,
           }}></Image>
-        <Button
-          transparent
-          onPress={() => navigation.goBack()}
-          large
-          style={{position: 'absolute', top: 8}}>
-          <Icon
-            name="arrow-back-circle-sharp"
-            style={{color: '#ffffff', fontSize: 38}}
-          />
-        </Button>
 
+        <Text
+          style={{
+            fontSize: 18,
+            textTransform: 'uppercase',
+            textAlign: 'center',
+          }}>
+          sign in to continue
+        </Text>
         <View style={{alignItems: 'center', margin: 30}}>
           {error === '' ? null : (
             <Text
@@ -202,10 +200,16 @@ const Signin = ({navigation}) => {
 
           <ActionButton
             mt={20}
-            buttonName={state.loading ? <ActivityIndicator color = '#ffffff' /> :"Continue"}
+            buttonName={
+              state.loading ? <ActivityIndicator color="#ffffff" /> : 'Login'
+            }
             // home={() => submitValues()}
             home={() => submitValues()}
           />
+          <View style={{display: 'flex', flexDirection: 'row', marginBottom: 14}}>
+            <Icon name="logo-google" size={18} style = {{marginRight: 15, color: Colors.google, fontSize: 34}}/>
+            <Icon name="logo-facebook" size={18} style = {{color: Colors.facebook, fontSize: 34}} />
+          </View>
           <Account
             text="Don't have an Account? "
             action="Signup"
