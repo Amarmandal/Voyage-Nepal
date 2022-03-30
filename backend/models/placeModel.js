@@ -62,10 +62,6 @@ const placeSchema = new Schema(
 	{ timestamps: true }
 )
 
-// placeSchema.virtual('placeDis').set(function (value) {
-// 	return (this.distance = `${value} KM`)
-// })
-
 const Place = mongoose.model('Place', placeSchema)
 
 module.exports = Place

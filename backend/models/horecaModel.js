@@ -42,6 +42,16 @@ const horecaSchema = new Schema(
 				max: 7,
 			},
 		},
+		lat: {
+			type: Number,
+			trim: true,
+			required: true,
+		},
+		lng: {
+			type: Number,
+			trim: true,
+			required: true,
+		},
 		phoneNumber: {
 			type: String,
 			required: true,
