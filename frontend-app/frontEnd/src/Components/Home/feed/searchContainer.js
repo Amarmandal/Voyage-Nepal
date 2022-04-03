@@ -1,34 +1,24 @@
 import React, {useState} from 'react';
 import {
   SafeAreaView,
-  TextInput,
   StyleSheet,
   Text,
   View,
   FlatList,
   Pressable,
   ImageBackground,
-  Dimensions
+  Dimensions,
 } from 'react-native';
 import Colors from '../../../constants/Color';
-import Icon from 'react-native-vector-icons/MaterialIcons'
-import {
-  Item,
-  Input,
-  Content,
-  ListItem,
-  Left,
-  Thumbnail,
-  Body,
-} from 'native-base';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {Item, Input} from 'native-base';
 import StarRating from 'react-native-star-rating';
-import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 
 const {width} = Dimensions.get('window');
 
-const SearchContainer = (props) => {
+const SearchContainer = ({feed}) => {
   const navigation = useNavigation();
 
   const places = useSelector(state => state.place);
@@ -37,8 +27,7 @@ const SearchContainer = (props) => {
   const [filteredData, setFilteredData] = useState(places);
   const [showList, setShowList] = useState(false);
 
-  const placeName = (name) => {
-    
+  const placeName = name => {
     const _place = name;
     const words = _place.split(' ');
 
@@ -46,14 +35,12 @@ const SearchContainer = (props) => {
       words[i] = words[i].charAt(0).toUpperCase() + words[i].substr(1);
     }
 
-  
     return words.join(' ');
-  
-};
+  };
 
   const Card = ({place}) => {
     return (
-      <View style={styles.card} key = {place._id}>
+      <View style={styles.card} key={place._id}>
         <ImageBackground
           style={styles.cardImage}
           source={{uri: place.placePhoto}}></ImageBackground>
@@ -64,29 +51,30 @@ const SearchContainer = (props) => {
             {place.location}
           </Text>
           {place.ratings ? (
-                    <View
-                    style={{
-                      alignItems: 'flex-start'
-                    }}>
-                    <StarRating
-                      disabled={false}
-                      emptyStar={'star-o'}
-                      fullStar={'star'}
-                      halfStar={'star-half-empty'}
-                      iconSet={'FontAwesome'}
-                      maxStars={5}
-                      rating={place.ratings}
-                      fullStarColor={Colors.warning}
-                      emptyStarColor={'white'}
-                      starSize={20}
-                    />
-                  </View>
-                  ) : <Text style = {{color: Colors.warning}}>'No ratings yet'</Text>}
+            <View
+              style={{
+                alignItems: 'flex-start',
+              }}>
+              <StarRating
+                disabled={false}
+                emptyStar={'star-o'}
+                fullStar={'star'}
+                halfStar={'star-half-empty'}
+                iconSet={'FontAwesome'}
+                maxStars={5}
+                rating={place.ratings}
+                fullStarColor={Colors.warning}
+                emptyStarColor={'white'}
+                starSize={20}
+              />
+            </View>
+          ) : (
+            <Text style={{color: Colors.warning}}>'No ratings yet'</Text>
+          )}
         </View>
       </View>
     );
   };
-
 
   const searchPlace = place => {
     setFilteredData(
@@ -98,15 +86,49 @@ const SearchContainer = (props) => {
 
   return (
     <SafeAreaView>
-      <Item rounded style = {{marginLeft: 25, marginRight: 25, marginBottom: 20, marginTop: 10, paddingLeft: 10, paddingRight: 10}}>
+      <Item
+        rounded
+        style={{
+          marginLeft: 25,
+          marginRight: 25,
+          marginBottom: 20,
+          marginTop: 10,
+          paddingLeft: 10,
+          paddingRight: 10,
+        }}>
         <Input
           placeholder="Search your destination"
           onChangeText={text => searchPlace(text)}
           // onFocus={() => setShowList(true)}
           // onBlur={() => setShowList(false)}
         />
-        <Icon name="search" style={{color: Colors.gray}} size = {28} />
+        <Icon name="search" style={{color: Colors.gray}} size={28} />
       </Item>
+      {/* {feed ? (
+        <FlatList
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        data={filteredData}
+        keyExtractor={item => item._id}
+        renderItem={({item}) => (
+          <Pressable
+            onPress={() =>
+              navigation.navigate('Details', {
+                image: item.placePhoto,
+                location: item.location,
+                name: item.name,
+                details: item.description,
+                reviews: item.reviews,
+                hotel: item.stayPlace,
+                id: item._id,
+                ratings: item.ratings,
+              })
+            }>
+            <Card key={item._id} place={item} />
+          </Pressable>
+        )}
+      />
+      ) : null} */}
 
       <FlatList
         horizontal
@@ -127,9 +149,7 @@ const SearchContainer = (props) => {
                 ratings: item.ratings,
               })
             }>
-            
-              <Card key={item._id} place={item} />
-            
+            <Card key={item._id} place={item} />
           </Pressable>
         )}
       />
@@ -223,7 +243,6 @@ const styles = StyleSheet.create({
   },
   ratings: {
     flexDirection: 'row',
-    marginTop: 2
+    marginTop: 2,
   },
 });
-

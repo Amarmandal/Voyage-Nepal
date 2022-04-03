@@ -22,6 +22,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Carousel from '../../../Components/Home/feed/swiper';
 import RandomPlaces from '../../../Components/Home/feed/RandomPlaces';
 import PlaceCategory from '../../../Components/Home/feed/Category';
+import SearchContainer from '../../../Components/Home/feed/searchContainer';
 
 const Feed = () => {
   const [visibility, setVisibility] = useState(false);
@@ -122,17 +123,11 @@ const Feed = () => {
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* <Alert visibility = {visibility} hideDialog = {hideDialog} exitApp = {exitApp}/> */}
+        <SearchContainer feed = 'feed page' />
         <Header />
         <Carousel />
         <PlaceCategory />
         <Popular />
-        {/* <ScrollView showsHorizontalScrollIndicator={false}>
-          {!loading ? (
-            <RandomPlaces />
-          ) : (
-            <Text style={{marginBottom: 60}}>Loading...</Text>
-          )}
-        </ScrollView> */}
       </ScrollView>
     </SafeAreaView>
   );
