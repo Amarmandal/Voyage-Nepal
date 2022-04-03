@@ -1,63 +1,67 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
-const Schema = mongoose.Schema;
-const {ObjectId} = Schema.Types;
+const Schema = mongoose.Schema
+const { ObjectId } = Schema.Types
 
-const placeSchema = new Schema({
-    name: {
-        type: String,
-        trim: true,
-        required: true,
-        minLength: 1,
-        unique: true,
-        lowercase: true
-    },
-    placePhoto: {
-        type: String,
-    },
-    description: {
-        type: String, 
-        trim: true,
-        required: true
-    },
-    location: {
-        type: String,
-        trim: true,
-        required: true,
-        maxLength: 100
-    },
-    category: [{
-        type: ObjectId,
-        ref: 'Category',
-        trim: true,
-    }],
-    stayPlace: [{
-        type: ObjectId,
-        ref: 'Hotel',
-        trim: true,
-    }],
-    reviews: [{
-        type: ObjectId,
-        ref: 'Review',
-        trim: true,
-    }],
-    distance: {
-        type: String,
-        trim: true
-    },
-    ratings: {
-        type: Number,
-        default: 0,
-        required: true,
-        max: 5
-    }
-}, {timestamps: true});
+const placeSchema = new Schema(
+	{
+		name: {
+			type: String,
+			trim: true,
+			required: true,
+			minLength: 1,
+			unique: true,
+			lowercase: true,
+		},
+		placePhoto: {
+			type: String,
+		},
+		description: {
+			type: String,
+			trim: true,
+			required: true,
+		},
+		nearestCity: {
+			type: ObjectId,
+			required: true,
+			ref: 'City',
+		},
+		category: [
+			{
+				type: ObjectId,
+				ref: 'Category',
+				trim: true,
+			},
+		],
+		stayPlace: [
+			{
+				type: ObjectId,
+				ref: 'Horeca',
+				trim: true,
+			},
+		],
+		reviews: [
+			{
+				type: ObjectId,
+				ref: 'Review',
+				trim: true,
+			},
+		],
+		rating: {
+			type: Number,
+			default: 0,
+			required: true,
+			max: 5,
+		},
+		userRatingsTotal: {
+			type: Number,
+			default: 0,
+			required: true,
+		},
+	},
+	{ timestamps: true }
+)
 
-placeSchema.virtual('placeDis')
-    .set(function(value) {
-        return this.distance = `${value} KM`;
-    })
+const Place = mongoose.model('Place', placeSchema)
 
-const Place = mongoose.model('Place', placeSchema);
-
-module.exports = Place;
+module.exports = Place
