@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const crypto = require('crypto')
-const { v4: uuid } = require('uuid')
 const { roleEnum } = require('../controllers/enum')
 const bcrypt = require('bcrypt')
 
@@ -31,14 +30,15 @@ const userSchema = new Schema(
 			enum: [roleEnum.USER, roleEnum.SUBADMIN, roleEnum.ADMIN],
 			default: roleEnum.USER,
 		},
-		hashPassword: {
+		password: {
 			type: String,
 			trim: true,
 			required: true,
 		},
 		city: {
-			type: String,
+			type: ObjectId,
 			trim: true,
+			ref: 'City',
 			required: true,
 		},
 		profileId: {
@@ -49,21 +49,15 @@ const userSchema = new Schema(
 	{ timestamps: true }
 )
 
-userSchema
-	.virtual('password')
-	.set(async function (userPass) {
-		this._password = userPass
-		this.hashPassword = await this.getHashPassword(userPass)
-	})
-	.get(function () {
-		return this._password
-	})
+userSchema.pre('save', async function (next) {
+	if (this.isModified('password')) {
+		const saltRounds = 10
+		this.password = await bcrypt.hash(this.password, saltRounds)
+	}
+	next()
+})
 
 userSchema.method({
-	authenticate: async function (plainPassword) {
-		return await bcrypt.compare(plainPassword, this.hashPassword)
-	},
-
 	getHashPassword: async function (plainPassword) {
 		if (plainPassword === '') return ''
 		try {
@@ -73,6 +67,10 @@ userSchema.method({
 		} catch (error) {
 			return ''
 		}
+	},
+
+	authenticate: async function (userPass) {
+		return await bcrypt.compare(userPass, this.password)
 	},
 
 	generateOtp: function () {

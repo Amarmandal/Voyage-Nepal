@@ -1,25 +1,16 @@
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
-const mongoose = require('mongoose')
+const connectDB = require('./db/connect_db')
 const app = express()
+const log = require('npmlog')
 const port = process.env.PORT || 8000
 const environment = process.env.STAGE
 
 app.use(express.static('public'))
 
 //connecting database mongoose
-mongoose.connect(environment === 'prod' ? process.env.DB_REMOTE : process.env.DB_LOCAL, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-	useCreateIndex: true,
-	useFindAndModify: false,
-})
-mongoose.connection
-	.once('open', () => {
-		console.log('DATABASE CONNECTED SUCCESSFULLY')
-	})
-	.on('error', (err) => console.log(err))
+connectDB(environment)
 
 //all middlewares
 app.use(express.json())
@@ -31,7 +22,7 @@ const authRoute = require('./routes/authRoutes')
 const categoryRoute = require('./routes/categoryRoutes')
 const reviewRoute = require('./routes/reviewRoutes')
 const placeRoute = require('./routes/placeRoutes')
-const hotresRoute = require('./routes/hotresRoutes')
+const hotresRoute = require('./routes/horecaRoutes')
 const coreRoute = require('./routes/coreRoute')
 
 app.use('/api', userRoute)
@@ -44,8 +35,8 @@ app.use('/api', coreRoute)
 
 app.listen(port, (err) => {
 	if (!err) {
-		console.log(`App listening at ${port}`)
+		log.info(`App listening at ${port}`)
 	} else {
-		console.log(err)
+		log.error(err)
 	}
 })
