@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const crypto = require('crypto')
-const { v4: uuid } = require('uuid')
 const { roleEnum } = require('../controllers/enum')
 const bcrypt = require('bcrypt')
 
@@ -37,8 +36,9 @@ const userSchema = new Schema(
 			required: true,
 		},
 		city: {
-			type: String,
+			type: ObjectId,
 			trim: true,
+			ref: 'City',
 			required: true,
 		},
 		profileId: {

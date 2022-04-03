@@ -1,7 +1,6 @@
 const User = require('../models/userModel')
 const Token = require('../models/tokenModel')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
 const { getTransporter } = require('../utils/sendEmail')
 
 exports.userSignup = async (req, res) => {
@@ -14,13 +13,9 @@ exports.userSignup = async (req, res) => {
 			return res.status(302).json({ error: 'User with this Email Already exist' })
 		}
 
-		const jwtToken = jwt.sign(
-			{ ...req.body, profileImgURL: req.profilePath },
-			process.env.JWT_SECRETS,
-			{
-				expiresIn: '15m',
-			}
-		)
+		const jwtToken = jwt.sign({ ...req.body }, process.env.JWT_SECRETS, {
+			expiresIn: '5m',
+		})
 
 		const transporter = await getTransporter()
 		const mailOptions = {
@@ -30,6 +25,7 @@ exports.userSignup = async (req, res) => {
 			text: ' ',
 			template: 'voyageregister',
 			context: {
+				NODE_ENV_DEV: process.env.STAGE === 'dev' ? true : false,
 				email,
 				jwtToken,
 			},
@@ -44,7 +40,7 @@ exports.userSignup = async (req, res) => {
 }
 
 exports.userEmailVerification = (req, res) => {
-	const { token } = req.body
+	const token = req.query.token
 	if (!token) return res.status(404).json({ error: 'Token Not Found' })
 
 	jwt.verify(token, process.env.JWT_SECRETS, (err, decodedToken) => {
@@ -63,8 +59,7 @@ exports.userEmailVerification = (req, res) => {
 					user
 						.save()
 						.then((doc) => {
-							const { _id, name, email, isAdmin, gender, city } = doc
-							return res.status(200).json({ id: _id, name, email, isAdmin, gender, city })
+							return res.sendFile('views/post-activation.html', { root: process.cwd() })
 						})
 						.catch((err) => {
 							return res.status(400).json({ error: 'Error Activating your Account' })
@@ -165,11 +160,9 @@ exports.changeCurrentPassword = async (req, res) => {
 		user.password = newPassword
 		await user.save()
 
-		res.status(200).json({ success: 'Password changed Successfully' })
-		return
+		return res.status(200).json({ success: 'Password changed Successfully' })
 	} catch (error) {
-		res.status(403).json({ error: 'Please check if your current password match' })
-		return
+		return res.status(403).json({ error: 'Please check if your current password match' })
 	}
 }
 

@@ -16,7 +16,7 @@ const { isSignedIn, isAuthorized, getUserByOtp } = require('../middleware/authMi
 router.param('userId', getUserById)
 
 //Activate User
-router.post('/user/verify-email', userEmailVerification)
+router.get('/user/verify-email', userEmailVerification)
 
 //Create New User
 router.post('/user/signup', userSignup)
