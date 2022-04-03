@@ -12,7 +12,7 @@ import Signup from '../screens/Signup/Signup';
 import Feed from '../screens/Homepage/feed/Feed';
 import Explore from '../screens/Homepage/explore/Explore';
 import Details from '../screens/Homepage/explore/Details';
-import Map from '../screens/Homepage/hotelScreen/Map';
+import Map from '../screens/Homepage/planTrip/viewPlans';
 import Profile from '../screens/Homepage/ProfileScreen/Profile';
 import AboutMe from '../screens/Homepage/ProfileScreen/AboutMe';
 import Starter from '../screens/starter/Starter';
@@ -32,6 +32,8 @@ import PrivacyPolicy from '../Components/Home/profile/Settings/PrivacyPolicy';
 import TermsAndCond from '../Components/Home/profile/Settings/TermsAndCond';
 import ChoosePlace from '../screens/starter/ChoosePlace'
 import TabComponent from './Tab'
+import ViewPlans from '../screens/Homepage/planTrip/viewPlans';
+import ViewWishlist from '../screens/Homepage/wishlist/viewWishlist';
 
 const activeColor = '#CF3838';
 
@@ -40,6 +42,8 @@ const RootStack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Maps = createBottomTabNavigator();
 const Explores = createMaterialBottomTabNavigator();
+const Plans = createMaterialBottomTabNavigator();
+const WishList = createMaterialBottomTabNavigator();
 const AccountStack = createMaterialBottomTabNavigator();
 const Feeds = createMaterialBottomTabNavigator();
 
@@ -67,9 +71,23 @@ const Home = () => {
           tabBarButton: (props)=> <TabComponent label="Home" {...props}/>
       }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Explore"
         component={ExploreScreen}
+        options={{
+          tabBarButton: (props)=> <TabComponent label="Explore" {...props}/>
+      }}
+      /> */}
+      <Tab.Screen
+        name="Plan"
+        component={TripPlanner}
+        options={{
+          tabBarButton: (props)=> <TabComponent label="Explore" {...props}/>
+      }}
+      />
+      <Tab.Screen
+        name="Wishlist"
+        component={WishLists}
         options={{
           tabBarButton: (props)=> <TabComponent label="Explore" {...props}/>
       }}
@@ -120,6 +138,22 @@ function ExploreScreen() {
       <Explores.Screen name="Details" component={Details} />
       <Explores.Screen name="ExploreMap" component={Map} />
     </Explores.Navigator>
+  );
+}
+
+function TripPlanner() {
+  return (
+    <Plans.Navigator barStyle={{display: 'none'}}>
+      <Plans.Screen name="Trip Plans" component={ViewPlans} />
+    </Plans.Navigator>
+  );
+}
+
+function WishLists() {
+  return (
+    <WishList.Navigator barStyle={{display: 'none'}}>
+      <WishList.Screen name="Wishlist" component={ViewWishlist} />
+    </WishList.Navigator>
   );
 }
 

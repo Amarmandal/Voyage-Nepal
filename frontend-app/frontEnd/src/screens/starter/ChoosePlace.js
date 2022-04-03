@@ -48,13 +48,12 @@ const ChoosePlace = ({navigation, route}) => {
         });
 
         for (var i = 0; i < 13; i++) {
-          var random = array[Math.floor(Math.random() * 20)];
+          var random = array[Math.floor(Math.random() * 24)];
           newArray.push(random);
         }
         setPlaces(newArray);
         setLoading(false);
 
-        // console.log(places);
       })
       .catch(function (error) {
         console.log(error);
@@ -62,7 +61,6 @@ const ChoosePlace = ({navigation, route}) => {
   }, [navigation]);
 
   const handleClick = place => {
-    // console.log(place);
     navigation.navigate('LoadingScreen2', {_place: place});
   };
 

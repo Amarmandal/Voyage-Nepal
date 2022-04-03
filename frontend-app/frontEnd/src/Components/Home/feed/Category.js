@@ -16,7 +16,7 @@ const Category = () => {
           justifyContent: 'space-evenly',
           flexWrap: 'wrap',
           marginBottom: 30,
-          marginTop: 30,
+          marginTop: 0,
         }}>
         <View
           style={{
