@@ -123,8 +123,8 @@ const Feed = () => {
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* <Alert visibility = {visibility} hideDialog = {hideDialog} exitApp = {exitApp}/> */}
-        <SearchContainer feed = 'feed page' />
         <Header />
+        <SearchContainer feed = 'feed page' />
         <Carousel />
         <PlaceCategory />
         <Popular />

@@ -2,18 +2,14 @@ import React from 'react';
 import {
   View,
   Text,
-  ImageBackground,
   StyleSheet,
-  useWindowDimensions,
   Image,
 } from 'react-native';
-import {Content, Button, Container, Icon} from 'native-base';
-import PlaceIcon from 'react-native-vector-icons/MaterialIcons';
-import PlusIcon from 'react-native-vector-icons/AntDesign';
+import {Content, Container, Icon} from 'native-base';
 import Colors from '../../../constants/Color';
 import PlaceList from '../../../Components/Home/PlanTrip/PlaceList';
 
-const ViewPlans = props => {
+const ViewPlans = ({navigation}) => {
   return (
     <Container>
       <Content padder style = {{marginBottom: 40}}>
@@ -30,7 +26,7 @@ const ViewPlans = props => {
             type="AntDesign"
             name="pluscircle"
             color="#000"
-            size={28}></Icon>
+            size={28} onPress = {() => navigation.navigate('CreateTrip')}></Icon>
         </View>
         <Image
           style={style.headerImage}
@@ -43,7 +39,7 @@ const ViewPlans = props => {
           <Text
             style={{
               fontSize: 14,
-              fontWeight: 'bold',
+              // fontWeight: 'bold',
               color: '#000',
               paddingTop: 5,
             }}>
@@ -88,11 +84,11 @@ export default ViewPlans;
 
 const style = StyleSheet.create({
   headerImage: {
-    height: 250,
+    height: 230,
     borderRadius: 15,
     // overflow: 'hidden',
     width: '100%',
-    position: 'relative'
+    position: 'relative',
   },
   header: {
     marginHorizontal: 10,
@@ -102,7 +98,7 @@ const style = StyleSheet.create({
     elevation: 5,
     borderRadius: 20,
     padding: 20,
-    top: 260,
+    top: 240,
     left: '8%',
     right: '8%',
   },

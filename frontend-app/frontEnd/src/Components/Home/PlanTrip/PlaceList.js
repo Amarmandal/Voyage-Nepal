@@ -24,7 +24,7 @@ export default function PlaceList() {
           <View style={{width: '80%'}}>
             <Text
               style={{
-                fontSize: 22,
+                fontSize: 20,
                 // color: Colors.themeColor,
                 paddingBottom: 6,
                 // fontWeight: 'bold',
@@ -34,7 +34,7 @@ export default function PlaceList() {
             </Text>
             <Text
               style={{
-                fontSize: 18,
+                fontSize: 14,
                 // color: Colors.themeColor,
                 paddingBottom: 6,
               }}>

@@ -34,6 +34,8 @@ import ChoosePlace from '../screens/starter/ChoosePlace'
 import TabComponent from './Tab'
 import ViewPlans from '../screens/Homepage/planTrip/viewPlans';
 import ViewWishlist from '../screens/Homepage/wishlist/viewWishlist';
+import CreatePlans from '../screens/Homepage/planTrip/CreatePlans';
+import Dob from '../screens/Homepage/ProfileScreen/Dob';
 
 const activeColor = '#CF3838';
 
@@ -122,6 +124,7 @@ function FeedScreen() {
     <Feeds.Navigator barStyle={{display: 'none'}}>
       {/* <Feeds.Screen name = 'Loading' component = {Loading} /> */}
       <Feeds.Screen name="Feed" component={Feed} />
+      <Feeds.Screen name="Explore" component={ExploreScreen} />
       <Feeds.Screen
         name="RecommendationDetail"
         component={RecommendationDetail}
@@ -144,7 +147,8 @@ function ExploreScreen() {
 function TripPlanner() {
   return (
     <Plans.Navigator barStyle={{display: 'none'}}>
-      <Plans.Screen name="Trip Plans" component={ViewPlans} />
+      <Plans.Screen name="TripPlans" component={ViewPlans} />
+      <Plans.Screen name="CreateTrip" component={CreatePlans} />
     </Plans.Navigator>
   );
 }
@@ -252,12 +256,24 @@ function MainStackScreen() {
   );
 }
 
+const linking = {
+  prefixes: ["app://deeplink/"],
+  config: {
+    screens:{
+      Dob: {
+        path: 'Dob'
+      }
+    }
+  }
+}
+
 function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <RootStack.Navigator mode="modal" headerMode="none">
         <RootStack.Screen name="Main" component={MainStackScreen} />
         <RootStack.Screen name="Email" component={Email} />
+        <RootStack.Screen name="Dob" component={Dob} />
         <RootStack.Screen name="MyModal" component={OTPScreen} />
         <RootStack.Screen name="Reset" component={ResetPassword} />
         <RootStack.Screen name="ChoosePlace" component={ChoosePlace} />
