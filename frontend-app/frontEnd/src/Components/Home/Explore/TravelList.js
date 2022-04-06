@@ -12,25 +12,25 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
+import {Button, Icon} from 'native-base';
 import SearchContainer from '../feed/searchContainer';
 import Colors from '../../../constants/Color';
 const {width} = Dimensions.get('window');
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import LocationIcon from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
-import api from '../../../services/ApiServices'
+import api from '../../../services/ApiServices';
 import StarRating from 'react-native-star-rating';
 
 const TravelList = props => {
   const navigation = useNavigation();
 
   const category = useSelector(state => state.category);
-  const state = useSelector(state => state.loginUser)
-  const places = useSelector(state => state.place)
+  const state = useSelector(state => state.loginUser);
+  const places = useSelector(state => state.place);
 
   // console.log(places);
-  const placeName = (name) => {
-    
+  const placeName = name => {
     const _place = name;
     const words = _place.split(' ');
 
@@ -38,83 +38,100 @@ const TravelList = props => {
       words[i] = words[i].charAt(0).toUpperCase() + words[i].substr(1);
     }
 
-  
     return words.join(' ');
-  
-};
-  
+  };
+
   const Card = ({place}) => {
     return (
-      <View style={styles.card} key = {place+place._id.toString()}>
+      <View style={styles.card} key={place + place._id.toString()}>
         <ImageBackground
           style={styles.cardImage}
           source={{uri: place.placePhoto}}></ImageBackground>
         <View style={styles.cardDetails}>
           <Text style={styles.cardText}>{placeName(place.name)}</Text>
           <Text style={styles.location}>
-            <Icon name="location-on" size={12} />
+            <LocationIcon name="location-on" size={12} />
             {place.location}
           </Text>
           {place.ratings ? (
-                    <View
-                    style={{
-                      alignItems: 'flex-start'
-                    }}>
-                    <StarRating
-                      disabled={false}
-                      emptyStar={'star-o'}
-                      fullStar={'star'}
-                      halfStar={'star-half-empty'}
-                      iconSet={'FontAwesome'}
-                      maxStars={5}
-                      rating={place.ratings}
-                      fullStarColor={Colors.warning}
-                      emptyStarColor={'white'}
-                      starSize={20}
-                    />
-                  </View>
-                  ) : <Text style = {{color: Colors.warning}}>'No ratings yet'</Text>}
+            <View
+              style={{
+                alignItems: 'flex-start',
+              }}>
+              <StarRating
+                disabled={false}
+                emptyStar={'star-o'}
+                fullStar={'star'}
+                halfStar={'star-half-empty'}
+                iconSet={'FontAwesome'}
+                maxStars={5}
+                rating={place.ratings}
+                fullStarColor={Colors.warning}
+                emptyStarColor={'white'}
+                starSize={20}
+              />
+            </View>
+          ) : (
+            <Text style={{color: Colors.warning}}>'No ratings yet'</Text>
+          )}
         </View>
       </View>
     );
   };
 
-  
   return (
     <SafeAreaView style={{flex: 1, marginBottom: 30}}>
+      <View
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          // justifyContent: 'center',
+          margin: 20
+        }}>
+        <Icon
+          name="arrow-back-circle-sharp"
+          style={{color: Colors.themeColor, fontSize: 38}}
+          onPress={() => navigation.goBack()}
+        />
+        {/* <Button primary onPress={() => navigation.goBack()} large>
+          <Icon
+            name="arrow-back-circle-sharp"
+            style={{color: Colors.themeColor, fontSize: 38}}
+          />
+        </Button> */}
+        <Text style={styles.headerText}>Explore Destinations </Text>
+      </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Explore Destinations </Text>
-          <SearchContainer />
-        </View>
+        <SearchContainer />
         {category.map((category, index) => (
-          <View  key={category._id}>
-            <Text style={styles.activityText} >{category.name}</Text>
-        
-              <FlatList
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={places}
-                keyExtractor={(item, index) => index.toString()+item}
-                renderItem={({item, index}) => (
-                  <Pressable
-                    onPress={() =>
-                      navigation.navigate('Details', {
-                        image: item.placePhoto,
-                        location: item.location,
-                        name: item.name,
-                        details: item.description,
-                        reviews: item.reviews,
-                        hotel: item.stayPlace,
-                        id: item._id,
-                        ratings: item.ratings
-                      })
-                    }>
-                      {item.category.includes(category._id) ? <Card key = {index.toString()} place={item} /> : null}
-                  </Pressable>
-                )}
-              />
-          
+          <View key={category._id}>
+            <Text style={styles.activityText}>{category.name}</Text>
+
+            <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={places}
+              keyExtractor={(item, index) => index.toString() + item}
+              renderItem={({item, index}) => (
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate('Details', {
+                      image: item.placePhoto,
+                      location: item.location,
+                      name: item.name,
+                      details: item.description,
+                      reviews: item.reviews,
+                      hotel: item.stayPlace,
+                      id: item._id,
+                      ratings: item.ratings,
+                    })
+                  }>
+                  {item.category.includes(category._id) ? (
+                    <Card key={index.toString()} place={item} />
+                  ) : null}
+                </Pressable>
+              )}
+            />
           </View>
         ))}
       </ScrollView>
@@ -125,15 +142,15 @@ const TravelList = props => {
 export default TravelList;
 
 const styles = StyleSheet.create({
-  header: {
-    justifyContent: 'space-between',
-  },
+  // header: {
+  //   justifyContent: 'space-between',
+  // },
   headerText: {
     fontSize: 25,
     fontWeight: 'bold',
     color: '#000000',
-    margin: 25,
-    marginTop: 35,
+    marginLeft: 25,
+    // marginTop: 35,
   },
   cardImage: {
     height: 220,
@@ -208,6 +225,6 @@ const styles = StyleSheet.create({
   },
   ratings: {
     flexDirection: 'row',
-    marginTop: 2
+    marginTop: 2,
   },
 });

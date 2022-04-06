@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {
   Image,
-  ScrollView,
-  Modal,
   ActivityIndicator,
-  SafeAreaView,
+  Linking
 } from 'react-native';
 import {Container, Content, View, Text, Button, Icon} from 'native-base';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,9 +10,6 @@ import {
   FormInput,
   ActionButton,
   Account,
-  GifComponent,
-  ActionText,
-  Title,
 } from '../../Components/FormComponents/FormCompponents';
 import {
   ForgotPassword,
@@ -28,6 +23,8 @@ import GoBack from '../../Components/Signin/GoBack';
 import {loginUser} from '../../redux/action/Login/loginUser';
 import {useDispatch, useSelector} from 'react-redux';
 import LoadingModal from '../../utils/Modal';
+// import auth from '@react-native-firebase/auth';
+// import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 
 const Signin = ({navigation}) => {
   const state = useSelector(state => state.loginUser);
@@ -44,6 +41,33 @@ const Signin = ({navigation}) => {
     isValidEmail: true,
     isValidPassword: true,
   });
+
+  // useEffect(() => {
+  //   GoogleSignin.configure({
+  //     webClientId: "Your-web-client-id", 
+  //     offlineAccess: true
+  //   })
+  // }, []);
+
+  // const GoogleSignUp = async() => {
+  //   try {
+  //     await GoogleSignin.hasPlayServices();
+  //     await GoogleSignin.signIn().then(result =&gt; { console.log(result) });
+  //   } catch (error) {
+  //     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+  //       // user cancelled the login flow
+  //       alert('User cancelled the login flow !');
+  //     } else if (error.code === statusCodes.IN_PROGRESS) {
+  //       alert('Signin in progress');
+  //       // operation (f.e. sign in) is in progress already
+  //     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+  //       alert('Google play services not available or outdated !');
+  //       // play services not available or outdated
+  //     } else {
+  //       console.log(error)
+  //     }
+  //   }
+  // };
 
   useEffect(async () => {
     const userEmail = await AsyncStorage.getItem('email');
@@ -112,8 +136,12 @@ const Signin = ({navigation}) => {
   };
 
   const handleForgotPAssword = () => {
-    navigation.navigate('Email');
+    navigation.navigate('Dob');
   };
+
+  const openURL = (url) => {
+    Linking.openURL(url).catch((err) => console.error('An error occurred', err));
+  }
 
   return (
     <Container style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
@@ -203,7 +231,6 @@ const Signin = ({navigation}) => {
             buttonName={
               state.loading ? <ActivityIndicator color="#ffffff" /> : 'Login'
             }
-            // home={() => submitValues()}
             home={() => submitValues()}
           />
           <View style={{display: 'flex', flexDirection: 'row', marginBottom: 14}}>
