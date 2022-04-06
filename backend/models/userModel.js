@@ -23,7 +23,6 @@ const userSchema = new Schema(
 		},
 		DOB: {
 			type: Date,
-			required: true,
 		},
 		role: {
 			type: String,
@@ -33,13 +32,21 @@ const userSchema = new Schema(
 		password: {
 			type: String,
 			trim: true,
-			required: true,
 		},
 		city: {
 			type: ObjectId,
 			trim: true,
 			ref: 'City',
-			required: true,
+		},
+		googleId: {
+			type: String,
+			trim: true,
+			unique: true,
+		},
+		facebookId: {
+			type: String,
+			trim: true,
+			unique: true,
 		},
 		profileId: {
 			type: ObjectId,

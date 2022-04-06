@@ -1,8 +1,10 @@
 const User = require('../models/userModel')
+const { OAuth2Client } = require('google-auth-library')
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto')
-
 const { rolePowerEnum } = require('../controllers/enum')
+const npmlog = require('npmlog')
+const client = new OAuth2Client(process.env.CLIENT_ID)
 
 //Check if user is Signed in
 exports.isSignedIn = (req, res, next) => {
@@ -19,6 +21,23 @@ exports.isSignedIn = (req, res, next) => {
 		req.auth = decodedValue
 		next()
 	})
+}
+
+exports.isGoogleTokenVerified = async (req, res, next) => {
+	const { idToken } = req.body
+	try {
+		const ticket = await client.verifyIdToken({
+			idToken,
+			audience: process.env.CLIENT_ID,
+		})
+		const payload = ticket.getPayload()
+		// const userid = payload['sub']
+		req.googlePayload = payload
+		next()
+	} catch (error) {
+		npmlog.error(error.message)
+		return res.status(401).json({ error: 'Unauthorized Access!' })
+	}
 }
 
 exports.isAuthorized = (req, res, next) => {
@@ -67,6 +86,5 @@ exports.getUserByOtp = async (req, res) => {
 	}
 
 	// req.profile = user;
-	res.status(200).json({ userResetId: user._id })
-	return
+	return res.status(200).json({ userResetId: user._id })
 }
