@@ -23,8 +23,7 @@ import GoBack from '../../Components/Signin/GoBack';
 import {loginUser} from '../../redux/action/Login/loginUser';
 import {useDispatch, useSelector} from 'react-redux';
 import LoadingModal from '../../utils/Modal';
-// import auth from '@react-native-firebase/auth';
-// import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { GoogleSignin, statusCodes, GoogleSigninButton } from '@react-native-google-signin/google-signin';
 
 const Signin = ({navigation}) => {
   const state = useSelector(state => state.loginUser);
@@ -41,33 +40,75 @@ const Signin = ({navigation}) => {
     isValidEmail: true,
     isValidPassword: true,
   });
+  const [user, setUser] = useState({})
 
-  // useEffect(() => {
-  //   GoogleSignin.configure({
-  //     webClientId: "Your-web-client-id", 
-  //     offlineAccess: true
-  //   })
-  // }, []);
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: "942468371176-c982abr7i767nobbkbu0lb1qglnfk71i.apps.googleusercontent.com", 
+      offlineAccess: true,
+      forceCodeForRefreshToken: true,
 
-  // const GoogleSignUp = async() => {
-  //   try {
-  //     await GoogleSignin.hasPlayServices();
-  //     await GoogleSignin.signIn().then(result =&gt; { console.log(result) });
-  //   } catch (error) {
-  //     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-  //       // user cancelled the login flow
-  //       alert('User cancelled the login flow !');
-  //     } else if (error.code === statusCodes.IN_PROGRESS) {
-  //       alert('Signin in progress');
-  //       // operation (f.e. sign in) is in progress already
-  //     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-  //       alert('Google play services not available or outdated !');
-  //       // play services not available or outdated
-  //     } else {
-  //       console.log(error)
-  //     }
-  //   }
-  // };
+    });
+    isSignedIn()
+  }, []);
+
+  const GoogleSignUp = async() => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log('due..', userInfo)
+      setUser(userInfo)
+      // await GoogleSignin.signIn().then(result => { console.log(result) });
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+        alert('User cancelled the login flow !');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        alert('Signin in progress');
+        // operation (f.e. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        alert('Google play services not available or outdated !');
+        // play services not available or outdated
+      } else {
+        console.log(error)
+      }
+    }
+  };
+
+  const isSignedIn = async() => {
+    const isSignedIn = await GoogleSignin.isSignedIn()
+    if(!!isSignedIn){
+      getCurrentUserInfo()
+    }else{
+      console.log('Please Login');
+    }
+  }
+
+  const getCurrentUserInfo = async() => {
+    try {
+      const userInfo = await GoogleSignin.signInSilently()
+      console.log('edit..', user);
+      setUser(userInfo)
+    } catch (error) {
+      if(error.code === statusCodes.SIGN_IN_REQUIRED){
+        alert('User has not signed in yet')
+        console.log('User has not signed in yet')
+      }else{
+        alert("Something went wrong")
+        console.log("Something went wrong")
+      }
+    }
+  }
+
+  const signOut = async() => {
+    try {
+      await GoogleSignin.revokeAccess()
+      await GoogleSignin.signOut()
+      setUser({})
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   useEffect(async () => {
     const userEmail = await AsyncStorage.getItem('email');
@@ -234,7 +275,7 @@ const Signin = ({navigation}) => {
             home={() => submitValues()}
           />
           <View style={{display: 'flex', flexDirection: 'row', marginBottom: 14}}>
-            <Icon name="logo-google" size={18} style = {{marginRight: 15, color: Colors.google, fontSize: 34}}/>
+            <Icon name="logo-google" onPress={GoogleSignUp} size={18} style = {{marginRight: 15, color: Colors.google, fontSize: 34}}/>
             <Icon name="logo-facebook" size={18} style = {{color: Colors.facebook, fontSize: 34}} />
           </View>
           <Account
