@@ -13,7 +13,6 @@ exports.createNewAdmin = async () => {
 			DOB: new Date(),
 			password: process.env.ADMIN_PASSWORD,
 			role: roleEnum.ADMIN,
-			city: 'none',
 		})
 
 		return newAdmin.save()
