@@ -41,12 +41,10 @@ const userSchema = new Schema(
 		googleId: {
 			type: String,
 			trim: true,
-			unique: true,
 		},
 		facebookId: {
 			type: String,
 			trim: true,
-			unique: true,
 		},
 		profileId: {
 			type: ObjectId,
