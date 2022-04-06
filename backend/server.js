@@ -5,7 +5,7 @@ const connectDB = require('./db/connect_db')
 const app = express()
 const log = require('npmlog')
 const port = process.env.PORT || 8000
-const environment = process.env.STAGE
+const environment = process.env.NODE_ENV
 
 app.use(express.static('public'))
 
