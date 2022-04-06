@@ -10,8 +10,14 @@ const {
 	changeCurrentPassword,
 	handleSignout,
 	tokenGenerator,
+	signWithGoogle,
 } = require('../controllers/authController')
-const { isSignedIn, isAuthorized, getUserByOtp } = require('../middleware/authMiddleware')
+const {
+	isSignedIn,
+	isAuthorized,
+	getUserByOtp,
+	isGoogleTokenVerified,
+} = require('../middleware/authMiddleware')
 
 router.param('userId', getUserById)
 
@@ -23,6 +29,13 @@ router.post('/user/signup', userSignup)
 
 //user sign in
 router.post('/user/signin', userSingin)
+
+//user google login
+router.post('/user/google/signin', isGoogleTokenVerified, signWithGoogle)
+
+router.get('/user/protected', isSignedIn, isAuthorized, (req, res) => {
+	res.send('You are accessing the protected routes')
+})
 
 //forget Password
 router.post('/user/forget-password', forgetPassword)

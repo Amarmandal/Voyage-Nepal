@@ -2,6 +2,7 @@ const User = require('../models/userModel')
 const Token = require('../models/tokenModel')
 const jwt = require('jsonwebtoken')
 const { getTransporter } = require('../utils/sendEmail')
+const npmlog = require('npmlog')
 
 exports.userSignup = async (req, res) => {
 	const { email } = req.body
@@ -36,6 +37,44 @@ exports.userSignup = async (req, res) => {
 		return info
 	} catch (error) {
 		console.log(error)
+	}
+}
+
+exports.signWithGoogle = async (req, res) => {
+	try {
+		const { sub: googleId, email, name, picture } = req.googlePayload
+		let accessToken = ''
+		if (googleId) {
+			const existingUser = await User.findOne({ googleId: googleId })
+			if (!existingUser) {
+				const newUser = new User({
+					name,
+					email,
+					googleId,
+				})
+
+				//Generating a user access token
+				await newUser.save()
+				accessToken = jwt.sign(
+					{ name, role: newUser.role, id: newUser._id },
+					process.env.JWT_SECRETS
+				)
+			} else {
+				accessToken = jwt.sign(
+					{ name, role: existingUser.role, id: existingUser._id },
+					process.env.JWT_SECRETS
+				)
+			}
+
+			return res.status(200).json({
+				accessToken,
+			})
+		}
+	} catch (error) {
+		npmlog.error(error)
+		return res.status(401).json({
+			error: 'Unauthorized user credentials!',
+		})
 	}
 }
 
