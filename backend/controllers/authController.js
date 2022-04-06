@@ -26,7 +26,7 @@ exports.userSignup = async (req, res) => {
 			text: ' ',
 			template: 'voyageregister',
 			context: {
-				NODE_ENV_DEV: process.env.STAGE === 'dev' ? true : false,
+				NODE_ENV_DEV: process.env.NODE_ENV === 'dev' ? true : false,
 				email,
 				jwtToken,
 			},
