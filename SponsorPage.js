@@ -1,4 +1,4 @@
-import {View, Text, SafeAreaView} from 'react-native';
+import {View, Text, SafeAreaView, Pressable} from 'react-native';
 import Colors from '../../../../constants/Color';
 
 import {Item, Input, Icon} from 'native-base';
@@ -31,6 +31,34 @@ const SponsorPage = ({navigation}) => {
           }}>
           Your Advertisements
         </Text>
+      </View>
+      <Pressable
+        onPress={() => {
+          navigation.navigate('banner');
+        }}>
+        <View
+          style={{
+            width: '45%',
+            height: '20%',
+            marginLeft: 20,
+            backgroundColor: Colors.themeColor,
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <Icon type="FontAwesome5" name="calendar-alt" style={{margin: 45}} />
+        </View>
+      </Pressable>
+      <View
+        style={{
+          width: '45%',
+          height: '20%',
+          marginLeft: 20,
+          marginTop: 20,
+          backgroundColor: Colors.themeColor,
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}>
+        <Icon type="FontAwesome5" name="calendar-alt" style={{margin: 45}} />
       </View>
     </SafeAreaView>
   );

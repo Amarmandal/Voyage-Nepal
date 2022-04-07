@@ -45,6 +45,7 @@ import Company from '../Components/Home/profile/Sponsorship/Company';
 import Tiers from '../Components/Home/profile/Sponsorship/Tiers';
 import success from '../Components/Home/profile/Sponsorship/success';
 import SponsorPage from '../Components/Home/profile/Sponsorship/SponsorPage';
+import banner from '../Components/Home/profile/Sponsorship/banner';
 
 const activeColor = '#CF3838';
 
@@ -181,6 +182,7 @@ function AccountScreen() {
       <AccountStack.Screen name="Tiers" component={Tiers} />
       <AccountStack.Screen name="success" component={success} />
       <AccountStack.Screen name="SponsorPage" component={SponsorPage} />
+      <AccountStack.Screen name="banner" component={banner} />
     </AccountStack.Navigator>
   );
 }
