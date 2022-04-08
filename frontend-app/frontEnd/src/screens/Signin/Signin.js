@@ -1,38 +1,29 @@
 import React, {useState, useEffect} from 'react';
-import {
-  Image,
-  ActivityIndicator,
-  Linking
-} from 'react-native';
+import {Image, ActivityIndicator} from 'react-native';
 import {Container, Content, View, Text, Button, Icon} from 'native-base';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Colors from '../../constants/Color';
+import {loginUser} from '../../redux/action/Login/loginUser';
 import {
   FormInput,
   ActionButton,
   Account,
 } from '../../Components/FormComponents/FormCompponents';
-import {
-  ForgotPassword,
-  HorizontalLine,
-  LineWithText,
-  SocialMediaLogin,
-} from '../../Components/Signin/Signin';
-import Colors from '../../constants/Color';
-import Loading from '../LoadingScreen/Loading';
-import GoBack from '../../Components/Signin/GoBack';
-import {loginUser} from '../../redux/action/Login/loginUser';
-import {useDispatch, useSelector} from 'react-redux';
-import LoadingModal from '../../utils/Modal';
-import { GoogleSignin, statusCodes, GoogleSigninButton } from '@react-native-google-signin/google-signin';
+import {ForgotPassword} from '../../Components/Signin/Signin';
+import {LoginButton, AccessToken} from 'react-native-fbsdk-next';
 
 const Signin = ({navigation}) => {
   const state = useSelector(state => state.loginUser);
 
   const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState(true);
   const [hidePassword, setHidePassword] = useState(true);
-  const [userData, setUserData] = useState({});
   const [error, setError] = useState('');
   const [data, setData] = useState({
     email: '',
@@ -40,24 +31,33 @@ const Signin = ({navigation}) => {
     isValidEmail: true,
     isValidPassword: true,
   });
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: "942468371176-c982abr7i767nobbkbu0lb1qglnfk71i.apps.googleusercontent.com", 
+      webClientId:
+        '942468371176-c982abr7i767nobbkbu0lb1qglnfk71i.apps.googleusercontent.com',
       offlineAccess: true,
       forceCodeForRefreshToken: true,
-
     });
-    isSignedIn()
+    isSignedIn();
   }, []);
 
-  const GoogleSignUp = async() => {
+  const facebookSignUp = async () => {
+    navigation.navigate('Welcome');
+  };
+
+  const GoogleSignUp = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log('due..', userInfo)
-      setUser(userInfo)
+      const {data} = await axios.post(
+        'http://172.17.16.80:8080/api/user/google/signin',
+        {idToken: `${userInfo.idToken}`},
+      );
+      AsyncStorage.setItem('token', data.accessToken);
+      setUser(userInfo);
+      navigation.navigate('Welcome', {user: userInfo});
       // await GoogleSignin.signIn().then(result => { console.log(result) });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
@@ -70,45 +70,43 @@ const Signin = ({navigation}) => {
         alert('Google play services not available or outdated !');
         // play services not available or outdated
       } else {
-        console.log(error)
+        console.log(error);
       }
     }
   };
 
-  const isSignedIn = async() => {
-    const isSignedIn = await GoogleSignin.isSignedIn()
-    if(!!isSignedIn){
-      getCurrentUserInfo()
-    }else{
+  const isSignedIn = async () => {
+    const isSignedIn = await GoogleSignin.isSignedIn();
+    if (!!isSignedIn) {
+      getCurrentUserInfo();
+    } else {
       console.log('Please Login');
     }
-  }
+  };
 
-  const getCurrentUserInfo = async() => {
+  const getCurrentUserInfo = async () => {
     try {
-      const userInfo = await GoogleSignin.signInSilently()
+      const userInfo = await GoogleSignin.signInSilently();
       console.log('edit..', user);
-      setUser(userInfo)
+      setUser(userInfo);
     } catch (error) {
-      if(error.code === statusCodes.SIGN_IN_REQUIRED){
-        alert('User has not signed in yet')
-        console.log('User has not signed in yet')
-      }else{
-        alert("Something went wrong")
-        console.log("Something went wrong")
+      if (error.code === statusCodes.SIGN_IN_REQUIRED) {
+        console.log('User has not signed in yet');
+      } else {
+        console.log('Something went wrong');
       }
     }
-  }
+  };
 
-  const signOut = async() => {
+  const signOut = async () => {
     try {
-      await GoogleSignin.revokeAccess()
-      await GoogleSignin.signOut()
-      setUser({})
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      setUser({});
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   useEffect(async () => {
     const userEmail = await AsyncStorage.getItem('email');
@@ -119,7 +117,6 @@ const Signin = ({navigation}) => {
 
   useEffect(() => {
     if (state.user && !state.loading) {
-      // console.log(state);
       setData({
         ...data,
         password: '',
@@ -132,10 +129,8 @@ const Signin = ({navigation}) => {
         token: state.user.token,
       });
       setError('');
-      // return <LoadingModal visibility={false} />;
     } else if (state.errors) {
       setError(state.errors);
-      // reutrn(<LoadingModal visibility={false} />);
     }
   }, [state.user, state.errors, state]);
 
@@ -180,10 +175,6 @@ const Signin = ({navigation}) => {
     navigation.navigate('Dob');
   };
 
-  const openURL = (url) => {
-    Linking.openURL(url).catch((err) => console.error('An error occurred', err));
-  }
-
   return (
     <Container style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
       <Button transparent onPress={() => navigation.goBack()} large>
@@ -193,10 +184,6 @@ const Signin = ({navigation}) => {
         />
       </Button>
       <Content keyboardShouldPersistTaps={'handled'}>
-        {/* <Image
-          source={require('../../assets/images/display.png')}
-          style={{marginBottom: 50, opacity: 0.8}}
-        /> */}
         <Image
           source={require('../../assets/pictures/newlogo.png')}
           style={{
@@ -274,9 +261,34 @@ const Signin = ({navigation}) => {
             }
             home={() => submitValues()}
           />
-          <View style={{display: 'flex', flexDirection: 'row', marginBottom: 14}}>
-            <Icon name="logo-google" onPress={GoogleSignUp} size={18} style = {{marginRight: 15, color: Colors.google, fontSize: 34}}/>
-            <Icon name="logo-facebook" size={18} style = {{color: Colors.facebook, fontSize: 34}} />
+          <View
+            style={{display: 'flex', flexDirection: 'row', marginBottom: 14}}>
+            <Icon
+              name="logo-google"
+              onPress={GoogleSignUp}
+              size={18}
+              style={{marginRight: 15, color: Colors.google, fontSize: 34}}
+            />
+            {/* <Icon
+              name="logo-facebook"
+              size={18}
+              onPress={facebookSignUp}
+              style={{color: Colors.facebook, fontSize: 34}}
+            /> */}
+            <LoginButton
+              onLoginFinished={(error, result) => {
+                if (error) {
+                  console.log('login has error: ' + result.error);
+                } else if (result.isCancelled) {
+                  console.log('login is cancelled.');
+                } else {
+                  AccessToken.getCurrentAccessToken().then(data => {
+                    console.log(data.accessToken.toString());
+                  });
+                }
+              }}
+              onLogoutFinished={() => console.log('logout.')}
+            />
           </View>
           <Account
             text="Don't have an Account? "
@@ -284,11 +296,6 @@ const Signin = ({navigation}) => {
             signup={() => navigation.navigate('Signup')}
           />
         </View>
-        {/* {state.loading ? (
-          <LoadingModal visibility={true} />
-        ) : (
-          <LoadingModal visibility={false} />
-        )} */}
       </Content>
     </Container>
   );

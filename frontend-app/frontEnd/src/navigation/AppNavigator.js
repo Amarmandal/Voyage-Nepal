@@ -36,6 +36,13 @@ import ViewPlans from '../screens/Homepage/planTrip/viewPlans';
 import ViewWishlist from '../screens/Homepage/wishlist/viewWishlist';
 import CreatePlans from '../screens/Homepage/planTrip/CreatePlans';
 import Dob from '../screens/Homepage/ProfileScreen/Dob';
+import Welcome from '../screens/starter/Welcome';
+import Company from '../Components/Home/profile/Sponsorship/Company';
+import Tiers from '../Components/Home/profile/Sponsorship/Tiers';
+import success from '../Components/Home/profile/Sponsorship/success';
+import SponsorPage from '../Components/Home/profile/Sponsorship/SponsorPage';
+import banner from '../Components/Home/profile/Sponsorship/banner';
+import Sponsor from '../Components/Home/profile/Sponsorship/Sponsor';
 
 const activeColor = '#CF3838';
 
@@ -171,22 +178,28 @@ function AccountScreen() {
       <AccountStack.Screen name="FAQ" component={FAQ} />
       <AccountStack.Screen name="Policy" component={PrivacyPolicy} />
       <AccountStack.Screen name="Terms" component={TermsAndCond} />
+      <AccountStack.Screen name="Sponsor" component={Sponsor} />
+      <AccountStack.Screen name="Company" component={Company} />
+      <AccountStack.Screen name="Tiers" component={Tiers} />
+      <AccountStack.Screen name="success" component={success} />
+      <AccountStack.Screen name="SponsorPage" component={SponsorPage} />
+      <AccountStack.Screen name="banner" component={banner} />
     </AccountStack.Navigator>
   );
 }
 
 function MainStackScreen() {
-  const [userToken, setUserToken] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(async () => {
-    const token = await AsyncStorage.getItem('token');
-    if (token !== null) {
-      setUserToken(token);
-      setIsLoading(false);
-    } else {
-      setIsLoading(false);
-    }
-  }, []);
+  // const [userToken, setUserToken] = useState(null);
+  // const [isLoading, setIsLoading] = useState(true);
+  // useEffect(async () => {
+  //   const token = await AsyncStorage.getItem('token');
+  //   if (token !== null) {
+  //     setUserToken(token);
+  //     setIsLoading(false);
+  //   } else {
+  //     setIsLoading(false);
+  //   }
+  // }, []);
   return (
     <MainStack.Navigator
       screenOptions={{
@@ -277,6 +290,7 @@ function App() {
         <RootStack.Screen name="MyModal" component={OTPScreen} />
         <RootStack.Screen name="Reset" component={ResetPassword} />
         <RootStack.Screen name="ChoosePlace" component={ChoosePlace} />
+        <RootStack.Screen name="Welcome" component={Welcome} />
       </RootStack.Navigator>
     </NavigationContainer>
   );

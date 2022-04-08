@@ -4,7 +4,7 @@ import {List, ListItem, Thumbnail, Body} from 'native-base';
 import StarRating from 'react-native-star-rating';
 import Colors from '../../../constants/Color';
 
-export default function PlaceList() {
+export default function PlaceList(props) {
   return (
     <List>
       <ListItem>
