@@ -15,6 +15,8 @@ import UserRole from "./pages/UserRole";
 import { ToastContainer } from "react-toastify";
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Terms from "./pages/Terms";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/login" component={LoginPage} />
+        <Route path="/terms" component={Terms} />
+        <Route path="/privacy" component={PrivacyPolicy} />
         <Route path="/user/verify" component={ActivateAccount} />
         <AdminRoute path="/place/create" component={CreatePlace} />
         <AdminRoute path="/place/update" component={UpdatePlace} />
