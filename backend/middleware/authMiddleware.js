@@ -48,10 +48,14 @@ exports.isAuthenticatedByFacebook = async (req, res, next) => {
 		const { data: response } = await axios(
 			`${debugAccessTokenUrl}?input_token=${accessToken}&access_token=${process.env.FB_APP_TOKEN}`
 		)
+		if (!response.data.is_valid) {
+			throw new Error('Invalid access token!')
+		}
 		next()
 	} catch (error) {
-		npmlog.error(JSON.stringify(error.response.data.error))
-		return res.status(401).json({ error: 'Unauthorized Access!' })
+		errMsg = error.message ? error.message : 'Unauthorized Access!'
+		npmlog.error(errMsg)
+		return res.status(401).json({ error: errMsg })
 	}
 }
 
