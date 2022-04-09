@@ -51,6 +51,48 @@ exports.signWithGoogle = async (req, res) => {
 					name,
 					email,
 					googleId,
+					avatarUrl: picture,
+				})
+
+				//Generating a user access token
+				await newUser.save()
+				accessToken = jwt.sign(
+					{ name, role: newUser.role, id: newUser._id },
+					process.env.JWT_SECRETS
+				)
+			} else {
+				accessToken = jwt.sign(
+					{ name, role: existingUser.role, id: existingUser._id },
+					process.env.JWT_SECRETS
+				)
+			}
+
+			return res.status(200).json({
+				accessToken,
+			})
+		}
+	} catch (error) {
+		npmlog.error(error)
+		return res.status(401).json({
+			error: 'Unauthorized user credentials!',
+		})
+	}
+}
+
+exports.signWithFacebook = async (req, res) => {
+	try {
+		const {
+			userData: { email, name, facebook_id, profilePicture },
+		} = req.body.data
+		let accessToken = ''
+		if (facebook_id) {
+			const existingUser = await User.findOne({ facebookId: facebook_id })
+			if (!existingUser) {
+				const newUser = new User({
+					name,
+					email,
+					facebookId: facebook_id,
+					avatarUrl: profilePicture,
 				})
 
 				//Generating a user access token

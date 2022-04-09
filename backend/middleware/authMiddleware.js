@@ -5,6 +5,7 @@ const crypto = require('crypto')
 const { rolePowerEnum } = require('../controllers/enum')
 const npmlog = require('npmlog')
 const client = new OAuth2Client(process.env.CLIENT_ID)
+const axios = require('axios')
 
 //Check if user is Signed in
 exports.isSignedIn = (req, res, next) => {
@@ -36,6 +37,20 @@ exports.isGoogleTokenVerified = async (req, res, next) => {
 		next()
 	} catch (error) {
 		npmlog.error(error.message)
+		return res.status(401).json({ error: 'Unauthorized Access!' })
+	}
+}
+
+exports.isAuthenticatedByFacebook = async (req, res, next) => {
+	const { accessToken } = req.body.data
+	const debugAccessTokenUrl = 'https://graph.facebook.com/debug_token'
+	try {
+		const { data: response } = await axios(
+			`${debugAccessTokenUrl}?input_token=${accessToken}&access_token=${process.env.FB_APP_TOKEN}`
+		)
+		next()
+	} catch (error) {
+		npmlog.error(JSON.stringify(error.response.data.error))
 		return res.status(401).json({ error: 'Unauthorized Access!' })
 	}
 }

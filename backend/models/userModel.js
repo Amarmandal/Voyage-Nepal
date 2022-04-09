@@ -21,8 +21,9 @@ const userSchema = new Schema(
 			minLength: 1,
 			unique: true,
 		},
-		DOB: {
-			type: Date,
+		avatarUrl: {
+			type: String,
+			trim: true,
 		},
 		role: {
 			type: String,
@@ -32,11 +33,6 @@ const userSchema = new Schema(
 		password: {
 			type: String,
 			trim: true,
-		},
-		city: {
-			type: ObjectId,
-			trim: true,
-			ref: 'City',
 		},
 		googleId: {
 			type: String,
