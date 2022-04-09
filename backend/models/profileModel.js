@@ -4,9 +4,14 @@ const Schema = mongoose.Schema
 
 const profileSchema = new Schema(
 	{
-		profilePicture: {
-			type: String,
+		DOB: {
+			type: Date,
+			required: true,
+		},
+		city: {
+			type: ObjectId,
 			trim: true,
+			ref: 'City',
 		},
 		gender: {
 			type: String,
