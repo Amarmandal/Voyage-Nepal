@@ -11,12 +11,14 @@ const {
 	handleSignout,
 	tokenGenerator,
 	signWithGoogle,
+	signWithFacebook,
 } = require('../controllers/authController')
 const {
 	isSignedIn,
 	isAuthorized,
 	getUserByOtp,
 	isGoogleTokenVerified,
+	isAuthenticatedByFacebook,
 } = require('../middleware/authMiddleware')
 
 router.param('userId', getUserById)
@@ -32,6 +34,9 @@ router.post('/user/signin', userSingin)
 
 //user google login
 router.post('/user/google/signin', isGoogleTokenVerified, signWithGoogle)
+
+//user facebook login
+router.post('/user/facebook/signin', isAuthenticatedByFacebook, signWithFacebook)
 
 router.get('/user/protected', isSignedIn, isAuthorized, (req, res) => {
 	res.send('You are accessing the protected routes')
