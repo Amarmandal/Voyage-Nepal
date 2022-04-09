@@ -16,7 +16,7 @@ import {
   Account,
 } from '../../Components/FormComponents/FormCompponents';
 import {ForgotPassword} from '../../Components/Signin/Signin';
-import {LoginButton, AccessToken} from 'react-native-fbsdk-next';
+import {LoginManager, AccessToken, GraphRequest} from 'react-native-fbsdk-next';
 
 const Signin = ({navigation}) => {
   const state = useSelector(state => state.loginUser);
@@ -52,7 +52,7 @@ const Signin = ({navigation}) => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       const {data} = await axios.post(
-        'http://172.17.16.80:8080/api/user/google/signin',
+        'http://192.168.10.129:8080/api/user/google/signin',
         {idToken: `${userInfo.idToken}`},
       );
       AsyncStorage.setItem('token', data.accessToken);
@@ -175,6 +175,57 @@ const Signin = ({navigation}) => {
     navigation.navigate('Dob');
   };
 
+  // useEffect(async () => {
+  //   // if(AccessToken.getCurrentAccessToken() !== null){
+  //   //   LoginManager.logOut
+  //   // }
+  //   const currentAccessToken = await AccessToken.getCurrentAccessToken();
+  //   if (currentAccessToken) {
+  //     console.log(currentAccessToken.accessToken);
+  //     return new Promise((resolve, reject) => {
+  //       try {
+  //         LoginManager.logOut();
+  //         setTimeout(resolve, 400);
+  //       } catch (error) {
+  //         reject(error);
+  //       }
+  //     });
+  //   }
+  // }, []);
+
+  const initUser = async token => {
+    try {
+      const {data} = await axios.get(
+        `https://graph.facebook.com/v2.5/me?fields=email,name,picture.type(large)&access_token=${token}`,
+      );
+      const {
+        email,
+        id: facebook_id,
+        name,
+        picture: {
+          data: {url},
+        },
+      } = data;
+      const constructData = {
+        accessToken: token,
+        userData: {
+          email,
+          name,
+          facebook_id,
+          profilePicture: url,
+        },
+      };
+      console.log(constructData);
+      // const fbData = await axios.post(
+      //   'http://192.168.10.129:8080/api/user/facebook/signin',
+      //   {data: constructData},
+      // );
+      // console.log('fbData', fbData);
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+
   return (
     <Container style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
       <Button transparent onPress={() => navigation.goBack()} large>
@@ -269,25 +320,29 @@ const Signin = ({navigation}) => {
               size={18}
               style={{marginRight: 15, color: Colors.google, fontSize: 34}}
             />
-            {/* <Icon
+            <Icon
               name="logo-facebook"
               size={18}
-              onPress={facebookSignUp}
-              style={{color: Colors.facebook, fontSize: 34}}
-            /> */}
-            <LoginButton
-              onLoginFinished={(error, result) => {
-                if (error) {
-                  console.log('login has error: ' + result.error);
-                } else if (result.isCancelled) {
-                  console.log('login is cancelled.');
-                } else {
-                  AccessToken.getCurrentAccessToken().then(data => {
-                    console.log(data.accessToken.toString());
+              onPress={() => {
+                // if (AccessToken.getCurrentAccessToken() != null) {
+                //   LoginManager.logOut();
+                // }
+                LoginManager.logInWithPermissions(['public_profile', 'email'])
+                  .then(function (result) {
+                    if (result.isCancelled) {
+                      alert('Login Cancelled ' + JSON.stringify(result));
+                    } else {
+                      AccessToken.getCurrentAccessToken().then(data => {
+                        const {accessToken} = data;
+                        initUser(accessToken);
+                      });
+                    }
+                  })
+                  .catch(function (error) {
+                    console.log(error);
                   });
-                }
               }}
-              onLogoutFinished={() => console.log('logout.')}
+              style={{color: Colors.facebook, fontSize: 34}}
             />
           </View>
           <Account
