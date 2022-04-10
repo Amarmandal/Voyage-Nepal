@@ -6,7 +6,7 @@ const Place = require('../models/placeModel')
 const HotRes = require('../models/horecaModel')
 const Category = require('../models/categoryModel')
 const { getUserById } = require('../controllers/userController')
-const { isSignedIn, isAuthorized, isAdmin } = require('../middleware/authMiddleware')
+const { isSignedIn, getUserProfile, isAdmin } = require('../middleware/authMiddleware')
 
 const getDocsCount = async (req, res) => {
 	try {
@@ -31,6 +31,6 @@ const getDocsCount = async (req, res) => {
 router.param('userId', getUserById)
 
 //Get Documents count to be displayed in an Admin dashboard
-router.get('/docs/count/:userId', isSignedIn, isAuthorized, isAdmin, getDocsCount)
+router.get('/docs/count/:userId', isSignedIn, getUserProfile, isAdmin, getDocsCount)
 
 module.exports = router

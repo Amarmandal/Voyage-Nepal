@@ -15,7 +15,7 @@ const {
 } = require('../controllers/authController')
 const {
 	isSignedIn,
-	isAuthorized,
+	getUserProfile,
 	getUserByOtp,
 	isGoogleTokenVerified,
 	isAuthenticatedByFacebook,
@@ -38,7 +38,7 @@ router.post('/user/google/signin', isGoogleTokenVerified, signWithGoogle)
 //user facebook login
 router.post('/user/facebook/signin', isAuthenticatedByFacebook, signWithFacebook)
 
-router.get('/user/protected', isSignedIn, isAuthorized, (req, res) => {
+router.get('/user/protected', isSignedIn, getUserProfile, (req, res) => {
 	res.send('You are accessing the protected routes')
 })
 
@@ -51,10 +51,10 @@ router.post('/user/verify-reset-otp', getUserByOtp)
 //reset password
 router.post('/user/:userId/reset-password', resetPassword)
 
-router.put('/user/:userId/change-password', isSignedIn, isAuthorized, changeCurrentPassword)
+router.put('/user/:userId/change-password', isSignedIn, getUserProfile, changeCurrentPassword)
 
 router.post('/auth/:userId/token', tokenGenerator)
 
-router.get('/auth/:userId/signout', isSignedIn, isAuthorized, handleSignout)
+router.get('/auth/:userId/signout', isSignedIn, getUserProfile, handleSignout)
 
 module.exports = router
