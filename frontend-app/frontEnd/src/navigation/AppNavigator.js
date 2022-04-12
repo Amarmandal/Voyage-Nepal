@@ -43,6 +43,7 @@ import success from '../Components/Home/profile/Sponsorship/success';
 import SponsorPage from '../Components/Home/profile/Sponsorship/SponsorPage';
 import banner from '../Components/Home/profile/Sponsorship/banner';
 import Sponsor from '../Components/Home/profile/Sponsorship/Sponsor';
+import WelcomeFb from '../screens/starter/WelcomeFb';
 
 const activeColor = '#CF3838';
 
@@ -291,6 +292,7 @@ function App() {
         <RootStack.Screen name="Reset" component={ResetPassword} />
         <RootStack.Screen name="ChoosePlace" component={ChoosePlace} />
         <RootStack.Screen name="Welcome" component={Welcome} />
+        <RootStack.Screen name="WelcomeFb" component={WelcomeFb} />
       </RootStack.Navigator>
     </NavigationContainer>
   );

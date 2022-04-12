@@ -215,12 +215,13 @@ const Signin = ({navigation}) => {
           profilePicture: url,
         },
       };
-      console.log(constructData);
-      // const fbData = await axios.post(
-      //   'http://192.168.10.129:8080/api/user/facebook/signin',
-      //   {data: constructData},
-      // );
-      // console.log('fbData', fbData);
+      // console.log(constructData);
+      const fbData = await axios.post(
+        'http://192.168.10.129:8080/api/user/facebook/signin',
+        {data: constructData},
+      );
+      console.log('fbData', fbData.data);
+      navigation.navigate('WelcomeFb', {user: constructData});
     } catch (error) {
       console.log(error.response.data);
     }
@@ -324,9 +325,6 @@ const Signin = ({navigation}) => {
               name="logo-facebook"
               size={18}
               onPress={() => {
-                // if (AccessToken.getCurrentAccessToken() != null) {
-                //   LoginManager.logOut();
-                // }
                 LoginManager.logInWithPermissions(['public_profile', 'email'])
                   .then(function (result) {
                     if (result.isCancelled) {
@@ -334,6 +332,7 @@ const Signin = ({navigation}) => {
                     } else {
                       AccessToken.getCurrentAccessToken().then(data => {
                         const {accessToken} = data;
+                        console.log('accessToken', accessToken);
                         initUser(accessToken);
                       });
                     }
