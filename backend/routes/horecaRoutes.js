@@ -11,19 +11,19 @@ const {
 	getPreviousHotelPage,
 } = require('../controllers/horecaController')
 const { getUserById } = require('../controllers/userController')
-const { isSignedIn, isAuthorized, isAdmin } = require('../middleware/authMiddleware')
+const { isSignedIn, getUserProfile, isAdmin } = require('../middleware/authMiddleware')
 const { uploadHotelPhoto } = require('../middleware/hotelMiddleware')
 const { upload } = require('../utils/uploadHelper')
 
 router.param('hotelId', getHotelById)
 router.param('userId', getUserById)
 
-router.get('/hotels/:userId', isSignedIn, isAuthorized, isAdmin, getAllStayPlaces)
+router.get('/hotels/:userId', isSignedIn, getUserProfile, isAdmin, getAllStayPlaces)
 
 router.get(
 	'/hotels/next-page/:userId/:lastObjectId?',
 	isSignedIn,
-	isAuthorized,
+	getUserProfile,
 	isAdmin,
 	getNextHotelPage
 )
@@ -31,7 +31,7 @@ router.get(
 router.get(
 	'/hotels/previous-page/:userId/:firstObjectId',
 	isSignedIn,
-	isAuthorized,
+	getUserProfile,
 	isAdmin,
 	getPreviousHotelPage
 )
@@ -40,7 +40,7 @@ router.get(
 router.post(
 	'/hotel/create/:userId',
 	isSignedIn,
-	isAuthorized,
+	getUserProfile,
 	isAdmin,
 	upload.single('photo'),
 	uploadHotelPhoto,
@@ -48,9 +48,9 @@ router.post(
 )
 
 //update the hotel
-router.put('/hotel/update/:hotelId/:userId', isSignedIn, isAuthorized, isAdmin, updateHotel)
+router.put('/hotel/update/:hotelId/:userId', isSignedIn, getUserProfile, isAdmin, updateHotel)
 
 //delete the hotel
-router.delete('/hotel/delete/:hotelId/:userId', isSignedIn, isAuthorized, isAdmin, deleteHotel)
+router.delete('/hotel/delete/:hotelId/:userId', isSignedIn, getUserProfile, isAdmin, deleteHotel)
 
 module.exports = router

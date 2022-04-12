@@ -1,5 +1,6 @@
+const { default: axios } = require('axios')
 const npmlog = require('npmlog')
-const Category = require('../models/categoryModel')
+const City = require('../models/cityModel')
 
 //category extractor
 exports.getCategoryById = async (req, res, next, categoryId) => {
@@ -50,14 +51,31 @@ exports.getPreviousCategoryPage = async (req, res) => {
 	}
 }
 
-exports.createCategory = async (req, res) => {
-	const newCat = new Category(req.body)
+exports.createNewCity = async (req, res) => {
+	const { name, cityType } = req.body
+	const key = process.env.GOOGLE_MAP_KEY
+	const URL = 'https://maps.googleapis.com/maps/api/geocode/json'
 	try {
-		const doc = await newCat.save()
-		res.status(200).json({ newCategory: newCat })
+		const city = new City({
+			name,
+			cityType,
+		})
+		const { data } = await axios.get(`${URL}?address=${name}&components=country:NP&key=${key}`)
+		if (data.status !== 'OK') {
+			throw new Error('Unable to set latitutde and longitude of the place')
+		}
+
+		const { results } = data
+		const {
+			geometry: { location },
+		} = results[0]
+		city.lat = location.lat
+		city.long = location.lng
+		await city.save()
+		res.status(200).json({ newCity: city })
 	} catch (err) {
-		npmlog.error(err)
-		res.status(403).json({ error: 'An Error Creating a Category' })
+		errMsg = err.code === 11000 ? 'City already exist in a DB' : 'Oops! Unable to create a city'
+		res.status(403).json({ error: errMsg })
 	}
 }
 

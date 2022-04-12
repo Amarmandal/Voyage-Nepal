@@ -13,14 +13,17 @@ const citySchema = new Schema(
 		},
 		lat: {
 			type: Number,
+			required: true,
 		},
 		long: {
 			type: Number,
+			required: true,
 		},
 		cityType: {
 			type: String,
 			enum: ['Metropolitan', 'Sub-Metropolitan'],
 			default: 'Metropolitan',
+			required: true,
 		},
 	},
 	{ timestamps: true }

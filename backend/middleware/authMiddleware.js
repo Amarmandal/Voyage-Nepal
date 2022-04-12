@@ -59,19 +59,24 @@ exports.isAuthenticatedByFacebook = async (req, res, next) => {
 	}
 }
 
-exports.isAuthorized = (req, res, next) => {
-	//req.userProfile is populated by getUserById method
-	//req,auth is populated when isSigned verify jwt token successfully
-	const checker = req.userProfile && req.auth && req.auth.id == req.userProfile._id
-	if (!checker) {
-		return res.status(401).json({ error: 'Unauthorized Access' })
+exports.getUserProfile = async (req, res, next) => {
+	const { id } = req.auth
+	try {
+		const user = await User.findById(id)
+		if (!user) {
+			throw new Error('User not found!')
+		}
+		req.auth.user = user
+		next()
+	} catch (error) {
+		npmlog.error(error.message)
+		return res.status(404).json({ error: error.message ? error.message : error })
 	}
-	next()
 }
 
 //isAdmin check
 exports.isAdmin = (req, res, next) => {
-	const { role } = req.userProfile
+	const { role } = req.auth.user
 
 	if (rolePowerEnum[role] > 10) {
 		next()
@@ -81,7 +86,7 @@ exports.isAdmin = (req, res, next) => {
 }
 
 exports.isSubAdmin = (req, res, next) => {
-	const { role } = req.userProfile
+	const { role } = req.auth.user
 
 	if (rolePowerEnum[role] > 5) {
 		next()
