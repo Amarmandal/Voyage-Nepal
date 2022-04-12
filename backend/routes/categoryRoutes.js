@@ -21,7 +21,7 @@ router.param('userId', getUserById)
 //Read Category by Id
 router.get('/category/:categoryId/:userId', isSignedIn, getUserProfile, getCategory)
 //get all categories
-router.get('/categories/:userId', isSignedIn, getUserProfile, getAllCategories)
+router.get('/categories/', isSignedIn, getUserProfile, getAllCategories)
 
 router.get(
 	'/categories/next-page/:userId/:lastObjectId?',
@@ -52,6 +52,6 @@ router.put(
 )
 
 //create Category
-router.post('/category/create/:userId', isSignedIn, getUserProfile, isAdmin, createCategory)
+router.post('/category/create', isSignedIn, getUserProfile, isAdmin, createCategory)
 
 module.exports = router

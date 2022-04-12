@@ -24,6 +24,7 @@ const reviewRoute = require('./routes/reviewRoutes')
 const placeRoute = require('./routes/placeRoutes')
 const hotresRoute = require('./routes/horecaRoutes')
 const coreRoute = require('./routes/coreRoute')
+const cityRoute = require('./routes/cityRoutes')
 
 app.use('/api', userRoute)
 app.use('/api', categoryRoute)
@@ -32,6 +33,7 @@ app.use('/api', reviewRoute)
 app.use('/api', placeRoute)
 app.use('/api', hotresRoute)
 app.use('/api', coreRoute)
+app.use('/api', cityRoute)
 
 app.listen(port, (err) => {
 	if (!err) {

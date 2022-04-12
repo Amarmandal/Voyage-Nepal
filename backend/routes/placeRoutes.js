@@ -3,6 +3,7 @@ const router = express.Router()
 
 const {
 	getPlaceById,
+	getRandomPlaces,
 	getAllPlace,
 	deletePlace,
 	createPlace,
@@ -10,11 +11,13 @@ const {
 	recommendsPlace,
 	getNextPlacePage,
 	getPreviousPlacePage,
+	getPlaceByCategory,
+	uploadPlaceFeaturedImg,
 } = require('../controllers/placeController')
 const { isSignedIn, getUserProfile, isAdmin } = require('../middleware/authMiddleware')
 const { getUserById } = require('../controllers/userController')
-const { uploadPlacePhoto } = require('../middleware/placeMiddleware')
 const { upload } = require('../utils/uploadHelper')
+const { uploadPlacePhoto } = require('../middleware/placeMiddleware')
 
 router.param('placeId', getPlaceById)
 router.param('userId', getUserById)
@@ -25,7 +28,10 @@ router.get('/place/:placeId/:userId', isSignedIn, getUserProfile, (req, res) => 
 })
 
 //get All the places
-router.get('/places/:userId', isSignedIn, getUserProfile, getAllPlace)
+router.get('/places', isSignedIn, getAllPlace)
+
+//get 10 random places
+router.get('/places/random', isSignedIn, getRandomPlaces)
 
 router.get(
 	'/places/next-page/:userId/:lastObjectId?',
@@ -43,17 +49,20 @@ router.get(
 	getPreviousPlacePage
 )
 
-// router.get('/places/:userId/:categoryId', isSignedIn, getUserProfile, getPlaceByCategory)
+//get places by gategory
+router.get('/places/:categoryId/category', isSignedIn, getPlaceByCategory)
 
-//create place only by admin
+router.post('/place/create', isSignedIn, getUserProfile, isAdmin, createPlace)
+
+//upload place featured image
 router.post(
-	'/place/create/:userId',
+	'/place/upload/featured-image',
 	isSignedIn,
 	getUserProfile,
 	isAdmin,
 	upload.single('photo'),
 	uploadPlacePhoto,
-	createPlace
+	uploadPlaceFeaturedImg
 )
 
 //recommendation routes

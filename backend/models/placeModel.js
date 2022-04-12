@@ -13,8 +13,9 @@ const placeSchema = new Schema(
 			unique: true,
 			lowercase: true,
 		},
-		placePhoto: {
-			type: String,
+		images: {
+			featuredImg: { type: String, required: true },
+			relatedImages: [{ type: String }],
 		},
 		description: {
 			type: String,
@@ -31,6 +32,7 @@ const placeSchema = new Schema(
 				type: ObjectId,
 				ref: 'Category',
 				trim: true,
+				required: true,
 			},
 		],
 		stayPlace: [
@@ -58,6 +60,8 @@ const placeSchema = new Schema(
 			default: 0,
 			required: true,
 		},
+		lat: { type: Number, required: true },
+		lng: { type: Number, required: true },
 	},
 	{ timestamps: true }
 )

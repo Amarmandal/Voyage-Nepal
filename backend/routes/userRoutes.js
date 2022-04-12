@@ -24,7 +24,7 @@ router.post(
 	uploadPhoto
 )
 
-router.get('/user/user-details/:userId', isSignedIn, getUserProfile, getUserDetails)
+router.get('/user/user-details', isSignedIn, getUserProfile, getUserDetails)
 
 //to make the parameter option we use ? sign after the parameter
 //here lastObjectId is the optional parameter
