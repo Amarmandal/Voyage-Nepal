@@ -23,8 +23,8 @@ router.param('placeId', getPlaceById)
 router.param('userId', getUserById)
 
 //get place by Id
-router.get('/place/:placeId/:userId', isSignedIn, getUserProfile, (req, res) => {
-	return res.status(200).json({ data: req.place })
+router.get('/place/:placeId', isSignedIn, getUserProfile, (req, res) => {
+	return res.status(200).json(req.place)
 })
 
 //get All the places
