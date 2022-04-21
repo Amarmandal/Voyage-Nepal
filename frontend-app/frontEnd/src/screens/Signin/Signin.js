@@ -17,6 +17,7 @@ import {
 } from '../../Components/FormComponents/FormCompponents';
 import {ForgotPassword} from '../../Components/Signin/Signin';
 import {LoginManager, AccessToken, GraphRequest} from 'react-native-fbsdk-next';
+import LoginIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Signin = ({navigation}) => {
   const state = useSelector(state => state.loginUser);
@@ -44,7 +45,20 @@ const Signin = ({navigation}) => {
   }, []);
 
   const facebookSignUp = async () => {
-    navigation.navigate('Welcome');
+    LoginManager.logInWithPermissions(['public_profile', 'email'])
+      .then(function (result) {
+        if (result.isCancelled) {
+          alert('Login Cancelled ' + JSON.stringify(result));
+        } else {
+          AccessToken.getCurrentAccessToken().then(data => {
+            const {accessToken} = data;
+            initUser(accessToken);
+          });
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const GoogleSignUp = async () => {
@@ -52,13 +66,17 @@ const Signin = ({navigation}) => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       const {data} = await axios.post(
-        'http://192.168.10.129:8080/api/user/google/signin',
+        'http://192.168.10.110:8080/api/user/google/signin',
         {idToken: `${userInfo.idToken}`},
       );
       AsyncStorage.setItem('token', data.accessToken);
+      AsyncStorage.setItem('id', userInfo.user.id);
       setUser(userInfo);
-      navigation.navigate('Welcome', {user: userInfo});
-      // await GoogleSignin.signIn().then(result => { console.log(result) });
+      console.log('data token', userInfo.user);
+      navigation.navigate('LoadingScreen1', {
+        id: userInfo.user.id,
+        token: data.accessToken,
+      });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -175,24 +193,6 @@ const Signin = ({navigation}) => {
     navigation.navigate('Dob');
   };
 
-  // useEffect(async () => {
-  //   // if(AccessToken.getCurrentAccessToken() !== null){
-  //   //   LoginManager.logOut
-  //   // }
-  //   const currentAccessToken = await AccessToken.getCurrentAccessToken();
-  //   if (currentAccessToken) {
-  //     console.log(currentAccessToken.accessToken);
-  //     return new Promise((resolve, reject) => {
-  //       try {
-  //         LoginManager.logOut();
-  //         setTimeout(resolve, 400);
-  //       } catch (error) {
-  //         reject(error);
-  //       }
-  //     });
-  //   }
-  // }, []);
-
   const initUser = async token => {
     try {
       const {data} = await axios.get(
@@ -215,15 +215,19 @@ const Signin = ({navigation}) => {
           profilePicture: url,
         },
       };
-      // console.log(constructData);
       const fbData = await axios.post(
-        'http://192.168.10.129:8080/api/user/facebook/signin',
+        'http://192.168.10.110:8080/api/user/facebook/signin',
         {data: constructData},
       );
-      console.log('fbData', fbData.data);
-      navigation.navigate('WelcomeFb', {user: constructData});
+      AsyncStorage.setItem('token', fbData.data.accessToken);
+      AsyncStorage.setItem('id', constructData.userData.facebook_id);
+      console.log('fbData', fbData.data.accessToken);
+      navigation.navigate('LoadingScreen1', {
+        id: constructData.userData.facebook_id,
+        token: fbData.data.accessToken,
+      });
     } catch (error) {
-      console.log(error.response.data);
+      console.log('err', error);
     }
   };
 
@@ -319,28 +323,15 @@ const Signin = ({navigation}) => {
               name="logo-google"
               onPress={GoogleSignUp}
               size={18}
-              style={{marginRight: 15, color: Colors.google, fontSize: 34}}
-            />
+              style={{marginRight: 15, color: Colors.google, fontSize: 34}}>
+              <Image
+                source={require('../../assets/icons/google.svg')}
+                style={{width: 20, height: 20}}></Image>
+            </Icon>
             <Icon
               name="logo-facebook"
               size={18}
-              onPress={() => {
-                LoginManager.logInWithPermissions(['public_profile', 'email'])
-                  .then(function (result) {
-                    if (result.isCancelled) {
-                      alert('Login Cancelled ' + JSON.stringify(result));
-                    } else {
-                      AccessToken.getCurrentAccessToken().then(data => {
-                        const {accessToken} = data;
-                        console.log('accessToken', accessToken);
-                        initUser(accessToken);
-                      });
-                    }
-                  })
-                  .catch(function (error) {
-                    console.log(error);
-                  });
-              }}
+              onPress={facebookSignUp}
               style={{color: Colors.facebook, fontSize: 34}}
             />
           </View>

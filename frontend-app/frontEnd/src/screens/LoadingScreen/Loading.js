@@ -85,44 +85,45 @@ const Loading = ({navigation, route}) => {
 
   useEffect(async () => {
     await geoLocation();
-    fetchRecommended();
+    navigation.navigate('Home', {currentLocation: position})
+    // fetchRecommended();
   }, [isFocused]);
 
-  const fetchRecommended = async () => {
-    const userDOB = moment(detail.userDetail.DOB, 'YYYY/M/D');
-    const userAge = moment().diff(userDOB, 'years');
-    setAge(userAge);
-    // console.log(age)
-    var data = JSON.stringify({
-      placename: _place,
-      age: age,
-      x: position.latitude,
-      y: position.longitude,
-    });
+  // const fetchRecommended = async () => {
+  //   const userDOB = moment(detail.userDetail.DOB, 'YYYY/M/D');
+  //   const userAge = moment().diff(userDOB, 'years');
+  //   setAge(userAge);
+  //   // console.log(age)
+  //   var data = JSON.stringify({
+  //     placename: _place,
+  //     age: age,
+  //     x: position.latitude,
+  //     y: position.longitude,
+  //   });
 
-    var config = {
-      method: 'post',
-      url: `/place/recommends/${state.user.userData.id}`,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${state.user.token}`,
-        Cookie: `token=${state.user.token}`,
-      },
-      data: data,
-    };
+    // var config = {
+    //   method: 'post',
+    //   url: `/place/recommends/${state.user.userData.id}`,
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Authorization: `Bearer ${state.user.token}`,
+    //     Cookie: `token=${state.user.token}`,
+    //   },
+    //   data: data,
+    // };
 
-    api(config)
-      .then(function (response) {
-        // console.log(JSON.stringify(response.data.data));
-        setLoading(false);
-        setRecommended(response.data.data);
-        dispatch(Recommended(response.data.data));
-        navigation.navigate('Home', {currentLocation: position});
-      })
-      .catch(function (error) {
-        console.log(error.response.data);
-      });
-  };
+    // api(config)
+    //   .then(function (response) {
+    //     // console.log(JSON.stringify(response.data.data));
+    //     setLoading(false);
+    //     setRecommended(response.data.data);
+    //     dispatch(Recommended(response.data.data));
+    //     navigation.navigate('Home', {currentLocation: position});
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error.response.data);
+    //   });
+  // };
 
   return (
     <View style={{display: 'flex', flex: 1, padding: 20}}>

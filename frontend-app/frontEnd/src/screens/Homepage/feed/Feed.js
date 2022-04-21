@@ -26,6 +26,7 @@ import SearchContainer from '../../../Components/Home/feed/searchContainer';
 
 const Feed = () => {
   const [visibility, setVisibility] = useState(false);
+  const token = async() => await AsyncStorage.getItem(token)
   useEffect(() => {
     fetchCategory();
     fetchPlaces();
@@ -60,9 +61,9 @@ const Feed = () => {
   const fetchCategory = async () => {
     var config = {
       method: 'get',
-      url: `/categories/${state.user.userData.id}`,
+      url: `/categories`,
       headers: {
-        Authorization: `Bearer ${state.user.token}`,
+        Authorization: `Bearer ${token()}`,
       },
     };
 
@@ -80,10 +81,9 @@ const Feed = () => {
   const fetchDetails = () => {
     var config = {
       method: 'get',
-      url: `/user/user-details/${state.user.userData.id}`,
+      url: `/user/user-details`,
       headers: {
-        Authorization: `Bearer ${state.user.token}`,
-        Cookie: `token=${state.user.token}`,
+        Authorization: `Bearer ${token()}`,
       },
     };
 
@@ -100,10 +100,9 @@ const Feed = () => {
   const fetchPlaces = async () => {
     var config = {
       method: 'get',
-      url: `/places/${state.user.userData.id}`,
+      url: `/places`,
       headers: {
-        Authorization: `Bearer ${state.user.token}`,
-        Cookie: `token=${state.user.token}`,
+        Authorization: `Bearer ${token()}`,
       },
     };
 

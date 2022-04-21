@@ -31,11 +31,11 @@ const ChoosePlace = ({navigation, route}) => {
   const {id, token} = route.params;
   const [places, setPlaces] = useState();
   const [loading, setLoading] = useState(true);
-  var newArray = [];
+  
   useEffect(() => {
     var config = {
       method: 'get',
-      url: `/places/${id}`,
+      url: `/places/random`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -44,14 +44,19 @@ const ChoosePlace = ({navigation, route}) => {
     api(config)
       .then(function (response) {
         const array = response.data.map(res => {
-          return res.name;
+          const _place = res.name;
+          const words = _place.split(' ');
+          for (let i = 0; i < words.length; i++) {
+            words[i] = words[i].charAt(0).toUpperCase() + words[i].substr(1);
+          }
+          return words.join(' ');
         });
 
-        for (var i = 0; i < 13; i++) {
-          var random = array[Math.floor(Math.random() * 24)];
-          newArray.push(random);
-        }
-        setPlaces(newArray);
+        // for (var i = 0; i < 13; i++) {
+        //   var random = array[Math.floor(Math.random() * 24)];
+        //   newArray.push(random);
+        // }
+        setPlaces(array);
         setLoading(false);
 
       })
@@ -93,8 +98,8 @@ const ChoosePlace = ({navigation, route}) => {
               key={index}
               bordered
               style={{margin: 10, padding: 5, borderColor: Colors.themeColor}}
-              onPress={() => handleClick(placeName(place))}>
-              <Text style={{color: 'black'}}>{placeName(place)}</Text>
+              onPress={() => handleClick(place)}>
+              <Text style={{color: 'black'}}>{place}</Text>
             </Button>
           ))
         ) : (
