@@ -17,7 +17,6 @@ exports.getPlaceById = async (req, res, next, id) => {
 			})
 			.populate({
 				path: 'stayPlace',
-				select: 'name rating stayType hotelPhotoUrl -_id',
 			})
 			.populate({
 				path: 'category',
@@ -26,8 +25,7 @@ exports.getPlaceById = async (req, res, next, id) => {
 			.exec()
 		;(req.place = place), next()
 	} catch (error) {
-		res.status(200).json({ error: 'Cannot find the place associated with Id' })
-		return
+		return res.status(200).json({ error: 'Place not found' })
 	}
 }
 
