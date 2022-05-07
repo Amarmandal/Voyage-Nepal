@@ -1,19 +1,19 @@
 import {View, Text, TouchableWithoutFeedback} from 'react-native';
 import React from 'react';
-import {Content} from 'native-base';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import {Content, Icon} from 'native-base';
+// import Icon from 'react-native-vector-icons';
 import Colors from '../../../constants/Color';
 import {useNavigation} from '@react-navigation/native';
 
 const Category = () => {
   const navigation = useNavigation();
   return (
-    <Content padder style={{marginBottom: 30}}>
+    <Content style={{marginBottom: 30}}>
       <View
         style={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-evenly',
+          justifyContent: 'space-around',
           flexWrap: 'wrap',
           marginBottom: 30,
           marginTop: 0,
@@ -26,10 +26,12 @@ const Category = () => {
           }}>
           <Icon
             name="mountain"
-            size={24}
+            type='FontAwesome5'
+            size={38}
+            color={Colors.themeColor}
             style={{
-              backgroundColor: Colors.themeColor,
-              padding: 12,
+              backgroundColor: '#52c0b450',
+              padding: 18,
               borderRadius: 10,
             }}
           />
@@ -42,15 +44,17 @@ const Category = () => {
             alignItems: 'center',
           }}>
           <Icon
-            name="mountain"
-            size={24}
+            name="building"
+            type='FontAwesome5'
+            size={38}
+            color={Colors.themeColor}
             style={{
-              backgroundColor: Colors.themeColor,
-              padding: 12,
+              backgroundColor: '#52c0b450',
+              padding: 18,
               borderRadius: 10,
             }}
           />
-          <Text style={{marginTop: 8}}>Adventure</Text>
+          <Text style={{marginTop: 8}}>Meuseums</Text>
         </View>
         <View
           style={{
@@ -59,32 +63,17 @@ const Category = () => {
             alignItems: 'center',
           }}>
           <Icon
-            name="mountain"
-            size={24}
+            name="park"
+            type='MaterialIcons'
+            size={38}
+            color={Colors.themeColor}
             style={{
-              backgroundColor: Colors.themeColor,
-              padding: 12,
+              backgroundColor: '#52c0b450',
+              padding: 18,
               borderRadius: 10,
             }}
           />
-          <Text style={{marginTop: 8}}>Adventure</Text>
-        </View>
-        <View
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Icon
-            name="mountain"
-            size={24}
-            style={{
-              backgroundColor: Colors.themeColor,
-              padding: 12,
-              borderRadius: 10,
-            }}
-          />
-          <Text style={{marginTop: 8}}>Adventure</Text>
+          <Text style={{marginTop: 8}}>Parks</Text>
         </View>
       </View>
       <View
@@ -102,11 +91,13 @@ const Category = () => {
             alignItems: 'center',
           }}>
           <Icon
-            name="mountain"
-            size={24}
+            name="snowboarding"
+            type='FontAwesome5'
+            size={38}
+            color={Colors.themeColor}
             style={{
-              backgroundColor: Colors.themeColor,
-              padding: 12,
+              backgroundColor: '#52c0b450',
+              padding: 18,
               borderRadius: 10,
             }}
           />
@@ -119,11 +110,13 @@ const Category = () => {
             alignItems: 'center',
           }}>
           <Icon
-            name="mountain"
-            size={24}
+            name="playstation"
+            type='Fontisto'
+            size={38}
+            color={Colors.themeColor}
             style={{
-              backgroundColor: Colors.themeColor,
-              padding: 12,
+              backgroundColor: '#52c0b450',
+              padding: 18,
               borderRadius: 10,
             }}
           />
@@ -136,28 +129,13 @@ const Category = () => {
             alignItems: 'center',
           }}>
           <Icon
-            name="mountain"
-            size={24}
+            name="nature"
+            type='MaterialIcons'
+            size={38}
+            color={Colors.themeColor}
             style={{
-              backgroundColor: Colors.themeColor,
-              padding: 12,
-              borderRadius: 10,
-            }}
-          />
-          <Text style={{marginTop: 8}}>Adventure</Text>
-        </View>
-        <View
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Icon
-            name="mountain"
-            size={24}
-            style={{
-              backgroundColor: Colors.themeColor,
-              padding: 12,
+              backgroundColor: '#52c0b450',
+              padding: 18,
               borderRadius: 10,
             }}
           />
@@ -167,17 +145,17 @@ const Category = () => {
       <TouchableWithoutFeedback onPress={() => navigation.navigate('Explore')}>
         <View
           style={{
-            marginRight: 20,
+            // marginRight: 20,
             marginTop: 20,
             display: 'flex',
             justifyContent: 'center',
-            alignItems: 'flex-end',
+            alignItems: 'center',
           }}>
           <Text
             style={{
               fontWeight: 'bold',
-              color: Colors.themeColor,
-              backgroundColor: '#52c0b450',
+              color: '#fff',
+              backgroundColor: Colors.themeColor,
               padding: 10,
               borderRadius: 8,
               paddingLeft: 15,

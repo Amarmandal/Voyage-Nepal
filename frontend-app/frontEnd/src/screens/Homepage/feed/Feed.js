@@ -26,7 +26,7 @@ import SearchContainer from '../../../Components/Home/feed/searchContainer';
 
 const Feed = () => {
   const [visibility, setVisibility] = useState(false);
-  const token = async() => await AsyncStorage.getItem(token)
+  const token = async() => await AsyncStorage.getItem('token')
   useEffect(() => {
     fetchCategory();
     fetchPlaces();

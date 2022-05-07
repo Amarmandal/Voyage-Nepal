@@ -18,7 +18,7 @@ import {useNavigation} from '@react-navigation/native';
 
 const {width} = Dimensions.get('window');
 
-const SearchContainer = ({feed}) => {
+const SearchContainer = () => {
   const navigation = useNavigation();
 
   const places = useSelector(state => state.place);
