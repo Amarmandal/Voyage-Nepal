@@ -9,7 +9,6 @@ const Welcome = ({route}) => {
       <Text>Full Name: {user.user.name}</Text>
       <Text>EMail: {user.user.email}</Text>
       <Image source={{uri: `${user.user.photo}`}} style = {{width: 150, height: 150}}></Image>
-      {console.log(user.user.email)}
     </View>
   );
 };

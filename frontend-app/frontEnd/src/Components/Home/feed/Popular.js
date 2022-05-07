@@ -97,7 +97,7 @@ const Popular = () => {
         <View>
           <Text style={styles.headingText}>Places Near You</Text>
         </View>
-        <View>
+        {/* <View>
           {recommendedPlace.nearByPlaceDetails.length !== 0 ? (
             <FlatList
               horizontal
@@ -115,13 +115,13 @@ const Popular = () => {
               Sorry, No nearby places found in Database.
             </Text>
           )}
-        </View>
+        </View> */}
 
         <View>
           <View>
             <Text style={styles.recommendText}>Recommended For You</Text>
           </View>
-          <View>
+          {/* <View>
             {recommendedPlace.recommendedPlaceDetails.length !== 0 ? (
               <FlatList
                 horizontal
@@ -139,7 +139,7 @@ const Popular = () => {
                 Sorry, No recemmnded places found in Database.
               </Text>
             )}
-          </View>
+          </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>

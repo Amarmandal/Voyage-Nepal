@@ -16,7 +16,8 @@ import {
   Account,
 } from '../../Components/FormComponents/FormCompponents';
 import {ForgotPassword} from '../../Components/Signin/Signin';
-import {LoginButton, AccessToken} from 'react-native-fbsdk-next';
+import {LoginManager, AccessToken, GraphRequest} from 'react-native-fbsdk-next';
+import LoginIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Signin = ({navigation}) => {
   const state = useSelector(state => state.loginUser);
@@ -44,7 +45,20 @@ const Signin = ({navigation}) => {
   }, []);
 
   const facebookSignUp = async () => {
-    navigation.navigate('Welcome');
+    LoginManager.logInWithPermissions(['public_profile', 'email'])
+      .then(function (result) {
+        if (result.isCancelled) {
+          alert('Login Cancelled ' + JSON.stringify(result));
+        } else {
+          AccessToken.getCurrentAccessToken().then(data => {
+            const {accessToken} = data;
+            initUser(accessToken);
+          });
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const GoogleSignUp = async () => {
@@ -52,13 +66,17 @@ const Signin = ({navigation}) => {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       const {data} = await axios.post(
-        'http://172.17.16.80:8080/api/user/google/signin',
+        'http://192.168.10.110:8080/api/user/google/signin',
         {idToken: `${userInfo.idToken}`},
       );
       AsyncStorage.setItem('token', data.accessToken);
+      AsyncStorage.setItem('id', userInfo.user.id);
       setUser(userInfo);
-      navigation.navigate('Welcome', {user: userInfo});
-      // await GoogleSignin.signIn().then(result => { console.log(result) });
+      console.log('data token', userInfo.user);
+      navigation.navigate('LoadingScreen1', {
+        id: userInfo.user.id,
+        token: data.accessToken,
+      });
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -175,6 +193,44 @@ const Signin = ({navigation}) => {
     navigation.navigate('Dob');
   };
 
+  const initUser = async token => {
+    try {
+      const {data} = await axios.get(
+        `https://graph.facebook.com/v2.5/me?fields=email,name,picture.type(large)&access_token=${token}`,
+      );
+      const {
+        email,
+        id: facebook_id,
+        name,
+        picture: {
+          data: {url},
+        },
+      } = data;
+      const constructData = {
+        accessToken: token,
+        userData: {
+          email,
+          name,
+          facebook_id,
+          profilePicture: url,
+        },
+      };
+      const fbData = await axios.post(
+        'http://192.168.10.110:8080/api/user/facebook/signin',
+        {data: constructData},
+      );
+      AsyncStorage.setItem('token', fbData.data.accessToken);
+      AsyncStorage.setItem('id', constructData.userData.facebook_id);
+      console.log('fbData', fbData.data.accessToken);
+      navigation.navigate('LoadingScreen1', {
+        id: constructData.userData.facebook_id,
+        token: fbData.data.accessToken,
+      });
+    } catch (error) {
+      console.log('err', error);
+    }
+  };
+
   return (
     <Container style={{display: 'flex', flex: 1, backgroundColor: '#ffffff'}}>
       <Button transparent onPress={() => navigation.goBack()} large>
@@ -267,27 +323,16 @@ const Signin = ({navigation}) => {
               name="logo-google"
               onPress={GoogleSignUp}
               size={18}
-              style={{marginRight: 15, color: Colors.google, fontSize: 34}}
-            />
-            {/* <Icon
+              style={{marginRight: 15, color: Colors.google, fontSize: 34}}>
+              <Image
+                source={require('../../assets/icons/google.svg')}
+                style={{width: 20, height: 20}}></Image>
+            </Icon>
+            <Icon
               name="logo-facebook"
               size={18}
               onPress={facebookSignUp}
               style={{color: Colors.facebook, fontSize: 34}}
-            /> */}
-            <LoginButton
-              onLoginFinished={(error, result) => {
-                if (error) {
-                  console.log('login has error: ' + result.error);
-                } else if (result.isCancelled) {
-                  console.log('login is cancelled.');
-                } else {
-                  AccessToken.getCurrentAccessToken().then(data => {
-                    console.log(data.accessToken.toString());
-                  });
-                }
-              }}
-              onLogoutFinished={() => console.log('logout.')}
             />
           </View>
           <Account

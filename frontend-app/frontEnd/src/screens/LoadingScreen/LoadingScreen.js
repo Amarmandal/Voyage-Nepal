@@ -15,7 +15,7 @@ const LoadingScreen = ({navigation, route}) => {
   const fetchDetails = () => {
     var config = {
         method: 'get',
-        url: `/user/user-details/${id}`,
+        url: `/user/user-details`,
         headers: {
           Authorization: `Bearer ${token}`,
           Cookie: `token=${token}`,
