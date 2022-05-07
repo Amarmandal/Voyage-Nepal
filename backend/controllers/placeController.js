@@ -2,6 +2,7 @@ const Place = require('../models/placeModel')
 const { default: axios } = require('axios')
 const npmlog = require('npmlog')
 
+const key = process.env.GOOGLE_MAP_KEY
 exports.getPlaceById = async (req, res, next, id) => {
 	try {
 		const place = await Place.findById(id)
@@ -50,6 +51,38 @@ exports.getTopRatedPlaces = async (_req, res) => {
 		result.sort((a, b) => a.score - b.score).reverse()
 
 		return res.status(200).json({ data: result.slice(0, 5) })
+	} catch (err) {
+		console.log(err)
+		return res.status(404).json({ error: 'Error! No places found.' })
+	}
+}
+
+exports.getNearbyPlaces = async (req, res) => {
+	try {
+		const origin = req.query.origin
+		if (!origin) {
+			return res.status(400).json({ error: 'Invalid Origin Address' })
+		}
+
+		const places = await Place.find()
+		const baseUrl = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}`
+		const result = Promise.all(
+			places.map(async (place) => {
+				const { lat, lng } = place
+				const { data } = await axios.get(`${baseUrl}&destinations=${lat}%2C${lng}&key=${key}`)
+				const { rows } = data
+				const { elements } = rows[0]
+				const { distance, duration } = elements[0]
+				const distanceScore = Number(distance.text.split(' ')[0])
+				// console.log(distanceScore)
+				return { distanceScore, distanceText: distance.text, durationText: duration.text, place }
+			})
+		)
+
+		const data = await result
+		data.sort((a, b) => a.distanceScore - b.distanceScore)
+
+		return res.status(200).json({ data: data.slice(0, 5) })
 	} catch (err) {
 		console.log(err)
 		return res.status(404).json({ error: 'Error! No places found.' })
@@ -144,7 +177,6 @@ exports.createPlace = async (req, res) => {
 	const { name, description, nearestCity, category, stayPlace, featuredImgUrl } = req.body
 	const URL =
 		'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=name%2Crating%2Cuser_ratings_total%2Cgeometry'
-	const key = process.env.GOOGLE_MAP_KEY
 	try {
 		const { data } = await axios.get(
 			`${URL}&input=${name}&inputtype=textquery&language=en&key=${key}`
