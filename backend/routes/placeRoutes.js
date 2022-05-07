@@ -13,6 +13,8 @@ const {
 	getPreviousPlacePage,
 	getPlaceByCategory,
 	uploadPlaceFeaturedImg,
+	getMostVisitedPlaces,
+	getTopRatedPlaces,
 } = require('../controllers/placeController')
 const { isSignedIn, getUserProfile, isAdmin } = require('../middleware/authMiddleware')
 const { getUserById } = require('../controllers/userController')
@@ -29,6 +31,12 @@ router.get('/place/:placeId', isSignedIn, getUserProfile, (req, res) => {
 
 //get All the places
 router.get('/places', isSignedIn, getAllPlace)
+
+//get most visited places
+router.get('/places/most-visited', isSignedIn, getMostVisitedPlaces)
+
+//get top rated places
+router.get('/places/top-rated', isSignedIn, getTopRatedPlaces)
 
 //get 10 random places
 router.get('/places/random', isSignedIn, getRandomPlaces)

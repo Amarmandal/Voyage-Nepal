@@ -29,6 +29,33 @@ exports.getPlaceById = async (req, res, next, id) => {
 	}
 }
 
+exports.getMostVisitedPlaces = async (req, res) => {
+	try {
+		const places = await Place.find().sort({ userRatingsTotal: 'desc' }).limit(5)
+		return res.status(200).json({ data: places })
+	} catch (err) {
+		console.log(err)
+		return res.status(404).json({ error: 'Error! No places found.' })
+	}
+}
+
+exports.getTopRatedPlaces = async (_req, res) => {
+	try {
+		const places = await Place.find({ rating: { $gt: 0 }, userRatingsTotal: { $gt: 0 } })
+		const result = places.map((place) => {
+			const { rating, userRatingsTotal } = place
+			const score = 0.5 * +rating + 10 * 0.5 * (1 - Math.exp(-Number(userRatingsTotal) / 10))
+			return { score, place }
+		})
+		result.sort((a, b) => a.score - b.score).reverse()
+
+		return res.status(200).json({ data: result.slice(0, 5) })
+	} catch (err) {
+		console.log(err)
+		return res.status(404).json({ error: 'Error! No places found.' })
+	}
+}
+
 exports.getNextPlacePage = async (req, res) => {
 	try {
 		const { lastObjectId } = req.params
