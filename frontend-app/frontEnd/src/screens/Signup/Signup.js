@@ -320,7 +320,7 @@ const Signup = ({navigation}, props) => {
               Password and confirm password doesn't match
             </Text>
           )}
-          <FormInput
+          {/* <FormInput
             icon="calendar"
             placeholder="Date of Birth"
             value={dob}
@@ -345,7 +345,7 @@ const Signup = ({navigation}, props) => {
             <Text style={{color: '#FF0000', fontSize: 14, marginBottom: 10}}>
               Please Enter your valid date of birth
             </Text>
-          )}
+          )} */}
           {/* <Text
             style={{
               alignSelf: 'flex-start',

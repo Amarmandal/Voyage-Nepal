@@ -12,7 +12,7 @@ export const GetPlaceByID = (data) => {
         })
         var config = {
             method: 'get',
-            url: `/place/${data}/${user.userData.id}`,
+            url: `/place/${data}`,
             headers: { 
               'Authorization': `Bearer ${user.token}`,
               Cookie: `token=${user.token}`,

@@ -43,7 +43,7 @@ const SearchContainer = ({align}) => {
       <View style={styles.card} key={place._id}>
         <ImageBackground
           style={styles.cardImage}
-          source={{uri: place.placePhoto}}></ImageBackground>
+          source={{uri: place.images.featuredImg}}></ImageBackground>
         <View style={styles.cardDetails}>
           <Text style={styles.cardText}>{placeName(place.name)}</Text>
           <Text style={styles.location}>
