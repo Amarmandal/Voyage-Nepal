@@ -6,7 +6,6 @@ const {
 	createNewTrip,
 	deleteTrip,
 	getDistinctTripCity,
-	getUserPlan,
 	getUserPlanByCity,
 } = require('../controllers/tripController')
 const { isSignedIn } = require('../middleware/authMiddleware')

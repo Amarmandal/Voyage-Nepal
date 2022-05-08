@@ -7,7 +7,6 @@ const bookmarkSchema = new Schema(
 		userId: {
 			type: Schema.Types.ObjectId,
 			required: true,
-			unique: true,
 			trim: true,
 			ref: 'User',
 		},

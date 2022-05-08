@@ -26,6 +26,8 @@ const hotresRoute = require('./routes/horecaRoutes')
 const coreRoute = require('./routes/coreRoute')
 const cityRoute = require('./routes/cityRoutes')
 const tripRoute = require('./routes/tripRoute')
+const bookmarkRoute = require('./routes/bookmarkRoute')
+const { isSignedIn } = require('./middleware/authMiddleware')
 
 app.use('/api', userRoute)
 app.use('/api', categoryRoute)
@@ -36,6 +38,7 @@ app.use('/api', hotresRoute)
 app.use('/api', coreRoute)
 app.use('/api', cityRoute)
 app.use('/api', tripRoute)
+app.use('/api', isSignedIn, bookmarkRoute)
 
 app.listen(port, (err) => {
 	if (!err) {
