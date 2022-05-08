@@ -6,7 +6,7 @@ let userid = AsyncStorage.getItem('userid');
 const api = axios.create({
   // baseURL: 'https://voyage-nepal.uc.r.appspot.com/api'
   // baseURL: 'http://10.0.2.2:8080/api'
-  baseURL: 'http://192.168.10.113:8080/api',
+  baseURL: 'http://192.168.10.106:8080/api',
 });
 
 let a_token = JSON.stringify({
@@ -43,7 +43,7 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   response => {
-    console.log('response', response.data);
+    // console.log('response', response.data);
     return response;
   },
   async error => {

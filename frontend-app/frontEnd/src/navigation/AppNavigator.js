@@ -44,6 +44,7 @@ import SponsorPage from '../Components/Home/profile/Sponsorship/SponsorPage';
 import banner from '../Components/Home/profile/Sponsorship/banner';
 import Sponsor from '../Components/Home/profile/Sponsorship/Sponsor';
 import WelcomeFb from '../screens/starter/WelcomeFb';
+import PlaceList from '../screens/Homepage/PlaceList/PlaceList';
 
 const activeColor = '#CF3838';
 
@@ -133,6 +134,7 @@ function FeedScreen() {
       {/* <Feeds.Screen name = 'Loading' component = {Loading} /> */}
       <Feeds.Screen name="Feed" component={Feed} />
       <Feeds.Screen name="Explore" component={ExploreScreen} />
+      <Feeds.Screen name = 'PlaceList' component={PlaceList} />
       <Feeds.Screen
         name="RecommendationDetail"
         component={RecommendationDetail}

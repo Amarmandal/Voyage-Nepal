@@ -18,7 +18,7 @@ import {useNavigation} from '@react-navigation/native';
 
 const {width} = Dimensions.get('window');
 
-const SearchContainer = () => {
+const SearchContainer = ({align}) => {
   const navigation = useNavigation();
 
   const places = useSelector(state => state.place);
@@ -104,7 +104,7 @@ const SearchContainer = () => {
         />
         <Icon name="search" style={{color: Colors.gray}} size={28} />
       </Item>
-      {/* {feed ? (
+      {!align ? (
         <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -128,9 +128,9 @@ const SearchContainer = () => {
           </Pressable>
         )}
       />
-      ) : null} */}
+      ) : null}
 
-      <FlatList
+      {/* <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
         data={filteredData}
@@ -152,7 +152,7 @@ const SearchContainer = () => {
             <Card key={item._id} place={item} />
           </Pressable>
         )}
-      />
+      /> */}
     </SafeAreaView>
   );
 };

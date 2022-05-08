@@ -1,12 +1,17 @@
-import {View, Text, TouchableWithoutFeedback} from 'react-native';
+import {View, Text, TouchableWithoutFeedback, Pressable} from 'react-native';
 import React from 'react';
 import {Content, Icon} from 'native-base';
 // import Icon from 'react-native-vector-icons';
 import Colors from '../../../constants/Color';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 const Category = () => {
   const navigation = useNavigation();
+  const category = useSelector(state => state.category);
+  const handleClick = (name, id) => {
+    navigation.navigate('PlaceList', {categoryName: name, categoryId: id})
+  }
   return (
     <Content style={{marginBottom: 30}}>
       <View
@@ -18,7 +23,32 @@ const Category = () => {
           marginBottom: 30,
           marginTop: 0,
         }}>
-        <View
+        {category &&
+          category.map(cat => (
+            <Pressable key={cat._id} onPress={() => handleClick(cat.name, cat._id)}>
+              <View
+                key={cat._id}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Icon
+                  name="mountain"
+                  type="FontAwesome5"
+                  size={38}
+                  color={Colors.themeColor}
+                  style={{
+                    backgroundColor: '#52c0b450',
+                    padding: 18,
+                    borderRadius: 10,
+                  }}
+                />
+                <Text style={{marginTop: 8}}>{cat.name}</Text>
+              </View>
+            </Pressable>
+          ))}
+        {/* <View
           style={{
             display: 'flex',
             justifyContent: 'center',
@@ -74,13 +104,13 @@ const Category = () => {
             }}
           />
           <Text style={{marginTop: 8}}>Parks</Text>
-        </View>
+        </View> */}
       </View>
-      <View
+      {/* <View
         style={{
           display: 'flex',
           flexDirection: 'row',
-          justifyContent: 'space-evenly',
+          justifyContent: 'space-around',
           flexWrap: 'wrap',
           marginBottom: 15,
         }}>
@@ -141,7 +171,7 @@ const Category = () => {
           />
           <Text style={{marginTop: 8}}>Adventure</Text>
         </View>
-      </View>
+      </View> */}
       <TouchableWithoutFeedback onPress={() => navigation.navigate('Explore')}>
         <View
           style={{
