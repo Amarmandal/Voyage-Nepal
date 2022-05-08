@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 
 const {
-	uploadPhoto,
 	updatePhoto,
 	getUserById,
 	removeUserById,
@@ -10,6 +9,7 @@ const {
 	getUserDetails,
 	getNextUserPage,
 	getPreviousUserPage,
+	uploadOrChangePhoto,
 } = require('../controllers/userController')
 const { isSignedIn, getUserProfile, isAdmin } = require('../middleware/authMiddleware')
 const { upload } = require('../utils/uploadHelper')
@@ -17,13 +17,14 @@ const { upload } = require('../utils/uploadHelper')
 router.param('userId', getUserById)
 
 router.post(
-	'/upload/photo/:userId',
+	'/user/upload/avatar-img',
 	isSignedIn,
 	getUserProfile,
 	upload.single('photo'),
-	uploadPhoto
+	uploadOrChangePhoto
 )
 
+//get user details and profile details
 router.get('/user/user-details', isSignedIn, getUserProfile, getUserDetails)
 
 //to make the parameter option we use ? sign after the parameter
@@ -44,7 +45,13 @@ router.get(
 	getPreviousUserPage
 )
 
-router.put('/update/photo/:userId', isSignedIn, getUserProfile, upload.single('photo'), updatePhoto)
+router.put(
+	'/user/avatar-img/change',
+	isSignedIn,
+	getUserProfile,
+	upload.single('photo'),
+	uploadOrChangePhoto
+)
 
 router.delete('/user/:userId/:userDeleteId', isSignedIn, getUserProfile, isAdmin, removeUserById)
 

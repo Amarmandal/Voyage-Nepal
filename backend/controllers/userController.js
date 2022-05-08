@@ -2,6 +2,7 @@ const User = require('../models/userModel')
 const { bucket } = require('../utils/uploadHelper')
 const { getIdFromURl } = require('../utils/imageIdExtract')
 const { v4: uuid } = require('uuid')
+const Profile = require('../models/profileModel')
 
 //get user by id
 exports.getUserById = async (req, res, next, userId) => {
@@ -20,13 +21,22 @@ exports.getUserById = async (req, res, next, userId) => {
 }
 
 exports.getUserDetails = async (req, res) => {
-	const currentUser = req.auth.user
-	if (currentUser) {
-		currentUser.password = undefined
-		return res.status(200).json(currentUser)
-	}
+	try {
+		const currentUser = req.auth.user
+		let profile = await Profile.findOne({ userId: req.auth.user._id }, 'gender city DOB')
 
-	return res.status(404).json({ error: 'Unauthorized Access!' })
+		if (!currentUser) {
+			throw new Error()
+		}
+
+		if (!profile) {
+			profile = {}
+		}
+
+		return res.status(200).json({ user: currentUser, profile })
+	} catch (error) {
+		return res.status(404).json({ error: 'No details!' })
+	}
 }
 
 exports.getNextUserPage = async (req, res) => {
@@ -127,15 +137,13 @@ exports.updateUserById = async (req, res) => {
 // exports.updateUserById =  asy
 
 //upload User Profile Picture
-exports.uploadPhoto = (req, res, next) => {
+exports.uploadOrChangePhoto = (req, res, next) => {
 	if (req.multerError) {
-		res.status(400).json(req.multerError)
-		return
+		return res.status(400).json(req.multerError)
 	}
 
 	if (!req.file) {
-		res.status(400).json({ error: 'No file uploaded.' })
-		return
+		return res.status(400).json({ error: 'No file uploaded.' })
 	}
 
 	const blob = bucket.file('images/' + uuid() + req.file.originalname.replace(/ /g, '_'))
@@ -151,57 +159,24 @@ exports.uploadPhoto = (req, res, next) => {
 		})
 		.on('finish', async () => {
 			const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
+			const user = req.auth.user
+			let displayMsg = ''
 
-			const user = req.userProfile
-			user.profileImgURL = publicUrl
+			if (user.avatarUrl) {
+				displayMsg = 'Avatar Image has been updated!'
+			} else {
+				displayMsg = 'Profile picture uploaded!'
+			}
+
+			user.avatarUrl = publicUrl
 
 			try {
 				await user.save()
-				res.status(200).json('Profile Picture has been set successfully')
-				return
+				return res.status(200).json({ success: displayMsg })
 			} catch (error) {
 				console.log(error)
-				res.status(400).json({ error: 'Error uploading user profile' })
-				return
+				return res.status(400).json({ error: 'Error uploading user profile' })
 			}
-		})
-		.end(req.file.buffer)
-}
-
-//update profile picture of the user
-exports.updatePhoto = (req, res, next) => {
-	if (req.multerError) {
-		res.status(400).json(req.multerError)
-		return
-	}
-
-	if (!req.file) {
-		res.status(400).json({ error: 'No file uploaded.' })
-		return
-	}
-
-	const fileId = getIdFromURl(req.userProfile.profileImgURL)
-	const blob = bucket.file(fileId)
-
-	const blobStream = blob.createWriteStream({
-		resumable: false,
-	})
-
-	blobStream
-		.on('error', (err) => {
-			console.log(err)
-			next(err)
-		})
-		.on('finish', async () => {
-			const publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
-
-			if (req.userProfile.profileImgURL !== publicUrl) {
-				res.status(400).json({ error: 'Unable to update User profile' })
-				return
-			}
-
-			res.status(200).json('User Profile has been updated Successfully')
-			return
 		})
 		.end(req.file.buffer)
 }
