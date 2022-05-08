@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const crypto = require('crypto')
 const { roleEnum } = require('../controllers/enum')
 const bcrypt = require('bcrypt')
+const Profile = require('./profileModel')
 
 const Schema = mongoose.Schema
 const { ObjectId } = Schema.Types
@@ -71,18 +72,30 @@ userSchema.method({
 	},
 
 	authenticate: async function (userPass) {
+		// console.log(userPass)
 		return await bcrypt.compare(userPass, this.password)
 	},
 
-	generateOtp: function () {
+	generateOtp: async function () {
 		let otp = ''
 		for (let i = 0; i < 6; i++) {
 			otp += Math.floor(Math.random() * 10)
 		}
 
-		this.encryptOtp = crypto.createHash('sha256').update(otp).digest('hex')
+		let doc = await Profile.findOne({ userId: this._id })
 
-		this.otpExpires = Date.now() + 5 * 60 * 1000
+		if (!doc) {
+			doc = new Profile({
+				userId: this._id,
+				otpExpiresIn: Date.now() + 5 * 60 * 1000,
+				encryptedOtp: crypto.createHash('sha256').update(otp).digest('hex'),
+			})
+		} else {
+			doc.otpExpiresIn = Date.now() + 5 * 60 * 1000
+			doc.encryptedOtp = crypto.createHash('sha256').update(otp).digest('hex')
+		}
+
+		await doc.save()
 		return otp
 	},
 })

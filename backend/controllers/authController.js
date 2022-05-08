@@ -3,6 +3,7 @@ const Token = require('../models/tokenModel')
 const jwt = require('jsonwebtoken')
 const { getTransporter } = require('../utils/sendEmail')
 const npmlog = require('npmlog')
+const Profile = require('../models/profileModel')
 
 exports.userSignup = async (req, res) => {
 	const { email } = req.body
@@ -167,7 +168,7 @@ exports.userSingin = async (req, res) => {
 			return res.status(404).json({ error: 'User not found in DB' })
 		}
 
-		if (!doc.authenticate(req.body.password)) {
+		if (!(await doc.authenticate(req.body.password))) {
 			return res.status(401).json({ error: 'User Email and Password do not match' })
 		}
 
@@ -256,14 +257,13 @@ exports.forgetPassword = async (req, res) => {
 			return res.status(404).json({ error: 'User associated with this mail not found' })
 		}
 
-		const otp = user.generateOtp()
-		await user.save()
+		const otp = await user.generateOtp()
 
 		const transporter = await getTransporter()
 		const mailOptions = {
 			from: process.env.EMAIL,
 			to: `${email}`,
-			subject: 'Verify You Email by Clicking the Link',
+			subject: 'Forget Password',
 			text: ' ',
 			template: 'voyageotp',
 			context: {
@@ -281,24 +281,25 @@ exports.forgetPassword = async (req, res) => {
 }
 
 exports.resetPassword = async (req, res) => {
-	const { password } = req.body
+	const { password, userId } = req.body
 
 	try {
-		const user = req.userProfile
-		if (!user.encryptOtp) {
-			throw new Error('Otp not found')
+		if (!userId || !password) {
+			throw new Error('Unauthorized Access!')
+		}
+
+		const user = await User.findOne({ _id: userId })
+
+		if (!user) {
+			throw new Error('Unauthorized User!')
 		}
 
 		user.password = password
-		user.encryptOtp = undefined
-		user.otpExpires = undefined
-
 		await user.save()
 
-		res.status(200).json('Password Reset Successful')
-		return
+		return res.status(200).json('Password Reset Successful')
 	} catch (error) {
-		return res.status(400).json({ error: 'Unable to Reset Password' })
+		return res.status(400).json({ error: 'Unauthorized Access!' })
 	}
 }
 

@@ -1,4 +1,5 @@
 const User = require('../models/userModel')
+const Profile = require('../models/profileModel')
 const { OAuth2Client } = require('google-auth-library')
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto')
@@ -95,20 +96,23 @@ exports.isSubAdmin = (req, res, next) => {
 	}
 }
 
-exports.getUserByOtp = async (req, res) => {
+exports.verifyOtpAndGetProfileId = async (req, res) => {
 	const { otp } = req.body
 
 	const hashedOtp = crypto.createHash('sha256').update(otp).digest('hex')
 
-	const user = await User.findOne({
-		encryptOtp: hashedOtp.toString(),
-		otpExpires: { $gt: Date.now() },
+	const profile = await Profile.findOne({
+		encryptedOtp: hashedOtp.toString(),
+		otpExpiresIn: { $gt: Date.now() },
 	})
 
-	if (!user) {
+	if (!profile) {
 		return res.status(408).json({ error: 'Invalid or Expired OTP' })
 	}
 
-	// req.profile = user;
-	return res.status(200).json({ userResetId: user._id })
+	profile.encryptedOtp = null
+	profile.otpExpiresIn = null
+
+	await profile.save()
+	return res.status(200).json({ resetUserId: profile.userId })
 }
