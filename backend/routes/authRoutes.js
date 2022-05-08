@@ -16,9 +16,9 @@ const {
 const {
 	isSignedIn,
 	getUserProfile,
-	getUserByOtp,
 	isGoogleTokenVerified,
 	isAuthenticatedByFacebook,
+	verifyOtpAndGetProfileId,
 } = require('../middleware/authMiddleware')
 
 router.param('userId', getUserById)
@@ -45,13 +45,13 @@ router.get('/user/protected', isSignedIn, getUserProfile, (req, res) => {
 //forget Password
 router.post('/user/forget-password', forgetPassword)
 
+//verify user otp
+router.post('/user/verify-otp', verifyOtpAndGetProfileId)
+
 //reset user otp
-router.post('/user/verify-reset-otp', getUserByOtp)
+router.post('/user/reset-password', resetPassword)
 
-//reset password
-router.post('/user/:userId/reset-password', resetPassword)
-
-router.put('/user/:userId/change-password', isSignedIn, getUserProfile, changeCurrentPassword)
+router.put('/user/change-password', isSignedIn, getUserProfile, changeCurrentPassword)
 
 router.post('/auth/:userId/token', tokenGenerator)
 
