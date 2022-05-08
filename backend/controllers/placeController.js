@@ -13,7 +13,7 @@ exports.getPlaceById = async (req, res, next, id) => {
 				//nested population. It populate the user property
 				populate: {
 					path: 'user',
-					select: 'name profileImgURL',
+					select: 'name avatarUrl',
 				},
 			})
 			.populate({
