@@ -17,11 +17,11 @@ const horecaSchema = new Schema(
 			trim: true,
 		},
 		address: {
-			streetName: {
-				type: String,
-				required: true,
-				trim: true,
-			},
+			// streetName: {
+			// 	type: String,
+			// 	required: true,
+			// 	trim: true,
+			// },
 			zipCode: {
 				type: String,
 				required: true,
@@ -42,16 +42,16 @@ const horecaSchema = new Schema(
 				max: 7,
 			},
 		},
-		lat: {
-			type: Number,
-			trim: true,
-			required: true,
-		},
-		lng: {
-			type: Number,
-			trim: true,
-			required: true,
-		},
+		// lat: {
+		// 	type: Number,
+		// 	trim: true,
+		// 	required: true,
+		// },
+		// lng: {
+		// 	type: Number,
+		// 	trim: true,
+		// 	required: true,
+		// },
 		phoneNumber: {
 			type: String,
 			required: true,

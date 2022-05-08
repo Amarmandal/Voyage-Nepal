@@ -38,7 +38,7 @@ router.get(
 
 //create hotel
 router.post(
-	'/hotel/create/:userId',
+	'/hotel/create',
 	isSignedIn,
 	getUserProfile,
 	isAdmin,

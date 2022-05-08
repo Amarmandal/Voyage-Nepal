@@ -58,13 +58,27 @@ exports.getHotelById = async (req, res, next, id) => {
 }
 
 exports.createHotelForPlace = async (req, res) => {
-	const hotel = new Horeca(req.body)
-	hotel.hotelPhotoUrl = req.hotelImgUrl
+	const { name, pricePerNight, zipCode, city, state, phoneNumber, email, horecaType, rating } =
+		req.body
+	const hotel = new Horeca({
+		name,
+		pricePerNight,
+		address: {
+			zipCode,
+			city,
+			state,
+		},
+		phoneNumber,
+		email,
+		rating,
+		horecaType,
+		imageUrl: req.hotelImgUrl,
+	})
 
 	try {
 		await hotel.save()
 
-		return res.status(200).json({ data: hotel })
+		return res.status(200).json(hotel)
 	} catch (error) {
 		console.log(error)
 
