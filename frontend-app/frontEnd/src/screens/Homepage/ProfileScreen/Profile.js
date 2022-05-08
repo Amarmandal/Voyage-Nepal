@@ -50,8 +50,48 @@ const Profile = ({navigation}) => {
 
   return (
     <Container>
-      <View style={{flex: 1, backgroundColor: '#ffffff', padding: 20, marginBottom: 40}}>
-        <LinearGradient
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: '#ffffff',
+          padding: 20,
+          marginBottom: 40,
+        }}>
+        <View style={{display: 'flex', flexDirection: 'row', height: 200, justifyContent: 'space-around', alignItems: 'center', marginLeft: 15, marginRight: 15}}>
+          <View>
+            {detail.userDetail.profileImgURL ? (
+              <Image
+                source={{uri: detail.userDetail.profileImgURL}}
+                style={{
+                  width: 150,
+                  height: 150,
+                  marginBottom: 10,
+                  borderRadius: 80,
+                }}
+              />
+            ) : (
+              <InitialsRound
+                initials={user.charAt(0).toUpperCase()}
+                font={60}
+                iHeight={120}
+                iWidth={120}
+                borderRadius={80}
+              />
+            )}
+          </View>
+          <View style = {{display: 'flex', flexDirection: 'column'}}>
+            <H1 style={{fontWeight: 'bold', color: '#000', marginBottom: 10}}>
+              {state.user.userData.name}
+            </H1>
+            <Text note style={{color: '#000000'}}>
+              {state.user.userData.email}
+            </Text>
+            <Text style={{color: '#000000', fontSize: 20}}>
+              {state.user.userData.city}
+            </Text>
+          </View>
+        </View>
+        {/* <LinearGradient
           start={{x: 0, y: 1}}
           end={{x: 1, y: 0}}
           colors={['#87f3e6', '#617170']}
@@ -60,14 +100,16 @@ const Profile = ({navigation}) => {
             justifyContent: 'center',
             borderRadius: 20,
             marginBottom: 25,
-          }}>
-          <View
+          }}> */}
+        {/* <View
             style={{
               height: 250,
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginLeft: 25,
-              marginRight: 25,
+              // alignItems: 'center',
+              // justifyContent: 'center',
+              marginLeft: 45,
+              // marginRight: 25,
+              display: 'flex',
+              flexDirection: 'row'
             }}>
             {detail.userDetail.profileImgURL ? (
               <Image
@@ -83,8 +125,8 @@ const Profile = ({navigation}) => {
               <InitialsRound
                 initials={user.charAt(0).toUpperCase()}
                 font={60}
-                iHeight={140}
-                iWidth={140}
+                iHeight={120}
+                iWidth={120}
                 borderRadius={80}
               />
             )}
@@ -98,8 +140,8 @@ const Profile = ({navigation}) => {
             <Text style={{color: '#000000', fontSize: 20}}>
               {state.user.userData.city}
             </Text>
-          </View>
-        </LinearGradient>
+          </View> */}
+        {/* </LinearGradient> */}
 
         <Content style={{marginTop: 20, margin: 10}}>
           <Pressable

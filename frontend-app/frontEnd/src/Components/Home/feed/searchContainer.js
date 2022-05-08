@@ -18,7 +18,7 @@ import {useNavigation} from '@react-navigation/native';
 
 const {width} = Dimensions.get('window');
 
-const SearchContainer = ({feed}) => {
+const SearchContainer = ({align}) => {
   const navigation = useNavigation();
 
   const places = useSelector(state => state.place);
@@ -43,7 +43,7 @@ const SearchContainer = ({feed}) => {
       <View style={styles.card} key={place._id}>
         <ImageBackground
           style={styles.cardImage}
-          source={{uri: place.placePhoto}}></ImageBackground>
+          source={{uri: place.images.featuredImg}}></ImageBackground>
         <View style={styles.cardDetails}>
           <Text style={styles.cardText}>{placeName(place.name)}</Text>
           <Text style={styles.location}>
@@ -104,7 +104,7 @@ const SearchContainer = ({feed}) => {
         />
         <Icon name="search" style={{color: Colors.gray}} size={28} />
       </Item>
-      {/* {feed ? (
+      {!align ? (
         <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -128,9 +128,9 @@ const SearchContainer = ({feed}) => {
           </Pressable>
         )}
       />
-      ) : null} */}
+      ) : null}
 
-      <FlatList
+      {/* <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
         data={filteredData}
@@ -152,7 +152,7 @@ const SearchContainer = ({feed}) => {
             <Card key={item._id} place={item} />
           </Pressable>
         )}
-      />
+      /> */}
     </SafeAreaView>
   );
 };

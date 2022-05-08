@@ -1,21 +1,18 @@
-import {GET_PLACE, GET_PLACE_SUCCESS, GET_PLACE_FAIL} from '../action.types'
+import {GET_PLACE_BY_CATEGORY, GET_PLACE_BY_CATEGORY_SUCCESS, GET_PLACE_BY_CATEGORY_FAIL} from '../action.types'
 import api from '../../../services/ApiServices'
 
-export const GetPlaceByID = (data) => {
-    // const {id} = data
-    // console.log(data);
+export const GetPlaceByCategory = (data) => {
     return async (dispatch, getState) => {
         const {loginUser} = getState()
         const {user} = loginUser
         dispatch({
-            type: GET_PLACE,
+            type: GET_PLACE_BY_CATEGORY,
         })
         var config = {
             method: 'get',
-            url: `/place/${data}`,
+            url: `/places/${data}/category`,
             headers: { 
               'Authorization': `Bearer ${user.token}`,
-              Cookie: `token=${user.token}`,
             }
           };
           
@@ -23,14 +20,14 @@ export const GetPlaceByID = (data) => {
           .then(function (response) {
             // console.log(JSON.stringify(response.data));
             dispatch({
-                type: GET_PLACE_SUCCESS,
-                payload: response.data.data
+                type: GET_PLACE_BY_CATEGORY_SUCCESS,
+                payload: response.data
             })
           })
           .catch(function (error) {
             console.log(error);
             dispatch({
-                type: GET_PLACE_FAIL,
+                type: GET_PLACE_BY_CATEGORY_FAIL,
                 payload: error
             })
           });

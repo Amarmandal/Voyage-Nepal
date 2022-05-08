@@ -10,6 +10,7 @@ import recommendedPlace from './recommendedPlace'
 import getPlaceById from './destinations/getPlaceById'
 import review from './userActivity/review'
 import currentLocation from './currentLocation'
+import getPlaceByCategory from './destinations/getPlaceByCategory'
 export default combineReducers({
     loginUser,
     authReducer,
@@ -21,5 +22,6 @@ export default combineReducers({
     recommendedPlace,
     getPlaceById,
     review,
-    currentLocation
+    currentLocation,
+    getPlaceByCategory
 })

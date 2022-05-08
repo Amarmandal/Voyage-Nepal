@@ -23,10 +23,11 @@ import Carousel from '../../../Components/Home/feed/swiper';
 import RandomPlaces from '../../../Components/Home/feed/RandomPlaces';
 import PlaceCategory from '../../../Components/Home/feed/Category';
 import SearchContainer from '../../../Components/Home/feed/searchContainer';
+import NearbyPlaces from '../../../Components/Home/PlaceList/NearbyPlaces'
 
 const Feed = () => {
   const [visibility, setVisibility] = useState(false);
-  const token = async() => await AsyncStorage.getItem(token)
+  const token = async() => await AsyncStorage.getItem('token')
   useEffect(() => {
     fetchCategory();
     fetchPlaces();
@@ -126,7 +127,7 @@ const Feed = () => {
         <SearchContainer feed = 'feed page' />
         <Carousel />
         <PlaceCategory />
-        <Popular />
+        <NearbyPlaces />
       </ScrollView>
     </SafeAreaView>
   );

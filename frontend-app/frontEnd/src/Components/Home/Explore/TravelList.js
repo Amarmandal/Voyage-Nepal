@@ -46,7 +46,7 @@ const TravelList = props => {
       <View style={styles.card} key={place + place._id.toString()}>
         <ImageBackground
           style={styles.cardImage}
-          source={{uri: place.placePhoto}}></ImageBackground>
+          source={{uri: place.images.featuredImg}}></ImageBackground>
         <View style={styles.cardDetails}>
           <Text style={styles.cardText}>{placeName(place.name)}</Text>
           <Text style={styles.location}>
@@ -116,7 +116,7 @@ const TravelList = props => {
                 <Pressable
                   onPress={() =>
                     navigation.navigate('Details', {
-                      image: item.placePhoto,
+                      image: item.images,
                       location: item.location,
                       name: item.name,
                       details: item.description,
