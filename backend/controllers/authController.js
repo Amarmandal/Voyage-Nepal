@@ -229,10 +229,10 @@ exports.tokenGenerator = async (req, res) => {
 
 exports.changeCurrentPassword = async (req, res) => {
 	const { currentPassword, newPassword } = req.body
-	const user = req.userProfile
+	const user = req.auth.user
 
 	try {
-		const isCurrentPasswordOk = user.authenticate(currentPassword)
+		const isCurrentPasswordOk = await user.authenticate(currentPassword)
 
 		if (!isCurrentPasswordOk) {
 			throw new Error('Current Password do not match')
@@ -243,7 +243,7 @@ exports.changeCurrentPassword = async (req, res) => {
 
 		return res.status(200).json({ success: 'Password changed Successfully' })
 	} catch (error) {
-		return res.status(403).json({ error: 'Please check if your current password match' })
+		return res.status(403).json({ error: 'Current Password do not match' })
 	}
 }
 

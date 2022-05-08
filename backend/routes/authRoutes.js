@@ -51,7 +51,7 @@ router.post('/user/verify-reset-otp', getUserByOtp)
 //reset password
 router.post('/user/:userId/reset-password', resetPassword)
 
-router.put('/user/:userId/change-password', isSignedIn, getUserProfile, changeCurrentPassword)
+router.put('/user/change-password', isSignedIn, getUserProfile, changeCurrentPassword)
 
 router.post('/auth/:userId/token', tokenGenerator)
 
