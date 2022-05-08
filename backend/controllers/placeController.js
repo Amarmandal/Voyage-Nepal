@@ -23,6 +23,10 @@ exports.getPlaceById = async (req, res, next, id) => {
 				path: 'category',
 				select: 'name',
 			})
+			.populate({
+				path: 'nearestCity',
+				select: 'name',
+			})
 			.exec()
 		;(req.place = place), next()
 	} catch (error) {
@@ -32,7 +36,13 @@ exports.getPlaceById = async (req, res, next, id) => {
 
 exports.getMostVisitedPlaces = async (req, res) => {
 	try {
-		const places = await Place.find().sort({ userRatingsTotal: 'desc' }).limit(5)
+		const places = await Place.find()
+			.sort({ userRatingsTotal: 'desc' })
+			.populate({
+				path: 'nearestCity',
+				select: 'name',
+			})
+			.limit(5)
 		return res.status(200).json({ data: places })
 	} catch (err) {
 		console.log(err)
@@ -42,7 +52,10 @@ exports.getMostVisitedPlaces = async (req, res) => {
 
 exports.getTopRatedPlaces = async (_req, res) => {
 	try {
-		const places = await Place.find({ rating: { $gt: 0 }, userRatingsTotal: { $gt: 0 } })
+		const places = await Place.find({ rating: { $gt: 0 }, userRatingsTotal: { $gt: 0 } }).populate({
+			path: 'nearestCity',
+			select: 'name',
+		})
 		const result = places.map((place) => {
 			const { rating, userRatingsTotal } = place
 			const score = 0.5 * +rating + 10 * 0.5 * (1 - Math.exp(-Number(userRatingsTotal) / 10))
@@ -64,7 +77,10 @@ exports.getNearbyPlaces = async (req, res) => {
 			return res.status(400).json({ error: 'Invalid Origin Address' })
 		}
 
-		const places = await Place.find()
+		const places = await Place.find().populate({
+			path: 'nearestCity',
+			select: 'name',
+		})
 		const baseUrl = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}`
 		const result = Promise.all(
 			places.map(async (place) => {
@@ -132,7 +148,10 @@ exports.getPreviousPlacePage = async (req, res) => {
 exports.getPlaceByCategory = async (req, res) => {
 	try {
 		const { categoryId } = req.params
-		const places = await Place.find({ category: { $in: [categoryId] } })
+		const places = await Place.find({ category: { $in: [categoryId] } }).populate({
+			path: 'nearestCity',
+			select: 'name',
+		})
 		return res.status(200).json(places)
 	} catch (error) {
 		return res.status(404).json({ error: 'Unauthorized Access!' })
