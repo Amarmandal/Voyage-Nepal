@@ -16,13 +16,17 @@ const reviewSchema = new Schema(
 			required: true,
 			max: 5,
 		},
+		place: {
+			type: Schema.Types.ObjectId,
+			ref: 'Place',
+		},
 		user: {
 			type: Schema.Types.ObjectId,
 			ref: 'User',
 		},
 		isApproved: {
 			type: Boolean,
-			default: false,
+			default: true,
 		},
 	},
 	{ timestamps: true }

@@ -15,7 +15,7 @@ const { isSignedIn, getUserProfile, isAdmin } = require('../middleware/authMiddl
 router.param('placeId', getPlaceById)
 router.param('userId', getUserById)
 
-router.post('/review/create/:placeId/:userId', isSignedIn, getUserProfile, createPlaceReview)
+router.post('/review/:placeId/create', isSignedIn, getUserProfile, createPlaceReview)
 
 //get an individual review
 router.get('/review/:userId', isSignedIn, getUserProfile, getReviewByUserId)
