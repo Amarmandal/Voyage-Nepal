@@ -15,6 +15,7 @@ const {
 	uploadPlaceFeaturedImg,
 	getMostVisitedPlaces,
 	getTopRatedPlaces,
+	getNearbyPlaces,
 } = require('../controllers/placeController')
 const { isSignedIn, getUserProfile, isAdmin } = require('../middleware/authMiddleware')
 const { getUserById } = require('../controllers/userController')
@@ -37,6 +38,10 @@ router.get('/places/most-visited', isSignedIn, getMostVisitedPlaces)
 
 //get top rated places
 router.get('/places/top-rated', isSignedIn, getTopRatedPlaces)
+
+//get nearest places
+//nearby?origin=origin_coordinates
+router.get('/places/nearby', isSignedIn, getNearbyPlaces)
 
 //get 10 random places
 router.get('/places/random', isSignedIn, getRandomPlaces)
